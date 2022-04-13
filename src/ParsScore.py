@@ -307,7 +307,9 @@ def ParsScore(tree_file, msa_file, alphabet, Q=np.array(None), gi_f=1, ge_f=1, p
         if not node.is_leaf():
             for i in range(length_MSA):
                 if branch_length:
-                    C, av_cost = calculateC(alphabet, Q, node.dist, branch_length)
+                    C, av_cost = calculateC(alphabet, Q, 
+                                            node.children[0].dist+node.children[1].dist, 
+                                            branch_length)
                     go = gi_f*av_cost
                     ge = ge_f*av_cost
                     
