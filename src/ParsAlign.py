@@ -950,6 +950,7 @@ def ParsAlign(tree_file, sequence_file, output_file, alphabet,
                 InitalizeSetsAndAlignment(node, alphabet, phylogeny_aware)    
             else:
                 if branch_length:
+                    
                     C, av_cost = calculateC(alphabet, Q, 
                                             node.children[0].dist+node.children[1].dist, 
                                             branch_length)
@@ -970,7 +971,9 @@ def ParsAlign(tree_file, sequence_file, output_file, alphabet,
                 InitalizeSetsAndAlignment(node, alphabet, phylogeny_aware)    
             else:
                 if branch_length:
-                    C, av_cost = calculateC(alphabet, Q, node.dist, branch_length)
+                    C, av_cost = calculateC(alphabet, Q,
+                                            node.children[0].dist+node.children[1].dist,
+                                            branch_length)
                     gi = gi_f*av_cost
                     ge = ge_f*av_cost
                 pars_score, T = GenerateMatrices(node, C, gi, ge, 
