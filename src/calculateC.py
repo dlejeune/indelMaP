@@ -9,7 +9,7 @@ import numpy as np
 import math
 from scipy.linalg import expm
 
-def calculateC(alphabet, Q, d, branch_length):
+def calculateC(alphabet, model, d, branch_length):
     '''
     
 
@@ -31,6 +31,8 @@ def calculateC(alphabet, Q, d, branch_length):
         The average cost which is used to calculate gap penalties.
 
     '''
+    Q = model[0]
+    d_max = model[1]
     
     if alphabet == 'Protein':
         characters = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 
@@ -66,6 +68,9 @@ def calculateC(alphabet, Q, d, branch_length):
             P = expm(Q*d)
         
         else:
+            if d > d_max:
+                d = d_max
+                
             P = np.identity(len(characters)) + Q*d
         
         cost_matrix = {}
