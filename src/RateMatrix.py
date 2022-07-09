@@ -241,10 +241,11 @@ JC69 = (np.array([[-1,1/3,1/3,1/3],
               [1/3,1/3,1/3,-1]]),0.99999999)
 
 def K80(alpha, beta):
-    K = (np.array([-1, alpha/(alpha+2*beta), beta/(alpha+2*beta), beta/(alpha+2*beta)],
+
+    K = np.array([[-1, alpha/(alpha+2*beta), beta/(alpha+2*beta), beta/(alpha+2*beta)],
                  [alpha/(alpha+2*beta), -1, beta/(alpha+2*beta), beta/(alpha+2*beta)],
                  [beta/(alpha+2*beta), beta/(alpha+2*beta), -1, alpha/(alpha+2*beta)],
-                 [beta/(alpha+2*beta), beta/(alpha+2*beta), alpha/(alpha+2*beta), -1]), 0.99999999)
+                 [beta/(alpha+2*beta), beta/(alpha+2*beta), alpha/(alpha+2*beta), -1]])
     
-    return K
+    return K, 0.99999999
     

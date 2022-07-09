@@ -8,7 +8,8 @@ Created on Fri Oct 29 22:23:09 2021
 
 import numpy as np
 from ete3 import PhyloNode
-from source.calculateC import calculateC
+from src.calculateC import calculateC
+from src.HelperFunctions import determineC
 
 def ParsLeaf(leaf, alphabet, phylogeny_aware=True):
     '''
@@ -93,7 +94,7 @@ def ParsLeaf(leaf, alphabet, phylogeny_aware=True):
     leaf.add_features(insertion_gaps = ins_gaps)
 
   
-def ParsInternal(tree, i, cost_matrix, go, ge, phylogeny_aware):
+def ParsInternal(tree, i, C_all, gi_f, ge_f, phylogeny_aware, branch_length):
     '''
     Creates the parsimony sets and scores for the internal nodes. 
 
@@ -127,6 +128,14 @@ def ParsInternal(tree, i, cost_matrix, go, ge, phylogeny_aware):
     right_set = tree.children[1].parsimony_sets
     right_score  = tree.children[1].parsimony_scores[i]
     
+    left_dist = tree.children[0].dist
+    right_dist = tree.children[1].dist
+    
+    C_left, gi_left, ge_left = determineC(C_all, left_dist, gi_f, ge_f, 
+                                          branch_length)
+    C_right, gi_right, ge_right = determineC(C_all, right_dist, gi_f, ge_f, 
+                                             branch_length)
+    
     length_MSA = len(left_set)
     
     if i == 0:
@@ -156,11 +165,11 @@ def ParsInternal(tree, i, cost_matrix, go, ge, phylogeny_aware):
                 
             #if we expand an insertion site
             if left_set[tmp] == set('-') and not tree.insertion_gaps[tmp] == True:
-                tree.parsimony_scores[i] = left_score + right_score + ge  
+                tree.parsimony_scores[i] = left_score + right_score + ge_left
             else:
-                tree.parsimony_scores[i] = left_score + right_score + go
+                tree.parsimony_scores[i] = left_score + right_score + gi_left
         else:
-            tree.parsimony_scores[i] = left_score + right_score + go
+            tree.parsimony_scores[i] = left_score + right_score + gi_left
                 
         if phylogeny_aware and tree.insertion_flags[i]:
             tree.parsimony_sets[i] = set('-')
@@ -183,11 +192,11 @@ def ParsInternal(tree, i, cost_matrix, go, ge, phylogeny_aware):
                 
             #if we expand an insertion site
             if right_set[tmp] == set('-') and not tree.insertion_gaps[tmp] == True:
-                tree.parsimony_scores[i] = left_score + right_score + ge  
+                tree.parsimony_scores[i] = left_score + right_score + ge_right
             else:
-                tree.parsimony_scores[i] = left_score + right_score + go
+                tree.parsimony_scores[i] = left_score + right_score + gi_right
         else:
-            tree.parsimony_scores[i] = left_score + right_score + go
+            tree.parsimony_scores[i] = left_score + right_score + gi_right
         
         if phylogeny_aware and tree.insertion_flags[i]:
             tree.parsimony_sets[i] = set('-')
@@ -201,34 +210,44 @@ def ParsInternal(tree, i, cost_matrix, go, ge, phylogeny_aware):
         else:
             tree.parsimony_sets[i] = left_set[i]
             
-                
-    elif not left_set[i].intersection(right_set[i]):
+    elif left_set[i].intersection(right_set[i]):
+        tree.parsimony_sets[i] = left_set[i].intersection(right_set[i])
         min_score = np.inf
         for left_character in left_set[i]:
-            for right_character in right_set[i]:
-                score = cost_matrix[left_character][right_character]
+            for int_character in tree.parsimony_sets[i]:
+                score_l = C_left[left_character][int_character]
                 
-                if score < min_score:
-                    min_score = score
-                
-        tree.parsimony_sets[i] = left_set[i].union(right_set[i])
-        tree.parsimony_scores[i] = left_score + right_score + min_score
-        
-    else:
-        min_score = np.inf
-        for left_character in left_set[i].intersection(right_set[i]):
-            for right_character in left_set[i].intersection(right_set[i]):
-                
-                score = cost_matrix[left_character][right_character]
-                
-                if score < min_score:
-                    min_score = score
+                for right_character in right_set[i]:
+                    score_r = C_right[right_character][int_character]
+                    
+                    score = score_l + score_r
+                    
+                    if score < min_score:
+                        min_score = score  
                         
-        tree.parsimony_sets[i] = left_set[i].intersection(right_set[i])
         tree.parsimony_scores[i] = left_score + right_score + min_score
-       
+    
+    elif not left_set[i].intersection(right_set[i]):
+        tree.parsimony_sets[i] = left_set[i].union(right_set[i])
+        
+        min_score = np.inf
+        for left_character in left_set[i]:
+            for int_character in tree.parsimony_sets[i]:
+                score_l = C_left[left_character][int_character]
+                
+                for right_character in right_set[i]:
+                    score_r = C_right[right_character][int_character]
+                    
+                    score = score_l + score_r
+                    
+                    if score < min_score:
+                        min_score = score        
+                
+        tree.parsimony_scores[i] = left_score + right_score + min_score
+    
+    
 
-def ParsScore(tree_file, msa_file, alphabet, Q=np.array(None), gi_f=1, ge_f=1, phylogeny_aware=True,
+def ParsScore(tree_file, msa_file, alphabet, Q=None, gi_f=1, ge_f=1, phylogeny_aware=True,
               branch_length = True):
     '''
     Calculates the parsimony score for the whole tree while accounting for 
@@ -261,14 +280,11 @@ def ParsScore(tree_file, msa_file, alphabet, Q=np.array(None), gi_f=1, ge_f=1, p
 
     '''
     
-    tree = PhyloNode(newick = tree_file, alignment = msa_file, format=1, quoted_node_names = True)
+    tree = PhyloNode(newick = tree_file, alignment = msa_file, format=1, quoted_node_names=True)
     length_MSA = len(tree.get_leaves()[0].sequence)
     
     
-    if not branch_length:
-        C, av_cost = calculateC(alphabet, Q, 0.62, branch_length)
-        go = gi_f*av_cost
-        ge = ge_f*av_cost
+    C_all = calculateC(alphabet, Q, branch_length)
     
     # find insertion points and mark them with an insertion flag set to True
     if phylogeny_aware:
@@ -306,16 +322,12 @@ def ParsScore(tree_file, msa_file, alphabet, Q=np.array(None), gi_f=1, ge_f=1, p
     for node in tree.traverse('postorder'):
         if not node.is_leaf():
             for i in range(length_MSA):
-                if branch_length:
-                    C, av_cost = calculateC(alphabet, Q, 
-                                            node.children[0].dist+node.children[1].dist, 
-                                            branch_length)
-                    go = gi_f*av_cost
-                    ge = ge_f*av_cost
                     
-                ParsInternal(node, i, C, go, ge, 
-                                     phylogeny_aware)
-            #print(node.parsimony_scores)
+                ParsInternal(node, i, C_all, gi_f, ge_f, 
+                                     phylogeny_aware, branch_length)
+            print(node.parsimony_sets)
+            print(node.insertion_gaps)
+            print(node.insertion_flags)
         
     # sum the parsimony scores at the root over the whole sequence
     tree_score = sum(tree.parsimony_scores)

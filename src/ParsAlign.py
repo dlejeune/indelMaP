@@ -8,8 +8,8 @@ Created on Fri Apr  1 08:55:19 2022
 
 import numpy as np
 from ete3 import PhyloNode
-from source.calculateC import calculateC
-from source.HelperFunctions import determineT, setcurrentT
+from src.calculateC import calculateC
+from src.HelperFunctions import determineT, setcurrentT, determineC
 
 
 def InitalizeSetsAndAlignment(leaf, alphabet, phylogeny_aware):
@@ -105,7 +105,7 @@ def InitalizeSetsAndAlignment(leaf, alphabet, phylogeny_aware):
         leaf.add_features(insertion_flags = ins_flags)
         leaf.add_features(insertion_permanent = ins_perm)
 
-def GenerateMatrices(tree, cost_matrix, gi, ge, phylogeny_aware):
+def GenerateMatrices(tree, C_all, gi_f, ge_f, phylogeny_aware, branch_length):
     '''
     Forward phase of the progressive algorithm. Generates the matrix S with
     the score and the trace back matrix T, which records the moves. 
@@ -143,6 +143,14 @@ def GenerateMatrices(tree, cost_matrix, gi, ge, phylogeny_aware):
         
         left_insertions = tree.children[0].insertion_permanent
         right_insertions = tree.children[1].insertion_permanent
+    
+    left_dist = tree.children[0].dist
+    right_dist = tree.children[1].dist
+    
+    C_left, gi_left, ge_left = determineC(C_all, left_dist, gi_f, ge_f, 
+                                          branch_length)
+    C_right, gi_right, ge_right = determineC(C_all, right_dist, gi_f, ge_f, 
+                                             branch_length)
         
     S = np.zeros((len(left_sets)+1, len(right_sets)+1), dtype=float)
     T = np.zeros((len(left_sets)+1, len(right_sets)+1), dtype=float)
@@ -161,11 +169,11 @@ def GenerateMatrices(tree, cost_matrix, gi, ge, phylogeny_aware):
                     tmp_i -= 1
                     
                 if tmp_i > 0 and S[tmp_i][0] != 0 and not left_flags[tmp_i-1]:
-                    S[i][0] = S[i-1][0] + ge                
+                    S[i][0] = S[i-1][0] + ge_left               
                 else:
-                    S[i][0] = S[i-1][0] + gi
+                    S[i][0] = S[i-1][0] + gi_left
         else:
-            S[i][0] = gi + (i-1)*ge 
+            S[i][0] = gi_left + (i-1)*ge_left
         
         T[i][0] = 3
             
@@ -187,11 +195,11 @@ def GenerateMatrices(tree, cost_matrix, gi, ge, phylogeny_aware):
                     tmp_j -= 1
             
                 if tmp_j > 0 and S[0][tmp_j] != 0 and not right_flags[tmp_j-1]:
-                    S[0][j] = S[0][j-1]  + ge
+                    S[0][j] = S[0][j-1]  + ge_right
                 else:
-                   S[0][j] = S[0][j-1]  + gi
+                   S[0][j] = S[0][j-1]  + gi_right
         else:
-            S[0][j] = gi + (j-1)*ge 
+            S[0][j] = gi_right + (j-1)*ge_right 
         
         T[0][j] = 2
             
@@ -217,31 +225,28 @@ def GenerateMatrices(tree, cost_matrix, gi, ge, phylogeny_aware):
             else:
                 #matching sets with a non empty intersection
                 if left_sets[i-1].intersection(right_sets[j-1]):
-                    intersection = left_sets[i-1].intersection(right_sets[j-1])
-                    
-                    min_score = np.inf
-                    for left_character in intersection:
-                        for right_character in intersection:
-                            score = cost_matrix[left_character][right_character]
-                            
-                            if score < min_score:
-                                min_score = score
-                
-                    score_intersection =  S[i-1][j-1] + min_score
-                    
-                #matching sets with an empty intersection 
+                    new_set = left_sets[i-1].intersection(right_sets[j-1])
                 elif not left_sets[i-1].intersection(right_sets[j-1]):
+                    new_set = left_sets[i-1].union(right_sets[j-1])
                     
-                    min_score = np.inf
-                    for left_character in left_sets[i-1]:
-                        for right_character in right_sets[j-1]:
-                            score = cost_matrix[left_character][right_character]
-                            
-                            if score < min_score:
-                                min_score = score
-                    
-                    score_intersection = S[i-1][j-1] + min_score
+                min_score_left = np.inf
+                for left_character in left_sets[i-1]:
+                    for int_character in new_set:
+                        score = C_left[left_character][int_character]
+                        
+                        if score < min_score_left:
+                            min_score_left = score
                 
+                min_score_right = np.inf
+                for right_character in right_sets[j-1]:
+                    for int_character in new_set:
+                        score = C_right[right_character][int_character]
+                        
+                        if score < min_score_right:
+                            min_score_right = score
+                
+                score_intersection = S[i-1][j-1] + min(min_score_left, min_score_right)
+                                    
                     
                 #if the algorithm is phylogeny aware gap placements in columns 
                 #flagged as deletions are free
@@ -261,13 +266,13 @@ def GenerateMatrices(tree, cost_matrix, gi, ge, phylogeny_aware):
                     if T[i][tmp_j] == 2:
                         if phylogeny_aware:
                             if not right_flags[tmp_j-1]:
-                                score_gap_left = S[i][j-1] + ge
+                                score_gap_left = S[i][j-1] + ge_right
                             else:
-                                score_gap_left = S[i][j-1] + gi
+                                score_gap_left = S[i][j-1] + gi_right
                         else:
-                            score_gap_left = S[i][j-1] + ge
+                            score_gap_left = S[i][j-1] + ge_right
                     else:
-                        score_gap_left = S[i][j-1] + gi
+                        score_gap_left = S[i][j-1] + gi_right
                 
                 if phylogeny_aware and left_flags[i-1]:
                     score_gap_right = S[i-1][j]
@@ -283,13 +288,13 @@ def GenerateMatrices(tree, cost_matrix, gi, ge, phylogeny_aware):
                     if T[tmp_i][j] == 3:
                         if phylogeny_aware:
                             if not left_flags[tmp_i-1]:
-                                score_gap_right = S[i-1][j] + ge
+                                score_gap_right = S[i-1][j] + ge_left
                             else:
-                                score_gap_right = S[i-1][j] + gi
+                                score_gap_right = S[i-1][j] + gi_left
                         else:
-                            score_gap_right = S[i-1][j] + ge
+                            score_gap_right = S[i-1][j] + ge_left
                     else:
-                        score_gap_right = S[i-1][j] + gi
+                        score_gap_right = S[i-1][j] + gi_left
                     
                 S[i][j] = min(score_intersection, score_gap_left, 
                               score_gap_right)
@@ -302,7 +307,7 @@ def GenerateMatrices(tree, cost_matrix, gi, ge, phylogeny_aware):
     #print(S)
     return pars_score, T
         
-def GenerateMatricesAffine(tree, cost_matrix, gi, ge, phylogeny_aware):
+def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, phylogeny_aware, branch_length):
     '''
     Forward phase of the progressive algorithm. Generates the matrix S with
     the score and the trace back matrix T, which records the moves. 
@@ -340,7 +345,16 @@ def GenerateMatricesAffine(tree, cost_matrix, gi, ge, phylogeny_aware):
         
         left_insertions = tree.children[0].insertion_permanent
         right_insertions = tree.children[1].insertion_permanent
-        
+    
+    
+    left_dist = tree.children[0].dist
+    right_dist = tree.children[1].dist
+    
+    C_left, gi_left, ge_left = determineC(C_all, left_dist, gi_f, ge_f,
+                                          branch_length)
+    C_right, gi_right, ge_right = determineC(C_all, right_dist, gi_f, ge_f,
+                                             branch_length)
+    
     S_M = np.zeros((len(left_sets)+1, len(right_sets)+1), dtype=float)
     S_Y = np.zeros((len(left_sets)+1, len(right_sets)+1), dtype=float)
     S_X = np.zeros((len(left_sets)+1, len(right_sets)+1), dtype=float)
@@ -356,16 +370,12 @@ def GenerateMatricesAffine(tree, cost_matrix, gi, ge, phylogeny_aware):
             if left_insertions[i-1] or left_flags[i-1]:
                 S_X[i][0] = S_X[i-1][0]        
             else:
-                tmp_i = i-1
-                while left_flags[tmp_i-1] and tmp_i > 0:
-                    tmp_i -= 1
-                    
-                if tmp_i > 0 and S_X[tmp_i][0] != 0 and not left_flags[tmp_i-1]:
-                    S_X[i][0] = S_X[i-1][0] + ge                
+                if S_X[i-1][0] != 0:
+                    S_X[i][0] = S_X[i-1][0] + ge_right                
                 else:
-                    S_X[i][0] = S_X[i-1][0] + gi
+                    S_X[i][0] = S_X[i-1][0] + gi_right
         else:
-            S_X[i][0] = gi + (i-1)*ge 
+            S_X[i][0] = gi_right + (i-1)*ge_right
         
         T_M[i][0] = T_X[i][0] = T_Y[i][0] = 3
             
@@ -380,16 +390,12 @@ def GenerateMatricesAffine(tree, cost_matrix, gi, ge, phylogeny_aware):
                 S_Y[0][j] = S_Y[0][j-1] 
             
             else:
-                tmp_j = j-1
-                while right_flags[tmp_j-1] and tmp_j > 0:
-                    tmp_j -= 1
-            
-                if tmp_j > 0 and S_Y[0][tmp_j] != 0 and not right_flags[tmp_j-1]:
-                    S_Y[0][j] = S_Y[0][j-1]  + ge
+                if S_Y[0][j-1] != 0:
+                    S_Y[0][j] = S_Y[0][j-1] + ge_left
                 else:
-                   S_Y[0][j] = S_Y[0][j-1]  + gi
+                   S_Y[0][j] = S_Y[0][j-1] + gi_left
         else:
-            S_Y[0][j] = gi + (j-1)*ge 
+            S_Y[0][j] = gi_left + (j-1)*ge_left
         
         T_M[0][j] = T_X[0][j] = T_Y[0][j] = 2
             
@@ -423,33 +429,28 @@ def GenerateMatricesAffine(tree, cost_matrix, gi, ge, phylogeny_aware):
             else:
                 min_S_M = min(S_M[i-1][j-1], S_X[i-1][j-1], S_Y[i-1][j-1])
                 
-
+                
                 #matching sets with a non empty intersection
                 if left_sets[i-1].intersection(right_sets[j-1]):
-                    intersection = left_sets[i-1].intersection(right_sets[j-1])
-                    
-                    min_score = np.inf
-                    for left_character in intersection:
-                        for right_character in intersection:
-                            score = cost_matrix[left_character][right_character]
-                            
-                            if score < min_score:
-                                min_score = score
-                    
-                    S_M[i][j] = min_S_M + min_score
-                    
-                #matching sets with an empty intersection 
-                elif not left_sets[i-1].intersection(right_sets[j-1]):
+                    new_set = left_sets[i-1].intersection(right_sets[j-1])
                 
-                    min_score = np.inf
-                    for left_character in left_sets[i-1]:
+                elif not left_sets[i-1].intersection(right_sets[j-1]):
+                    new_set = left_sets[i-1].union(right_sets[j-1])
+                    
+                min_score = np.inf
+                for left_character in left_sets[i-1]:
+                    for int_character in new_set:
+                        score_l = C_left[left_character][int_character]
+                        
                         for right_character in right_sets[j-1]:
-                            score = cost_matrix[left_character][right_character]
+                            score_r = C_right[right_character][int_character]
+                            
+                            score = score_l + score_r
                             
                             if score < min_score:
                                 min_score = score
-                    
-                    S_M[i][j] = min_S_M + min_score
+                
+                S_M[i][j] = min_S_M + min_score
                 
                 T_M[i][j] = determineT(min_S_M, S_M[i-1][j-1], S_X[i-1][j-1], S_Y[i-1][j-1])
                     
@@ -461,49 +462,36 @@ def GenerateMatricesAffine(tree, cost_matrix, gi, ge, phylogeny_aware):
                 #otherwise gaps are penalized with gi for newly openend gaps 
                 #and ge for gap extensions
                 else:
-                    tmp_j = j-1
-                    while ((T_Y[i][tmp_j] == 0 and tmp_j > 0)
-                           or (phylogeny_aware and T_Y[i][tmp_j] == 2 
-                               and right_flags[tmp_j-1] 
-                               and tmp_j > 0)):
-                        tmp_j -= 1                    
-                        
-                    if phylogeny_aware:
-                        if not right_flags[tmp_j-1]:
-                            s_y = S_Y[i][j-1] + ge
-                        else:
-                            s_y = S_Y[i][j-1] + gi
-                    else:
-                        s_y = S_Y[i][j-1] + ge
-                        
-                    s_x = S_X[i][j-1] + gi
-                    s_m = S_M[i][j-1] + gi
+                    tmp = j-1
+                
+                    while tmp > 0 and right_flags[tmp-1] and (T_Y[i][tmp] == 2 or T_Y[i][tmp] == 0) and phylogeny_aware:
+                        tmp -= 1
+                    
+                    if (T_Y[i][tmp] == 1 or T_Y[i][tmp] == 3) and right_flags[tmp-1]:
+                        s_y = S_Y[i][tmp] + gi_left
+                    else: 
+                        s_y = S_Y[i][tmp] + ge_left
+                    s_x = S_X[i][j-1] + gi_left
+                    s_m = S_M[i][j-1] + gi_left
                     
                     S_Y[i][j] = min(s_m, s_x, s_y)
                     T_Y[i][j] = determineT(S_Y[i][j], s_m, s_x, s_y)
                 
                 if phylogeny_aware and left_flags[i-1]:
-                    S_X[i][j] = min(S_M[i-1][j], S_X[i-1][j], S_Y[i-1][j])
+                    
+                    S_X[i][j] = min(S_M[i-1][j], S_Y[i-1][j], S_X[i-1][j])
                     T_X[i][j] = determineT(S_X[i][j], S_M[i-1][j], S_X[i-1][j], S_Y[i-1][j])
                 else:
-                    tmp_i = i-1
-                      
-                    while ((T_X[tmp_i][j] == 0 and tmp_i > 0)
-                           or (phylogeny_aware and T_X[tmp_i][j] == 3 
-                               and left_flags[tmp_i-1] 
-                               and tmp_i > 0)):
-                        tmp_i -= 1
-     
-                    if phylogeny_aware:
-                        if not left_flags[tmp_i-1]:
-                            s_x = S_X[i-1][j] + ge
-                        else:
-                            s_x = S_X[i-1][j] + gi
-                    else:
-                        s_x = S_X[i-1][j] + ge
+                    tmp = i-1
+                    while tmp > 0  and left_flags[tmp-1] and (T_X[tmp][j] == 3 or T_X[tmp][j] == 0) and phylogeny_aware:
+                        tmp -= 1
                     
-                    s_m = S_M[i-1][j] + gi
-                    s_y = S_Y[i-1][j] + gi
+                    if (T_X[tmp][j] == 1 or T_X[tmp][j] == 2) and left_flags[tmp-1]:
+                        s_x = S_X[tmp][j] + gi_right
+                    else:
+                        s_x = S_X[tmp][j] + ge_right
+                    s_m = S_M[i-1][j] + gi_right
+                    s_y = S_Y[i-1][j] + gi_right
                     
                     S_X[i][j] = min(s_m, s_x, s_y)
                     T_X[i][j] = determineT(S_X[i][j], s_m, s_x, s_y)
@@ -517,11 +505,14 @@ def GenerateMatricesAffine(tree, cost_matrix, gi, ge, phylogeny_aware):
                      S_X[len(left_sets)][len(right_sets)],
                      S_Y[len(left_sets)][len(right_sets)])
     
-    #print(S_M, '\n', S_X, '\n', S_Y)
+    
+    
+    
+    #print(pars_score, '\n', S_M, '\n', T_M, '\n', S_X, '\n', T_X, '\n', S_Y, '\n', T_Y)
     
     return pars_score, T_M, T_X, T_Y, start_T
 
-def TraceBack(T, tree, cost_matrix, phylogeny_aware):
+def TraceBack(T, tree, phylogeny_aware):
     '''
     Finds the alignment for the (sub-)tree and adds it to the (sub-)tree root. 
     Adds the parsimony sets to the (sub-)tree root.
@@ -705,7 +696,7 @@ def TraceBack(T, tree, cost_matrix, phylogeny_aware):
         tree.add_features(insertion_flags = ins_flags)
         tree.add_features(insertion_permanent = ins_perm)
         
-def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, cost_matrix, phylogeny_aware):
+def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, phylogeny_aware):
     
     '''
     Finds the alignment for the (sub-)tree and adds it to the (sub-)tree root. 
@@ -755,6 +746,8 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, cost_matrix, phylogeny_aware):
     
     pars_sets = []
     while i > 0 or j > 0:
+        
+
         #permanent insertions 
         if current_T[i][j] == 0 and phylogeny_aware:
             if left_insertions[i-1] and right_insertions[j-1]:
@@ -831,7 +824,6 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, cost_matrix, phylogeny_aware):
             if phylogeny_aware:
                 ins_flags.insert(0, False)
                 ins_perm.insert(0,False)
-            
             current_T = setcurrentT(current_T[i][j], T_M, T_X, T_Y)
             
             i = i-1
@@ -860,7 +852,6 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, cost_matrix, phylogeny_aware):
                     pars_sets.insert(0, right_sets[j-1])
             else:
                 pars_sets.insert(0, right_sets[j-1])
-            
             current_T = setcurrentT(current_T[i][j], T_M, T_X, T_Y)
             
             j = j-1    
@@ -889,6 +880,7 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, cost_matrix, phylogeny_aware):
                 pars_sets.insert(0, left_sets[i-1])
             
             current_T = setcurrentT(current_T[i][j], T_M, T_X, T_Y)
+            
             i = i-1   
 
         align = np.concatenate((new_col, align), axis=1)
@@ -901,7 +893,7 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, cost_matrix, phylogeny_aware):
         
 
 def ParsAlign(tree_file, sequence_file, output_file, alphabet,
-                      Q=np.array(None), gi_f=1, ge_f=1, phylogeny_aware = True,
+                      Q=None, gi_f=1, ge_f=1, phylogeny_aware = True,
                       branch_length = True):
     '''
     Returns and prints a the Multiple Sequence Alignment for the given tree.
@@ -936,51 +928,36 @@ def ParsAlign(tree_file, sequence_file, output_file, alphabet,
     
     tree = PhyloNode(newick = tree_file, alignment = sequence_file, format=1, quoted_node_names=True) 
     
-    if not branch_length:
-        C, av_cost = calculateC(alphabet, Q, 0.62, branch_length)
-        gi = gi_f*av_cost
-        ge = ge_f*av_cost
-    
+    C_all = calculateC(alphabet, Q, branch_length)
     
     # Use Gotoh for affine gaps
-    if gi_f != ge_f:
-        pars_s = 0   
-        for node in tree.traverse('postorder'):
-            if node.is_leaf():
-                InitalizeSetsAndAlignment(node, alphabet, phylogeny_aware)    
-            else:
-                if branch_length:
-                    
-                    C, av_cost = calculateC(alphabet, Q, 
-                                            node.children[0].dist+node.children[1].dist, 
-                                            branch_length)
-                    gi = gi_f*av_cost
-                    ge = ge_f*av_cost
-                pars_score, T_M, T_X, T_Y, start_T = GenerateMatricesAffine(node, C, gi, ge, 
-                                                 phylogeny_aware)
-             
-                TraceBackAffine(T_M, T_X, T_Y, start_T, node, C, phylogeny_aware)
-                pars_s = pars_s + pars_score
-                node.add_features(parsimony_score = pars_score)
+    #if gi_f != ge_f:
+    pars_s = 0   
+    for node in tree.traverse('postorder'):
+        if node.is_leaf():
+            InitalizeSetsAndAlignment(node, alphabet, phylogeny_aware)    
+        else:
+                                  
+            pars_score, T_M, T_X, T_Y, start_T = GenerateMatricesAffine(node, alphabet, C_all, gi_f, ge_f,
+                                             phylogeny_aware, branch_length)
+            
+            TraceBackAffine(T_M, T_X, T_Y, start_T, node, phylogeny_aware)
+            pars_s += pars_score
+            node.add_features(parsimony_score = pars_score)
+            
     
     # Use Needleman and Wunsch for linear gap cost
-    else:
-        pars_s = 0   
-        for node in tree.traverse('postorder'):
-            if node.is_leaf():
-                InitalizeSetsAndAlignment(node, alphabet, phylogeny_aware)    
-            else:
-                if branch_length:
-                    C, av_cost = calculateC(alphabet, Q,
-                                            node.children[0].dist+node.children[1].dist,
-                                            branch_length)
-                    gi = gi_f*av_cost
-                    ge = ge_f*av_cost
-                pars_score, T = GenerateMatrices(node, C, gi, ge, 
-                                                 phylogeny_aware)
-                TraceBack(T, node, C, phylogeny_aware)
-                pars_s = pars_s + pars_score
-                node.add_features(parsimony_score = pars_score)
+    # else:
+    #     pars_s = 0   
+    #     for node in tree.traverse('postorder'):
+    #         if node.is_leaf():
+    #             InitalizeSetsAndAlignment(node, alphabet, phylogeny_aware)    
+    #         else:
+    #             pars_score, T = GenerateMatrices(node, C_all, gi_f, ge_f, 
+    #                                              phylogeny_aware, branch_length)
+    #             TraceBack(T, node, phylogeny_aware)
+    #             pars_s = pars_s + pars_score
+    #             node.add_features(parsimony_score = pars_score)
         
     alignment = tree.alignment 
     

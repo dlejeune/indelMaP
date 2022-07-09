@@ -85,5 +85,45 @@ def setcurrentT(currentT_value, T_M, T_X, T_Y):
         current_T = T_X
     return current_T
 
+def determineC(C_all, dist, gi_f, ge_f, branch_length):
+    
+    close = 0.1
+    intermediate = 0.3
+    distant = 0.5
+    very_distant = 0.7
+    
+    if len(C_all) != 2:
+        
+        if dist == 0.0 or not branch_length:
+        
+            C = C_all[distant][0]
+            gi = gi_f*C_all[distant][1]
+            ge = ge_f*C_all[distant][1]
+        
+        elif 0.0 < dist and dist <= 0.2:
+            C = C_all[close][0]
+            gi = gi_f*C_all[close][1]
+            ge = ge_f*C_all[close][1]
+        
+        elif 0.2 < dist and dist <= 0.4:
+            C = C_all[intermediate][0]
+            gi = gi_f*C_all[intermediate][1]
+            ge = ge_f*C_all[intermediate][1]
+            
+        elif 0.4 < dist and dist <= 0.6:
+            C = C_all[distant][0]
+            gi = gi_f*C_all[distant][1]
+            ge = ge_f*C_all[distant][1]
+            
+        elif 0.6 < dist:
+            C = C_all[very_distant][0]
+            gi = gi_f*C_all[very_distant][1]
+            ge = ge_f*C_all[very_distant][1]
+    else:
+        C = C_all[0]
+        gi = gi_f*C_all[1]
+        ge = ge_f*C_all[1]
+    
+    return C, gi, ge
         
 #%%
