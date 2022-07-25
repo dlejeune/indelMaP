@@ -8,6 +8,7 @@ Created on Fri Oct 29 22:23:09 2021
 
 import numpy as np
 from ete3 import PhyloNode
+from random import sample
 from src.calculateC import calculateC
 from src.HelperFunctions import determineC
 
@@ -244,11 +245,49 @@ def ParsInternal(tree, i, C_all, gi_f, ge_f, phylogeny_aware, branch_length):
                         min_score = score        
                 
         tree.parsimony_scores[i] = left_score + right_score + min_score
+        
+def ParsAncestral(tree):
+    seq = ''
+    events = ''
     
-    
-
-def ParsScore(tree_file, msa_file, alphabet, Q=None, gi_f=1, ge_f=1, phylogeny_aware=True,
-              branch_length = True):
+    for i in range(len(tree.parsimony_sets)):
+        if tree.is_root():
+            character = sample(tree.parsimony_sets[i],1)[0]
+            
+            if character == '-' and (tree.insertion_gaps[i] or tree.insertion_flags[i]):
+                character = '*'
+        
+        else:
+            if tree.parsimony_sets[i] == set('-'):
+                if (tree.insertion_gaps[i] or tree.insertion_flags[i]):
+                    character = '*'
+                else:
+                    character = '-'
+            
+            else:
+                if len(tree.parsimony_sets[i]) > 1 and tree.up.sequence[i] in tree.parsimony_sets[i]:
+                        character = tree.up.sequence[i]
+                else:
+                    if tree.up.insertion_flags[i]:
+                        character = sample(tree.parsimony_sets[i],1)[0].lower()
+                    else:
+                        if tree.up.evolutionary_events[i].islower():
+                            character = sample(tree.parsimony_sets[i],1)[0].lower()
+                        else:
+                            character = sample(tree.parsimony_sets[i],1)[0]
+            
+        events += character
+        if character == '*':
+            seq += '-'
+        else:
+            seq += character.upper()
+        
+    tree.add_features(evolutionary_events = events)
+    tree.add_features(sequence = seq)
+                    
+                
+def ParsScore(tree_file, msa_file, out_file, alphabet, Q=None, gi_f=1, ge_f=1, phylogeny_aware=True,
+              branch_length = True, ancestor_reconstruction=True):
     '''
     Calculates the parsimony score for the whole tree while accounting for 
     insertions and deletions.
@@ -272,6 +311,8 @@ def ParsScore(tree_file, msa_file, alphabet, Q=None, gi_f=1, ge_f=1, phylogeny_a
     branch_length : boolean, default = True
         If set to true the branch length is used to calculate a branch length 
         specific cost matrix, if set to False a standard distance of 0.62 is used
+    ancestor_reconstruction : boolean, default = True
+        If set to true ancestral sites and evolutionary events are reconstructed.
 
     Returns
     -------
@@ -290,7 +331,9 @@ def ParsScore(tree_file, msa_file, alphabet, Q=None, gi_f=1, ge_f=1, phylogeny_a
     if phylogeny_aware:
         for i in range(length_MSA):
             leaf_res = []
+            no_leaves = 0
             for leaf in tree.iter_leaves():
+                no_leaves += 1
                 if i == 0:
                     #sets and scores for leaves
                     ParsLeaf(leaf, alphabet, phylogeny_aware)
@@ -325,12 +368,37 @@ def ParsScore(tree_file, msa_file, alphabet, Q=None, gi_f=1, ge_f=1, phylogeny_a
                     
                 ParsInternal(node, i, C_all, gi_f, ge_f, 
                                      phylogeny_aware, branch_length)
-            print(node.parsimony_sets)
-            print(node.insertion_gaps)
-            print(node.insertion_flags)
+
         
     # sum the parsimony scores at the root over the whole sequence
     tree_score = sum(tree.parsimony_scores)
+    
+    if ancestor_reconstruction:
+        with (open(out_file + '_internal_evolutionary_events.fasta', 'w') as f1, 
+              open(out_file + '_internal_ancestral_reconstruction.fasta', 'w') as f3,
+              open(out_file + '_leaves_evolutionary_events.fasta', 'w') as f2):
+            
+                no_internal = no_leaves + 1
+                for node in tree.traverse('preorder'):
+                    if node.name == '':  
+                        if node.is_root():
+                            node.name = 'ROOT'
+                        else:
+                            node.name = 'N' + str(no_internal)
+                            no_internal += 1
+                        
+                    ParsAncestral(node)
+                    if not node.is_leaf():
+                        print('>', node.name,'\n',node.evolutionary_events, file=f1)
+                        print('>', node.name, '\n', node.sequence, file=f3)
+                    else:
+                        print('>', node.name,'\n',node.evolutionary_events, file=f2)
+        f1.close()
+        f2.close()
+        f3.close()
+        
+        tree.write(format=1, outfile=out_file+'_tree.nwk')
+            
     
     return tree_score
 
