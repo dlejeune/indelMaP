@@ -937,7 +937,6 @@ def ParsAlign(tree_file, sequence_file, output_file, alphabet,
         if node.is_leaf():
             InitalizeSetsAndAlignment(node, alphabet, phylogeny_aware)    
         else:
-                                  
             pars_score, T_M, T_X, T_Y, start_T = GenerateMatricesAffine(node, alphabet, C_all, gi_f, ge_f,
                                              phylogeny_aware, branch_length)
             

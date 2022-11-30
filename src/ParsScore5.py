@@ -10,8 +10,7 @@ Created on Wed Jul 13 15:24:28 2022
 import numpy as np
 from ete3 import PhyloNode
 from random import sample
-from src.calculateC import calculateC
-from src.HelperFunctions import determineC
+
 
 def ParsLeaf(leaf, alphabet):
     '''
@@ -28,6 +27,7 @@ def ParsLeaf(leaf, alphabet):
 
     '''
     
+    #initialize list for parsimony sets
     pars_sets = []
     for i in range(len(leaf.sequence)):
         if alphabet == 'Protein':
@@ -84,8 +84,10 @@ def ParsLeaf(leaf, alphabet):
             else:
                 pars_sets.append(set(leaf.sequence[i]))
     
+    # initialize parsimony scores for each site
     pars_scores = [0]*len(leaf.sequence)
-
+    
+    # add parsimony sets and parsimony scores to each leaf
     leaf.add_features(parsimony_sets = pars_sets)
     leaf.add_features(parsimony_scores = pars_scores)
 
@@ -97,61 +99,75 @@ def ParsInternal(tree, i):
     Parameters
     ----------
     tree : PhyloNode or PhlyoTree
-        Internal nodes a tree structue.
+        Internal nodes a tree structure.
     i : int
         Index for the sequence.
-    cost_matrix: double dictionary
-        Gives the scores for matching, mismatching characters
-        Give None to get the unweighted version.
-    go : float
-        Gap opening penalty.
-    ge : float
-        Gap extension penalty.
-    phylogeny_aware: boolean
-        Default is set to True. If set to false, insertions are penalized
-        multiple times.
-
+    
     Returns
     -------
     None.
 
     '''
     
-    
+    # tree.children[0] accesses the left child for the subtree
     left_set = tree.children[0].parsimony_sets
     left_score = tree.children[0].parsimony_scores[i]
     
+    # tree.children[1] accesses the right child for the subtree
     right_set = tree.children[1].parsimony_sets
     right_score  = tree.children[1].parsimony_scores[i]
     
     length_MSA = len(left_set)
     
     if i == 0:
+        # initialize sets and parsimony scores for internal node
+        # at the beginning of each sequence
         pars_sets = [set()] * length_MSA
         pars_scores = [0] * length_MSA
     
         tree.add_features(parsimony_sets = pars_sets)
         tree.add_features(parsimony_scores = pars_scores)
-            
+    
+    # if the sets intersect we do not have an evolutionary event
     if left_set[i].intersection(right_set[i]):
         tree.parsimony_sets[i] = left_set[i].intersection(right_set[i])
         tree.parsimony_scores[i] = left_score + right_score
-        
+    
+    # if the sets do not intersect we count 1 for an evolutionary event
     elif not left_set[i].intersection(right_set[i]):
         tree.parsimony_sets[i] = left_set[i].union(right_set[i])
         tree.parsimony_scores[i] = left_score + right_score + 1
         
 def ParsAncestral(tree):
+    '''
+    Ancestral sequence reconstruction.
+    
+    Parameters
+    ----------
+    tree : PhyloNode or PhlyoTree
+        Internal nodes a tree structure.
+        
+    Returns
+    -------
+    None.
+    '''
+    
+    # initialize sequence
     seq = ''
     
     for i in range(len(tree.parsimony_sets)):
+        
+        # if we are not at the root and there is a character in the current parsimony set which was reconstructed at the site in the ancestor, we choose that character
         if not tree.is_root() and tree.up.sequence[i] in tree.parsimony_sets[i]:
             character = tree.up.sequence[i]
+        # else we make a random choice between the characters in the currents set
         else:
             character = sample(tree.parsimony_sets[i],1)[0]
-    
-        seq += character
         
+        # the character is added to the sequence
+        seq += character
+    
+    # the sequence is added to the current node
     tree.add_features(sequence = seq)
                     
                 
@@ -166,19 +182,6 @@ def ParsScore5(tree_file, msa_file, out_file, alphabet, ancestor_reconstruction=
         path to newick tree file.
     msa_file : str
         path to alignemnt file in fasta format.
-    cost_matrix: double dictionary
-        Gives the scores for matching, mismatching characters
-        Give None to get the unweighted version
-    go : float
-        Gap opening panelty
-    ge : float
-        Gap extension penalty
-    phylogeny_aware: boolean
-        Default is set to True. If set to false, insertions are penalized 
-        multiple times
-    branch_length : boolean, default = True
-        If set to true the branch length is used to calculate a branch length 
-        specific cost matrix, if set to False a standard distance of 0.62 is used
     ancestor_reconstruction : boolean, default = True
         If set to true ancestral sites and evolutionary events are reconstructed.
 
@@ -188,32 +191,37 @@ def ParsScore5(tree_file, msa_file, out_file, alphabet, ancestor_reconstruction=
         parsimony score for the whole tree.
 
     '''
-    
+    # load tree structure and multiple sequence alignment
     tree = PhyloNode(newick = tree_file, alignment = msa_file, format=1, quoted_node_names=True)
     length_MSA = len(tree.get_leaves()[0].sequence)
     
-        
+    
+    # initialize sets and scores at the leaves
     no_leaves = 0
     for leaf in tree.iter_leaves():
             ParsLeaf(leaf, alphabet)
+            # count leaves to number internal nodes in ancestral reconstruction
             no_leaves += 1
 
                     
-    #find internal sets and scores
+    # find internal sets and scores
     for node in tree.traverse('postorder'):
         if not node.is_leaf():
             for i in range(length_MSA):
-                    
                 ParsInternal(node, i)
 
         
-    # sum the parsimony scores at the root over the whole sequence
+    # sum the parsimony scores at the root over the whole MSA length
+    # to get the parsimony score for the whole tree
     tree_score = sum(tree.parsimony_scores)
     
+    #
     if ancestor_reconstruction:
+        # print ancestral reconstruction to out_file_internal_ancestral_reconstruction.fasta
         with open(out_file + '_internal_ancestral_reconstruction.fasta', 'w') as f3:
             no_internal = no_leaves +1
             for node in tree.traverse('preorder'):
+                # name internal nodes if they are not already named
                 if node.name == '':  
                     if node.is_root():
                         node.name = 'ROOT'
@@ -226,6 +234,7 @@ def ParsScore5(tree_file, msa_file, out_file, alphabet, ancestor_reconstruction=
                     print('>', node.name, '\n', node.sequence, file=f3)
         
         f3.close()
+        # print tree with internal node names to out_file_tree.nwk
         tree.write(format=1, outfile=out_file+'_tree.nwk')
             
     

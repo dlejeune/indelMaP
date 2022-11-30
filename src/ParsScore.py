@@ -321,6 +321,9 @@ def ParsScore(tree_file, msa_file, out_file, alphabet, Q=None, gi_f=1, ge_f=1, p
 
     '''
     
+    print(tree_file)
+    print(msa_file)
+    print(out_file)
     tree = PhyloNode(newick = tree_file, alignment = msa_file, format=1, quoted_node_names=True)
     length_MSA = len(tree.get_leaves()[0].sequence)
     
@@ -374,25 +377,23 @@ def ParsScore(tree_file, msa_file, out_file, alphabet, Q=None, gi_f=1, ge_f=1, p
     tree_score = sum(tree.parsimony_scores)
     
     if ancestor_reconstruction:
-        with (open(out_file + '_internal_evolutionary_events.fasta', 'w') as f1, 
-              open(out_file + '_internal_ancestral_reconstruction.fasta', 'w') as f3,
-              open(out_file + '_leaves_evolutionary_events.fasta', 'w') as f2):
+        with open(out_file + '_internal_evolutionary_events.fasta', 'w') as f1, open(out_file + '_internal_ancestral_reconstruction.fasta', 'w') as f3, open(out_file + '_leaves_evolutionary_events.fasta', 'w') as f2:
             
-                no_internal = no_leaves + 1
-                for node in tree.traverse('preorder'):
-                    if node.name == '':  
-                        if node.is_root():
-                            node.name = 'ROOT'
-                        else:
-                            node.name = 'N' + str(no_internal)
-                            no_internal += 1
-                        
-                    ParsAncestral(node)
-                    if not node.is_leaf():
-                        print('>', node.name,'\n',node.evolutionary_events, file=f1)
-                        print('>', node.name, '\n', node.sequence, file=f3)
+            no_internal = no_leaves + 1
+            for node in tree.traverse('preorder'):
+                if node.name == '':  
+                    if node.is_root():
+                        node.name = 'ROOT'
                     else:
-                        print('>', node.name,'\n',node.evolutionary_events, file=f2)
+                        node.name = 'N' + str(no_internal)
+                        no_internal += 1
+                    
+                ParsAncestral(node)
+                if not node.is_leaf():
+                    print('>'+ node.name+'\n'+node.evolutionary_events, file=f1)
+                    print('>'+ node.name+ '\n'+ node.sequence, file=f3)
+                else:
+                    print('>'+ node.name+'\n'+node.evolutionary_events, file=f2)
         f1.close()
         f2.close()
         f3.close()
