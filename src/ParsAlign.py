@@ -1059,8 +1059,13 @@ def main():
     alphabet = args.alphabet
     Q = args.RateMatrix
 
-    if Q == None:
+    if Q == 'None':
         q = None
+    elif Q == None:
+        if alphabet == 'Protein':
+            q = WAG
+        elif alphabet == 'DNA':
+            q = K80(2,1)
     elif Q[0] == 'WAG':
         q = WAG
     elif Q[0] == 'blosum':
