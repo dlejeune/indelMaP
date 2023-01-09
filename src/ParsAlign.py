@@ -1045,7 +1045,7 @@ def get_arguments_from_CLI():
     parser.add_argument('--gap_opening_factor','-go', default = 2.5, help = 'The gap opening cost is given by the gap_opening_factor*average_substitution_cost; default = 2.5', type=float, required = False)
     parser.add_argument('--gap_extension_factor', '-ge', default = 0.5, help = 'The gap extension cost is given by the gap_extension_factor*average_substitution_cost; default = 0.5', type=float, required = False)
     parser.add_argument('--indel-aware', '-ia', default=True, help = 'If set to False the algorithm does not distinguish between insertion and deletion events; default = True', type=bool, required = False)
-    parser.add_argument('--branch_length', '-bl', default=True, help = 'If set to False the cost matrix is calculated based on the transition probability matrix for branch length 0.5 for each branch; if True the cost matrix is calculated based on one of the four distances [0.1,0.3,0.5,0.7], the distance closest to the branch length is chosen.', required=False)
+    parser.add_argument('--branch_length', '-bl', default=True, help = 'If set to False the cost matrix is calculated based on the transition probability matrix for branch length 0.5 for each branch; if True the cost matrix is calculated based on one of the four distances [0.1,0.3,0.5,0.7], the distance closest to the branch length is chosen.', type=bool, required=False)
     args = parser.parse_args()
     return args
 
