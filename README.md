@@ -9,7 +9,6 @@ The code does not require installation. Download the repository and execute the 
 For minimal usage, ParsAlign.py requires a sequences file in fasta format and a corresponding guide tree in newick format, as well as the required alphabet (protein or DNA).
 
 ```
-#!bash
 python ParsAlign.py --seq_file sequenceFile.fasta --tree_file treeFile.nwk --alphabet Protein 
 	
 ```
@@ -17,7 +16,6 @@ python ParsAlign.py --seq_file sequenceFile.fasta --tree_file treeFile.nwk --alp
 Minimal usage for ParsASR.py is similar, it requires a multiple sequence alignment in fasta format and a corresponding guide tree in newick format, as well as the required alphabet (protein or DNA).
 
 ```
-#!bash
 python ParsASR.py --msa_file multipleSequenceAlignmentFile.fasta --tree_file treeFile.nwk --alphabet Protein 
 	
 ```
