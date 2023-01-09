@@ -11,7 +11,6 @@ from ete3 import PhyloNode
 from calculateC import calculateC
 from HelperFunctions import determineT, setcurrentT, determineC
 from RateMatrix import WAG, blosum, JC69, K80
-import re
 import argparse
 import os
 
