@@ -7,7 +7,7 @@ The code does not require installation. Download the repository and execute the 
 
 ## Usage
 
-### Minimal Usage
+### Minimal usage
 For minimal usage, ParsAlign.py requires a sequences file in fasta format and a corresponding guide tree in newick format, as well as the required alphabet (protein or DNA). Minimal usage for ParsASR.py is similar. It requires a multiple sequence alignment in fasta format, a corresponding guide tree in newick format, and the required alphabet (protein or DNA). To specify the path for the output files and name, use the option --output_file without a suffix.
 
 ```
@@ -35,7 +35,7 @@ There is also the option to specify a symmetric rate matrix with an average subs
 python ParsAlign.py --seq_file sequenceFile.fasta --tree_file treeFile.nwk --alphabet Protein --RateMatrix=-1,0.333,0.333,0.333:0.333,-1,0.333,0.333:0.333,0.333,-1,0.333:0.333,0.333,0.333,-1
 ```
 
-### Gap Costs
+### Gap costs
 Gap costs are calculated by scaling the average substitution rate by a gap opening factor and a gap extension factor. The default is affine gap costs with the factor 2.5 for gap opening and 0.5 for gap extension. 
 For example, linear gap costs are specified by setting both factors to the same value.
 ```
@@ -54,7 +54,7 @@ If required, the option --indel_aware can be set to False. This will stop the al
 python ParsAlign.py --seq_file multipleSequenceAlignmentFile.fasta --tree_file treeFile.nwk --alphabet Protein  --indel_aware False
 ```
 
-### Indel-aware Parsimony Score
+### Indel-aware parsimony score
 If only the indel-aware parsimony score is required, the option --ancestral_reconstruction for ParsASR can be set to False. The algorithm will only calculate the indel-aware parsimony score for a given alignment and guide tree. 
 ```
 python ParsASR.py --msa_file multipleSequenceAlignmentFile.fasta --tree_file treeFile.nwk --alphabet Protein  --ancestral_reconstruction False
