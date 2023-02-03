@@ -249,7 +249,7 @@ def ParsInternal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length):
                 
         tree.parsimony_scores[i] = left_score + right_score + min_score
         
-def ParsAncestral(tree):
+def ParsAncestral(tree, indel_aware):
     seq = ''
     events = ''
     
@@ -257,12 +257,12 @@ def ParsAncestral(tree):
         if tree.is_root():
             character = sample(tree.parsimony_sets[i],1)[0]
             
-            if character == '-' and (tree.insertion_gaps[i] or tree.insertion_flags[i]):
+            if character == '-' and (indel_aware and (tree.insertion_gaps[i] or tree.insertion_flags[i])):
                 character = '*'
         
         else:
             if tree.parsimony_sets[i] == set('-'):
-                if (tree.insertion_gaps[i] or tree.insertion_flags[i]):
+                if indel_aware and (tree.insertion_gaps[i] or tree.insertion_flags[i]):
                     character = '*'
                 else:
                     character = '-'
@@ -271,7 +271,7 @@ def ParsAncestral(tree):
                 if len(tree.parsimony_sets[i]) > 1 and tree.up.sequence[i] in tree.parsimony_sets[i]:
                         character = tree.up.sequence[i]
                 else:
-                    if tree.up.insertion_flags[i]:
+                    if indel_aware and tree.up.insertion_flags[i]:
                         character = sample(tree.parsimony_sets[i],1)[0].lower()
                     else:
                         if tree.up.evolutionary_events[i].islower():
@@ -395,7 +395,8 @@ def ParsASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getcwd())
                         node.name = 'N' + str(no_internal)
                         no_internal += 1
                     
-                ParsAncestral(node)
+                ParsAncestral(node, indel_aware)
+                
                 if not node.is_leaf():
                     print('>'+ node.name+'\n'+node.evolutionary_events, file=f1)
                     print('>'+ node.name+ '\n'+ node.sequence, file=f3)
