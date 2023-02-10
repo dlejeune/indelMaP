@@ -1037,9 +1037,9 @@ def ParsAlign(sequence_file,  tree_file, alphabet, output_file=os.path.abspath(o
 
 def get_arguments_from_CLI():
     parser = argparse.ArgumentParser(prog = 'Indel-aware parsimony alignment', description='The program progressively alignes protein or nucleotide sequences along a given guide tree under indel-aware parsimony.')
-    parser.add_argument('--seq_file', '-s', help='Path to file containing unaligned input sequences in fasta format. If aligned sequences are given, gaps are removed and sequences are realigned.', required = True)
-    parser.add_argument('--tree_file', '-t',  help='Path to file containing a guide tree to guide the progressive alignment in newick format.', required = True)
-    parser.add_argument('--output_file', '-o', default=os.path.abspath(os.getcwd())+'/msa', help = 'Path and filename for the outputfile without suffix; if left empty the file will save to the current working directory under the filename msa.fasta', required = False)
+    parser.add_argument('--seq_file', '-s', help='Path to file containing unaligned input sequences in fasta format. If aligned sequences are given, gaps are removed and sequences are realigned.', required = True, type=str)
+    parser.add_argument('--tree_file', '-t',  help='Path to file containing a guide tree to guide the progressive alignment in newick format.', required = True, type=str)
+    parser.add_argument('--output_file', '-o', default=os.path.abspath(os.getcwd())+'/msa', help = 'Path and filename for the outputfile without suffix; if left empty the file will save to the current working directory under the filename msa.fasta', required = False, type=str)
     parser.add_argument('--alphabet', '-a',  help='Specify sequence alphabet, choose between DNA or Protein', type=str, required = True)
     parser.add_argument('--RateMatrix','-q', default = None, type=str, nargs='+', help = 'Choose the substitution model; - Protein: WAG, blosum - DNA: JC69, K80{alpha,beta}; if no substitution model is specified the default for DNA sequences is K80 with transition to transversion ratio of 2 and for Protein sequences WAG; if each substitution should be associated with the same cost you can type None. You can specify your own model by giving a symmetric transition rate matrix with an average substitution rate of 1. Columns have to be separated by a comma and rows with a colon, and transition rates are given as float. Example: -q=-1,0.3333333333333333,0.3333333333333333,0.3333333333333333:0.3333333333333333,-1,0.3333333333333333,0.3333333333333333:0.3333333333333333,0.3333333333333333,-1,0.3333333333333333:0.3333333333333333,0.3333333333333333,0.3333333333333333,-1')
     parser.add_argument('--gap_opening_factor','-go', default = 2.5, help = 'The gap opening cost is given by the gap_opening_factor*average_substitution_cost; default = 2.5', type=float, required = False)
@@ -1090,7 +1090,7 @@ def main():
     indel_aware = args.indel_aware
     branch_length = args.branch_length
     
-    parsimony_score, al = ParsAlign(tree_file, sequence_file, alphabet, output_file,
+    parsimony_score, al = ParsAlign(sequence_file, tree_file, alphabet, output_file,
                           q, gi_f, ge_f, indel_aware,
                           branch_length)
 
