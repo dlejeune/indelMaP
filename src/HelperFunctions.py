@@ -6,11 +6,17 @@ Created on Wed Apr  6 15:08:35 2022
 @author: claraiglhaut
 """
 import random
+from enum import Flag, auto
+import numpy as np
 
 random.seed(128)
 
 
-#%% HELPER FUNCTIONS
+class flags(Flag):
+    no_gap = auto()
+    gap_opening = auto()
+    gap_extension = auto()
+
 
 def determineT(min_S, S_M, S_X, S_Y):
     '''
@@ -84,6 +90,41 @@ def setcurrentT(currentT_value, T_M, T_X, T_Y):
     elif currentT_value == 3:
         current_T = T_X
     return current_T
+
+def gap_traceback(direction_gap, left_flags, right_flags, left_insertions, right_insertions, tmp_i, tmp_j, current_T, T_M, T_X, T_Y):  
+    
+    if direction_gap == 'left':
+        gap = left_flags[tmp_i-1]  
+    elif direction_gap == 'right':
+        gap = right_flags[tmp_j-1]     
+    count = 0
+    while gap != flags.gap_opening and tmp_i>0 and tmp_j>0:
+        count += 1
+        if left_insertions[tmp_i-1] and right_insertions[tmp_j-1]:
+            tmp_i -= 1 
+            tmp_j -= 1
+                        
+        elif left_insertions[tmp_i-1]:
+            tmp_i -= 1
+
+        elif right_insertions[tmp_j-1]:
+            tmp_j -= 1
+                        
+        #move diagonal 
+        elif current_T[tmp_i][tmp_j] == 1:
+            break
+            
+        #move horizontal
+        elif np.array_equal(current_T, T_Y):
+            current_T = setcurrentT(current_T[tmp_i][tmp_j], T_M, T_X, T_Y)
+            tmp_j -= 1 
+            
+        #move vertical
+        elif np.array_equal(current_T, T_X):
+            current_T = setcurrentT(current_T[tmp_i][tmp_j], T_M, T_X, T_Y)
+            tmp_i -= 1 
+    print(count)
+    return tmp_i, tmp_j, current_T
 
 def determineC(C_all, dist, gi_f, ge_f, branch_length):
     
