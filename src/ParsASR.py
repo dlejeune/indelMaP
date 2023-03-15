@@ -31,60 +31,48 @@ def ParsLeaf(leaf, alphabet, indel_aware=True):
     '''
     
     pars_sets = []
+    characters_protein = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 
+                      'F', 'P', 'S', 'T', 'W', 'Y', 'V']
+    characters_dna = ['T', 'C', 'A', 'G']
     for i in range(len(leaf.sequence)):
+        in_character = leaf.sequence[i].upper()
         if alphabet == 'Protein':
-    
-            if leaf.sequence[i] == 'X':
-                pars_sets.append(set(alphabet))
-            
-            elif leaf.sequence[i] == 'B':
+            if in_character == 'X':
+                pars_sets.append(set(characters_protein))
+            elif in_character == 'B':
                 pars_sets.append(set(['D', 'N']))
-            
-            elif leaf.sequence[i] == 'Z':
+            elif in_character == 'Z':
                 pars_sets.append(set(['E', 'Q']))
-            
-            elif leaf.sequence[i] == 'J':
+            elif in_character == 'J':
                 pars_sets.append(set(['I', 'L']))
-                
             else:
-                pars_sets.append(set(leaf.sequence[i]))
+                pars_sets.append(set(in_character))
         
         if alphabet == 'DNA':
-            if leaf.sequence[i] == 'X' or leaf.sequence[i] == 'N':
-                pars_sets.append(set(alphabet))
-                
-            elif leaf.sequence[i] == 'V':
+            if in_character == 'X' or in_character == 'N':
+                pars_sets.append(set(characters_dna))
+            elif in_character == 'V':
                 pars_sets.append(set(['A', 'C', 'G']))
-            
-            elif leaf.sequence[i] == 'H':
+            elif in_character == 'H':
                 pars_sets.append(set(['A', 'C', 'T']))
-                    
-            elif leaf.sequence[i] == 'D':
+            elif in_character == 'D':
                 pars_sets.append(set(['A', 'G', 'T']))
-                
-            elif leaf.sequence[i] == 'B':
+            elif in_character == 'B':
                 pars_sets.append(set(['C', 'G', 'T']))
-            
-            elif leaf.sequence[i] == 'M':
+            elif in_character == 'M':
                 pars_sets.append(set(['A', 'C']))
-            
-            elif leaf.sequence[i] == 'R':
+            elif in_character == 'R':
                 pars_sets.append(set(['A', 'G']))
-            
-            elif leaf.sequence[i] == 'W':
+            elif in_character == 'W':
                 pars_sets.append(set(['A', 'T']))
-            
-            elif leaf.sequence[i] == 'S':
+            elif in_character == 'S':
                 pars_sets.append(set(['C', 'G']))
-                
-            elif leaf.sequence[i] == 'Y':
+            elif in_character == 'Y':
                 pars_sets.append(set(['C', 'T']))
-            
-            elif leaf.sequence[i] == 'K':
+            elif in_character == 'K':
                 pars_sets.append(set(['G', 'T']))
-            
             else:
-                pars_sets.append(set(leaf.sequence[i]))
+                pars_sets.append(set(in_character))
     
     pars_scores = [0]*len(leaf.sequence)
     ins_gaps = [False] *len(leaf.sequence)
