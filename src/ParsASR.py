@@ -163,13 +163,28 @@ def ParsInternal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length):
     
     elif (left_set[i] == set('-') and right_set[i] != set('-')):
         if i > 0:
-            tmp = i-1
-            while tree.insertion_gaps[tmp] == True and tmp > 0:
-                tmp -= 1
+            
                 
             #if we expand an insertion site
-            if left_set[tmp] == set('-') and not tree.insertion_gaps[tmp] == True:
-                tree.parsimony_scores[i] = left_score + right_score + ge_left
+            if indel_aware and tree.insertion_flags[i]:
+                tmp = i-1
+                while (tree.insertion_gaps[tmp] and (not tree.insertion_flags[tmp]) and tmp > 0):
+                    tmp -= 1
+                #print(left_set[tmp])
+                if left_set[tmp] == set('-') and tree.insertion_flags[tmp]:
+                    tree.parsimony_scores[i] = left_score + right_score + ge_left
+                else:
+                    tree.parsimony_scores[i] = left_score + right_score + gi_left
+            
+            elif indel_aware and not tree.insertion_flags[i]:
+                tmp = i-1
+                while (tree.insertion_gaps[tmp] or tree.insertion_flags[tmp]) and tmp > 0:
+                    tmp -= 1
+                
+                if left_set[tmp] == set('-') and (not tree.insertion_gaps[tmp]) and (not tree.insertion_flags[tmp]):
+                    tree.parsimony_scores[i] = left_score + right_score + ge_left
+                else:
+                    tree.parsimony_scores[i] = left_score + right_score + gi_left
             else:
                 tree.parsimony_scores[i] = left_score + right_score + gi_left
         else:
@@ -190,13 +205,28 @@ def ParsInternal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length):
         
     elif (left_set[i] != set('-') and right_set[i] == set('-')):
         if i > 0:
-            tmp = i-1
-            while tree.insertion_gaps[tmp] == True and tmp > 0:
-                tmp -= 1
                 
             #if we expand an insertion site
-            if right_set[tmp] == set('-') and not tree.insertion_gaps[tmp] == True:
-                tree.parsimony_scores[i] = left_score + right_score + ge_right
+            if indel_aware and tree.insertion_flags[i]:
+                tmp = i-1
+                while tree.insertion_gaps[tmp] and (not tree.insertion_flags[tmp]) and tmp > 0:
+                    tmp -= 1
+                
+                if right_set[tmp] == set('-') and tree.insertion_flags[tmp]:
+                    tree.parsimony_scores[i] = left_score + right_score + ge_right
+                else:
+                    tree.parsimony_scores[i] = left_score + right_score + gi_right
+                    
+            elif indel_aware and not tree.insertion_flags[i]:
+                tmp = i-1
+            
+                while (tree.insertion_gaps[tmp] or tree.insertion_flags[tmp]) and tmp > 0:
+                    tmp -= 1
+                
+                if right_set[tmp] == set('-') and (not tree.insertion_gaps[tmp]) and (not tree.insertion_flags[tmp]):
+                    tree.parsimony_scores[i] = left_score + right_score + ge_right
+                else:
+                    tree.parsimony_scores[i] = left_score + right_score + gi_right
             else:
                 tree.parsimony_scores[i] = left_score + right_score + gi_right
         else:
@@ -248,6 +278,7 @@ def ParsInternal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length):
                         min_score = score        
                 
         tree.parsimony_scores[i] = left_score + right_score + min_score
+    
         
 def ParsAncestral(tree, indel_aware):
     seq = ''
@@ -330,7 +361,8 @@ def ParsASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getcwd())
 
     '''
     
-    
+
+        
     tree = PhyloNode(newick = tree_file, alignment = msa_file, format=1, quoted_node_names=True)
     length_MSA = len(tree.get_leaves()[0].sequence)
     
@@ -378,22 +410,23 @@ def ParsASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getcwd())
                     
                 ParsInternal(node, i, C_all, gi_f, ge_f, 
                                      indel_aware, branch_length)
-
-        
     # sum the parsimony scores at the root over the whole sequence
+            # print(node.insertion_gaps)
+            # print(node.insertion_flags)
+            # print(node.parsimony_scores)
     tree_score = sum(tree.parsimony_scores)
     
     if ancestor_reconstruction:
         with open(out_file + '_internal_evolutionary_events.fasta', 'w') as f1, open(out_file + '_internal_ancestral_reconstruction.fasta', 'w') as f3, open(out_file + '_leaves_evolutionary_events.fasta', 'w') as f2:
             
-            no_internal = no_leaves + 1
+            no_internal = len(tree) + 1
             for node in tree.traverse('preorder'):
-                if node.name == '':  
-                    if node.is_root():
-                        node.name = 'ROOT'
-                    else:
-                        node.name = 'N' + str(no_internal)
-                        no_internal += 1
+                
+                if node.is_root():
+                    node.name = 'ROOT'
+                else:
+                    node.name = 'N' + str(no_internal)
+                    no_internal += 1
                     
                 ParsAncestral(node, indel_aware)
                 
@@ -437,9 +470,7 @@ def main():
     alphabet = args.alphabet
     Q = args.RateMatrix
 
-    if Q == 'None':
-        q = None
-    elif Q == None:
+    if Q == None:
         if alphabet == 'Protein':
             q = WAG
         elif alphabet == 'DNA':
@@ -452,6 +483,9 @@ def main():
         q = K80(float(Q[0].split('0')[1]),float(Q[1].split('0')[1]))
     elif Q[0] == 'JC69':
         q = JC69
+    elif Q[0] == 'None':
+        q = None
+        
     else:
         print('User defined rate matrix')
         Q = Q[0].split(':')
