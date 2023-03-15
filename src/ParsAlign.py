@@ -9,12 +9,12 @@ Created on Fri Apr  1 08:55:19 2022
 import numpy as np
 from ete3 import PhyloNode
 from calculateC import calculateC
-from HelperFunctions import determineT, setcurrentT, determineC
+from HelperFunctions import flags, determineT, setcurrentT, gap_traceback, determineC
 from RateMatrix import WAG, blosum, JC69, K80
 import argparse
 import os
 
-
+possible_ins = flags.gap_opening | flags.gap_extension
 
 def InitalizeSetsAndAlignment(leaf, alphabet, indel_aware):
     '''
@@ -43,7 +43,7 @@ def InitalizeSetsAndAlignment(leaf, alphabet, indel_aware):
                       'F', 'P', 'S', 'T', 'W', 'Y', 'V']
         characters_dna = ['T', 'C', 'A', 'G']
         
-        if leaf.sequence[i] in characters_protein or characters_dna:
+        if leaf.sequence[i] in (characters_protein or characters_dna):
             character = np.array(in_character).reshape((1,1))
             align = np.concatenate((align, character), axis=1)
             
@@ -86,7 +86,7 @@ def InitalizeSetsAndAlignment(leaf, alphabet, indel_aware):
                     pars_sets.append(set(in_character))
             
             if indel_aware:
-                ins_flags.append(False)
+                ins_flags.append(flags.no_gap)
                 ins_perm.append(False)
     
     leaf.add_features(parsimony_sets = pars_sets)
@@ -106,7 +106,7 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
     ----------
     tree : PhlyoTree or PhyloNode
         Current (sub-)tree
-    cost_matrix : double dictionary
+    C_all : double dictionary
         Gives the scores for matching, mismatching characters
     gi : float
         Gives gap opening panelty
@@ -124,14 +124,14 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
         Trace back matrix 
     '''
    
-    
     left_sets = tree.children[0].parsimony_sets
     right_sets = tree.children[1].parsimony_sets
     
     if indel_aware:
         left_flags = tree.children[0].insertion_flags
         right_flags = tree.children[1].insertion_flags
-        
+
+
         left_insertions = tree.children[0].insertion_permanent
         right_insertions = tree.children[1].insertion_permanent
     
@@ -152,14 +152,14 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
         if indel_aware:
             if left_insertions[i-1]:
                 S[i][0] = S[i-1][0]                 
-            elif left_flags[i-1]:
+            elif left_flags[i-1] in possible_ins:
                 S[i][0] = S[i-1][0]             
             else:
                 tmp_i = i-1
-                while left_flags[tmp_i-1] and tmp_i > 0:
+                while (left_flags[tmp_i-1] in possible_ins) and tmp_i > 0:
                     tmp_i -= 1
                     
-                if tmp_i > 0 and S[tmp_i][0] != 0 and not left_flags[tmp_i-1]:
+                if tmp_i > 0 and S[tmp_i][0] != 0 and (not left_flags[tmp_i-1] in possible_ins):
                     S[i][0] = S[i-1][0] + ge_left               
                 else:
                     S[i][0] = S[i-1][0] + gi_left
@@ -177,15 +177,15 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
             if right_insertions[j-1]:
                 S[0][j] = S[0][j-1] 
                 
-            elif right_flags[j-1]:
+            elif right_flags[j-1] in possible_ins:
                 S[0][j] = S[0][j-1] 
 
             else:
                 tmp_j = j-1
-                while right_flags[tmp_j-1] and tmp_j > 0:
+                while (right_flags[tmp_j-1] in possible_ins) and tmp_j > 0:
                     tmp_j -= 1
             
-                if tmp_j > 0 and S[0][tmp_j] != 0 and not right_flags[tmp_j-1]:
+                if tmp_j > 0 and S[0][tmp_j] != 0 and not (right_flags[tmp_j-1] in possible_ins):
                     S[0][j] = S[0][j-1]  + ge_right
                 else:
                    S[0][j] = S[0][j-1]  + gi_right
@@ -220,28 +220,25 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
                 elif not left_sets[i-1].intersection(right_sets[j-1]):
                     new_set = left_sets[i-1].union(right_sets[j-1])
                     
-                min_score_left = np.inf
+                min_score = np.inf
                 for left_character in left_sets[i-1]:
                     for int_character in new_set:
-                        score = C_left[left_character][int_character]
+                        score_l = C_left[left_character][int_character]
                         
-                        if score < min_score_left:
-                            min_score_left = score
+                        for right_character in right_sets[j-1]:
+                            score_r = C_right[right_character][int_character]
+                            
+                            score = score_l + score_r
+                            
+                            if score < min_score:
+                                min_score = score
                 
-                min_score_right = np.inf
-                for right_character in right_sets[j-1]:
-                    for int_character in new_set:
-                        score = C_right[right_character][int_character]
-                        
-                        if score < min_score_right:
-                            min_score_right = score
-                
-                score_intersection = S[i-1][j-1] + min(min_score_left, min_score_right)
+                score_intersection = S[i-1][j-1] + min_score
                                     
                     
                 #if the algorithm is phylogeny aware gap placements in columns 
                 #flagged as deletions are free
-                if indel_aware and right_flags[j-1]:
+                if indel_aware and (right_flags[j-1] in possible_ins):
                     score_gap_left = S[i][j-1]
                 
                 #otherwise gaps are penalized with gi for newly openend gaps 
@@ -250,13 +247,13 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
                     tmp_j = j-1
                     while ((T[i][tmp_j] == 0 and tmp_j > 0)
                            or (indel_aware and T[i][tmp_j] == 2 
-                               and right_flags[tmp_j-1] 
+                               and (right_flags[tmp_j-1] in possible_ins)
                                and tmp_j > 0)):
                         tmp_j -= 1                    
                         
                     if T[i][tmp_j] == 2:
                         if indel_aware:
-                            if not right_flags[tmp_j-1]:
+                            if not right_flags[tmp_j-1] in possible_ins:
                                 score_gap_left = S[i][j-1] + ge_right
                             else:
                                 score_gap_left = S[i][j-1] + gi_right
@@ -265,7 +262,7 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
                     else:
                         score_gap_left = S[i][j-1] + gi_right
                 
-                if indel_aware and left_flags[i-1]:
+                if indel_aware and (left_flags[i-1] in possible_ins):
                     score_gap_right = S[i-1][j]
                 
                 else:
@@ -273,12 +270,12 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
                       
                     while ((T[tmp_i][j] == 0 and tmp_i > 0)
                            or (indel_aware and T[tmp_i][j] == 3 and
-                               left_flags[tmp_i-1] and tmp_i > 0)):
+                               (left_flags[tmp_i-1] in possible_ins) and tmp_i > 0)):
                         tmp_i -= 1
      
                     if T[tmp_i][j] == 3:
                         if indel_aware:
-                            if not left_flags[tmp_i-1]:
+                            if not (left_flags[tmp_i-1] in possible_ins):
                                 score_gap_right = S[i-1][j] + ge_left
                             else:
                                 score_gap_right = S[i-1][j] + gi_left
@@ -295,9 +292,10 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
 
     
     pars_score = S[len(left_sets)][len(right_sets)]
-    #print(S)
+    
     return pars_score, T
-        
+
+
 def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branch_length):
     '''
     Forward phase of the progressive algorithm. Generates the matrix S with
@@ -325,7 +323,6 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
     T : numpy.ndarray
         Trace back matrix 
     '''
-   
     
     left_sets = tree.children[0].parsimony_sets
     right_sets = tree.children[1].parsimony_sets
@@ -333,7 +330,7 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
     if indel_aware:
         left_flags = tree.children[0].insertion_flags
         right_flags = tree.children[1].insertion_flags
-        
+
         left_insertions = tree.children[0].insertion_permanent
         right_insertions = tree.children[1].insertion_permanent
     
@@ -358,7 +355,7 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
         S_M[i][0] = np.inf    
         S_Y[i][0] = np.inf
         if indel_aware:
-            if left_insertions[i-1] or left_flags[i-1]:
+            if left_insertions[i-1] or (left_flags[i-1] in possible_ins):
                 S_X[i][0] = S_X[i-1][0]        
             else:
                 if S_X[i-1][0] != 0:
@@ -377,7 +374,7 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
     for j in range(1,len(right_sets)+1):
         S_M[0][j] = S_X[0][j] = np.inf
         if indel_aware:
-            if right_insertions[j-1] or right_flags[j-1]:
+            if right_insertions[j-1] or (right_flags[j-1] in possible_ins):
                 S_Y[0][j] = S_Y[0][j-1] 
             
             else:
@@ -418,7 +415,45 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
             
             
             else:
-                min_S_M = min(S_M[i-1][j-1], S_X[i-1][j-1], S_Y[i-1][j-1])
+                S_X_cut = S_X[i-1][j-1]
+                S_Y_cut = S_Y[i-1][j-1]
+                S_M_cut = S_M[i-1][j-1]
+                if left_flags[i-1] == flags.gap_extension and right_flags[j-1] == flags.gap_extension:
+                    tmp = i-1
+                    while tmp > 0 and (T_X[tmp][j-1] == 3 or left_insertions[tmp-1]):
+                        tmp-=1
+                    if T_X[tmp][j-1] != 1:
+                        S_X_cut = S_X[i-1][j-1] + gi_right - ge_right
+                    
+                    tmp = j-1
+                    while tmp > 0 and (T_Y[i-1][tmp] == 2 or right_insertions[tmp-1]):
+                        tmp -= 1
+                    if T_Y[i-1][tmp] != 1:
+                        S_Y_cut = S_Y[i-1][j-1] + gi_left - ge_left
+
+                elif left_flags[i-1] == flags.gap_extension:
+                    
+                    S_X_cut = S_X[i-1][j-1] + gi_right - ge_right
+                    
+                    tmp = j-1
+                    while tmp > 0 and (T_Y[i-1][tmp] == 2 or right_insertions[tmp-1]):
+                        tmp -= 1
+                    if T_Y[i-1][tmp] != 1:
+                        S_Y_cut = S_Y[i-1][j-1] + gi_left - ge_left
+                    
+
+                elif right_flags[j-1] == flags.gap_extension:
+                    
+                    S_Y_cut = S_Y[i-1][j-1] + gi_left - ge_left
+                    
+                    tmp = i-1
+                    while tmp > 0 and (T_X[tmp][j-1] == 3 or left_insertions[tmp-1]):
+                        tmp-=1
+                    if T_X[tmp][j-1] != 1:
+                        S_X_cut = S_X[i-1][j-1] + gi_right - ge_right
+                    
+
+                min_S_M = min(S_M_cut, S_X_cut, S_Y_cut)
                 
                 
                 #matching sets with a non empty intersection
@@ -440,25 +475,41 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
                             
                             if score < min_score:
                                 min_score = score
+
                 
                 S_M[i][j] = min_S_M + min_score
-                
-                T_M[i][j] = determineT(min_S_M, S_M[i-1][j-1], S_X[i-1][j-1], S_Y[i-1][j-1])
+                T_M[i][j] = determineT(min_S_M, S_M_cut, S_X_cut, S_Y_cut)
                     
                 #if the algorithm is phylogeny aware gap placements in columns 
                 #flagged as deletions are free
-                if indel_aware and right_flags[j-1]:
-                    S_Y[i][j] = min(S_M[i][j-1], S_X[i][j-1], S_Y[i][j-1])
-                    T_Y[i][j] = determineT(S_Y[i][j], S_M[i][j-1], S_X[i][j-1], S_Y[i][j-1])
+                if indel_aware and (right_flags[j-1] in possible_ins):
+                    S_M_cut = S_M[i][j-1]
+                    S_X_cut = S_X[i][j-1]
+                    if right_flags[j-1] == flags.gap_extension:
+                        tmp_i = i
+                        tmp_j = j-1
+                        while left_insertions[tmp_i-1] or right_insertions[tmp_j-1] or T_X[tmp_i][tmp_j] == 3:
+                            if left_insertions[tmp_i-1] or T_X[tmp_i][tmp_j] == 3:
+                                tmp_i -= 1
+                            if right_insertions[tmp_j-1]:
+                                tmp_j -= 1
+                        
+                        if T_X[tmp_i][tmp_j] != 2:
+                            S_X_cut  = S_X[i][j-1] + gi_right - ge_right  
+                        S_M_cut = S_M[i][j-1] + gi_right - ge_right   
+                    
+                    S_Y[i][j] = min(S_M_cut, S_X_cut, S_Y[i][j-1])
+                    T_Y[i][j] = determineT(S_Y[i][j], S_M_cut, S_X_cut, S_Y[i][j-1])
+
                 #otherwise gaps are penalized with gi for newly openend gaps 
                 #and ge for gap extensions
                 else:
                     tmp = j-1
                 
-                    while tmp > 0 and right_flags[tmp-1] and (T_Y[i][tmp] == 2 or T_Y[i][tmp] == 0) and indel_aware:
+                    while tmp > 0 and (right_flags[tmp-1] in possible_ins) and (T_Y[i][tmp] == 2 or T_Y[i][tmp] == 0) and indel_aware:
                         tmp -= 1
                     
-                    if (T_Y[i][tmp] == 1 or T_Y[i][tmp] == 3) and right_flags[tmp-1]:
+                    if (T_Y[i][tmp] == 1 or T_Y[i][tmp] == 3) and (right_flags[tmp-1] in possible_ins):
                         s_y = S_Y[i][tmp] + gi_left
                     else: 
                         s_y = S_Y[i][tmp] + ge_left
@@ -468,16 +519,31 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
                     S_Y[i][j] = min(s_m, s_x, s_y)
                     T_Y[i][j] = determineT(S_Y[i][j], s_m, s_x, s_y)
                 
-                if indel_aware and left_flags[i-1]:
-                    
-                    S_X[i][j] = min(S_M[i-1][j], S_Y[i-1][j], S_X[i-1][j])
-                    T_X[i][j] = determineT(S_X[i][j], S_M[i-1][j], S_X[i-1][j], S_Y[i-1][j])
+                if indel_aware and (left_flags[i-1] in possible_ins):
+                    S_M_cut = S_M[i-1][j]
+                    S_Y_cut = S_Y[i-1][j]
+                    if left_flags[i-1] == flags.gap_extension:
+                        tmp_i = i-1
+                        tmp_j = j
+                        while right_insertions[tmp_j-1] or left_insertions[tmp_i-1] or T_Y[tmp_i][tmp_j] == 2:
+                            if right_insertions[tmp_j-1] or T_Y[tmp_i][tmp_j] == 2:
+                                tmp_j -= 1
+                            if left_insertions[tmp_i-1]:
+                                tmp_i -= 1
+                        
+                        if T_Y[tmp_i][tmp_j] != 3:
+                            S_Y_cut = S_Y[i-1][j] + gi_left - ge_left
+                        S_M_cut = S_M[i-1][j] + gi_left - ge_left
+
+                    S_X[i][j] = min(S_M_cut, S_X[i-1][j], S_Y_cut)
+                    T_X[i][j] = determineT(S_X[i][j], S_M_cut, S_X[i-1][j],S_Y_cut)
+
                 else:
                     tmp = i-1
-                    while tmp > 0  and left_flags[tmp-1] and (T_X[tmp][j] == 3 or T_X[tmp][j] == 0) and indel_aware:
+                    while tmp > 0  and (left_flags[tmp-1] in possible_ins) and (T_X[tmp][j] == 3 or T_X[tmp][j] == 0) and indel_aware:
                         tmp -= 1
                     
-                    if (T_X[tmp][j] == 1 or T_X[tmp][j] == 2) and left_flags[tmp-1]:
+                    if (T_X[tmp][j] == 1 or T_X[tmp][j] == 2) and (left_flags[tmp-1] in possible_ins):
                         s_x = S_X[tmp][j] + gi_right
                     else:
                         s_x = S_X[tmp][j] + ge_right
@@ -495,11 +561,8 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
     start_T = determineT(pars_score, S_M[len(left_sets)][len(right_sets)], 
                      S_X[len(left_sets)][len(right_sets)],
                      S_Y[len(left_sets)][len(right_sets)])
-    
-    
-    
-    
-    #print(pars_score, '\n', S_M, '\n', T_M, '\n', S_X, '\n', T_X, '\n', S_Y, '\n', T_Y)
+
+    # print(pars_score, '\n', S_M, '\n', T_M, '\n', S_X, '\n', T_X, '\n', S_Y, '\n', T_Y)
     
     return pars_score, T_M, T_X, T_Y, start_T
 
@@ -533,7 +596,7 @@ def TraceBack(T, tree, indel_aware):
     if indel_aware:
         left_flags = tree.children[0].insertion_flags
         right_flags = tree.children[1].insertion_flags
-        
+    
         left_insertions = tree.children[0].insertion_permanent
         right_insertions = tree.children[1].insertion_permanent
 
@@ -562,7 +625,7 @@ def TraceBack(T, tree, indel_aware):
                     new_col0[len(left_alignment)+m] = '-' 
           
                 pars_sets.insert(0, set('-'))
-                ins_flags.insert(0,True)
+                ins_flags.insert(0,flags.no_gap)
                 ins_perm.insert(0,True)
                     
                 i = i-1 
@@ -574,7 +637,7 @@ def TraceBack(T, tree, indel_aware):
                     new_col1[len(left_alignment)+m] = right_alignment[m][j-1]
                
                 pars_sets.insert(0, set('-'))
-                ins_flags.insert(0,True)
+                ins_flags.insert(0,flags.no_gap)
                 ins_perm.insert(0,True)
             
                 j = j-1  
@@ -591,7 +654,7 @@ def TraceBack(T, tree, indel_aware):
                     new_col[len(left_alignment)+m] = '-' 
           
                 pars_sets.insert(0, set('-'))
-                ins_flags.insert(0,True)
+                ins_flags.insert(0,flags.no_gap)
                 ins_perm.insert(0,True)
      
                 i = i-1  
@@ -604,7 +667,7 @@ def TraceBack(T, tree, indel_aware):
                     new_col[len(left_alignment)+m] = right_alignment[m][j-1]
                
                 pars_sets.insert(0, set('-'))
-                ins_flags.insert(0,True)
+                ins_flags.insert(0,flags.no_gap)
                 ins_perm.insert(0,True)
                 
                 j = j-1 
@@ -624,7 +687,7 @@ def TraceBack(T, tree, indel_aware):
                 pars_sets.insert(0, left_sets[i-1].intersection(right_sets[j-1]))
             
             if indel_aware:
-                ins_flags.insert(0, False)
+                ins_flags.insert(0, flags.no_gap)
                 ins_perm.insert(0,False)
                 
             i = i-1
@@ -641,12 +704,13 @@ def TraceBack(T, tree, indel_aware):
            
             
             if indel_aware:
-                ins_flags.insert(0, True)
                 
-                if right_flags[j-1]:
+                if right_flags[j-1] in possible_ins:
+                    ins_flags.insert(0, flags.no_gap)
                     ins_perm.insert(0,True)
                     pars_sets.insert(0, set('-'))
                 else:
+                    ins_flags.insert(0, possible_ins)
                     ins_perm.insert(0,False)
                     pars_sets.insert(0, right_sets[j-1])
             else:
@@ -666,12 +730,12 @@ def TraceBack(T, tree, indel_aware):
       
             
             if indel_aware:
-                ins_flags.insert(0, True)
-                
-                if left_flags[i-1]:
+                if left_flags[i-1] in possible_ins:
+                    ins_flags.insert(0, flags.no_gap)
                     ins_perm.insert(0,True)
                     pars_sets.insert(0, set('-'))
                 else:
+                    ins_flags.insert(0, possible_ins)
                     ins_perm.insert(0,False)
                     pars_sets.insert(0, left_sets[i-1])
             else:
@@ -686,7 +750,7 @@ def TraceBack(T, tree, indel_aware):
     if indel_aware:
         tree.add_features(insertion_flags = ins_flags)
         tree.add_features(insertion_permanent = ins_perm)
-        
+
 def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
     
     '''
@@ -718,7 +782,6 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
     if indel_aware:
         left_flags = tree.children[0].insertion_flags
         right_flags = tree.children[1].insertion_flags
-        
         left_insertions = tree.children[0].insertion_permanent
         right_insertions = tree.children[1].insertion_permanent
 
@@ -734,7 +797,7 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
     j = right_alignment.shape[1]
     
     current_T = setcurrentT(start_T, T_M, T_X, T_Y)
-    
+
     pars_sets = []
 
     while i > 0 and j > 0:
@@ -751,7 +814,7 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
                     new_col0[len(left_alignment)+m] = '-' 
           
                 pars_sets.insert(0, set('-'))
-                ins_flags.insert(0,True)
+                ins_flags.insert(0,possible_ins)
                 ins_perm.insert(0,True)
                     
                 i = i-1 
@@ -763,7 +826,7 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
                     new_col1[len(left_alignment)+m] = right_alignment[m][j-1]
                
                 pars_sets.insert(0, set('-'))
-                ins_flags.insert(0,True)
+                ins_flags.insert(0,possible_ins)
                 ins_perm.insert(0,True)
             
                 j = j-1  
@@ -780,7 +843,7 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
                     new_col[len(left_alignment)+m] = '-' 
           
                 pars_sets.insert(0, set('-'))
-                ins_flags.insert(0,True)
+                ins_flags.insert(0,possible_ins)
                 ins_perm.insert(0,True)
      
                 i = i-1  
@@ -793,7 +856,7 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
                     new_col[len(left_alignment)+m] = right_alignment[m][j-1]
                
                 pars_sets.insert(0, set('-'))
-                ins_flags.insert(0,True)
+                ins_flags.insert(0,possible_ins)
                 ins_perm.insert(0,True)
                 
                 j = j-1 
@@ -813,8 +876,9 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
                 pars_sets.insert(0, left_sets[i-1].intersection(right_sets[j-1]))
             
             if indel_aware:
-                ins_flags.insert(0, False)
+                ins_flags.insert(0, flags.no_gap)
                 ins_perm.insert(0,False)
+            
             current_T = setcurrentT(current_T[i][j], T_M, T_X, T_Y)
             
             i = i-1
@@ -833,16 +897,23 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
            
             
             if indel_aware:
-                ins_flags.insert(0, True)
                 
-                if right_flags[j-1]:
+                if right_flags[j-1] in possible_ins:
+                    ins_flags.insert(0, possible_ins)
                     ins_perm.insert(0,True)
                     pars_sets.insert(0, set('-'))
                 else:
+                    if current_T[i][j] != 2 or (current_T[i][j] == 2 and right_flags[j-2] in possible_ins and current_T[i][j-1] != 0 and current_T[i][j-1]!=2):
+                    
+                        ins_flags.insert(0, flags.gap_opening)
+                    else:
+                        ins_flags.insert(0, flags.gap_extension)
                     ins_perm.insert(0,False)
                     pars_sets.insert(0, right_sets[j-1])
             else:
                 pars_sets.insert(0, right_sets[j-1])
+            
+            
             current_T = setcurrentT(current_T[i][j], T_M, T_X, T_Y)
             
             j = j-1    
@@ -859,12 +930,16 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
       
             
             if indel_aware:
-                ins_flags.insert(0, True)
                 
-                if left_flags[i-1]:
+                if left_flags[i-1] in possible_ins:
+                    ins_flags.insert(0, possible_ins)
                     ins_perm.insert(0,True)
                     pars_sets.insert(0, set('-'))
                 else:
+                    if current_T[i][j]!=3 or (current_T[i][j]==3 and left_flags[i-2] in possible_ins and current_T[i-1][j]!=0 and current_T[i-1][j]!=3):
+                        ins_flags.insert(0, flags.gap_opening)
+                    else:
+                        ins_flags.insert(0, flags.gap_extension)
                     ins_perm.insert(0,False)
                     pars_sets.insert(0, left_sets[i-1])
             else:
@@ -882,22 +957,26 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
             new_col[n] = '-'
         for m in range(len(right_alignment)):
             new_col[len(left_alignment)+m] = right_alignment[m][j-1]
-       
         
         if indel_aware:
-            ins_flags.insert(0, True)
-            
-            if right_flags[j-1]:
+                
+            if right_flags[j-1] in possible_ins:
+                ins_flags.insert(0, possible_ins)
                 ins_perm.insert(0,True)
                 pars_sets.insert(0, set('-'))
             else:
+                if j == 1 or right_flags[j-2] in possible_ins:
+                    ins_flags.insert(0, flags.gap_opening)
+                else:
+                    ins_flags.insert(0, flags.gap_extension)
                 ins_perm.insert(0,False)
                 pars_sets.insert(0, right_sets[j-1])
         else:
             pars_sets.insert(0, right_sets[j-1])
+        
         current_T = setcurrentT(current_T[i][j], T_M, T_X, T_Y)
         
-        j = j-1
+        j = j-1   
         
         align = np.concatenate((new_col, align), axis=1)
 
@@ -909,14 +988,18 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
         for m in range(len(right_alignment)):
             new_col[len(left_alignment)+m] = '-' 
   
-        
         if indel_aware:
-            ins_flags.insert(0, True)
-            
-            if left_flags[i-1]:
+                
+            if left_flags[i-1] in possible_ins:
+                ins_flags.insert(0, possible_ins)
                 ins_perm.insert(0,True)
                 pars_sets.insert(0, set('-'))
             else:
+                if i == 1 or left_flags[i-2] in possible_ins:
+                    ins_flags.insert(0, flags.gap_opening)
+                else:
+                    ins_flags.insert(0, flags.gap_extension)
+
                 ins_perm.insert(0,False)
                 pars_sets.insert(0, left_sets[i-1])
         else:
@@ -924,7 +1007,7 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
         
         current_T = setcurrentT(current_T[i][j], T_M, T_X, T_Y)
         
-        i = i-1   
+        i = i-1    
         
         align = np.concatenate((new_col, align), axis=1)
         
@@ -933,8 +1016,9 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
     tree.add_features(parsimony_sets = pars_sets)  
     if indel_aware:
         tree.add_features(insertion_flags = ins_flags)
+        # print(tree.insertion_flags)
         tree.add_features(insertion_permanent = ins_perm)
-        
+        # print(tree.insertion_permanent)
 
 def ParsAlign(sequence_file,  tree_file, alphabet, output_file=os.path.abspath(os.getcwd())+'/msa',
                       Q=None, gi_f=2.5, ge_f=0.5, indel_aware = True,
@@ -1024,9 +1108,9 @@ def ParsAlign(sequence_file,  tree_file, alphabet, output_file=os.path.abspath(o
 
 def get_arguments_from_CLI():
     parser = argparse.ArgumentParser(prog = 'Indel-aware parsimony alignment', description='The program progressively alignes protein or nucleotide sequences along a given guide tree under indel-aware parsimony.')
-    parser.add_argument('--seq_file', '-s', help='Path to file containing unaligned input sequences in fasta format. If aligned sequences are given, gaps are removed and sequences are realigned.', required = True, type=str)
-    parser.add_argument('--tree_file', '-t',  help='Path to file containing a guide tree to guide the progressive alignment in newick format.', required = True, type=str)
-    parser.add_argument('--output_file', '-o', default=os.path.abspath(os.getcwd())+'/msa', help = 'Path and filename for the outputfile without suffix; if left empty the file will save to the current working directory under the filename msa.fasta', required = False, type=str)
+    parser.add_argument('--seq_file', '-s', help='Path to file containing unaligned input sequences in fasta format. If aligned sequences are given, gaps are removed and sequences are realigned.', required = True)
+    parser.add_argument('--tree_file', '-t',  help='Path to file containing a guide tree to guide the progressive alignment in newick format.', required = True)
+    parser.add_argument('--output_file', '-o', default=os.path.abspath(os.getcwd())+'/msa', help = 'Path and filename for the outputfile without suffix; if left empty the file will save to the current working directory under the filename msa.fasta', required = False)
     parser.add_argument('--alphabet', '-a',  help='Specify sequence alphabet, choose between DNA or Protein', type=str, required = True)
     parser.add_argument('--RateMatrix','-q', default = None, type=str, nargs='+', help = 'Choose the substitution model; - Protein: WAG, blosum - DNA: JC69, K80{alpha,beta}; if no substitution model is specified the default for DNA sequences is K80 with transition to transversion ratio of 2 and for Protein sequences WAG; if each substitution should be associated with the same cost you can type None. You can specify your own model by giving a symmetric transition rate matrix with an average substitution rate of 1. Columns have to be separated by a comma and rows with a colon, and transition rates are given as float. Example: -q=-1,0.3333333333333333,0.3333333333333333,0.3333333333333333:0.3333333333333333,-1,0.3333333333333333,0.3333333333333333:0.3333333333333333,0.3333333333333333,-1,0.3333333333333333:0.3333333333333333,0.3333333333333333,0.3333333333333333,-1')
     parser.add_argument('--gap_opening_factor','-go', default = 2.5, help = 'The gap opening cost is given by the gap_opening_factor*average_substitution_cost; default = 2.5', type=float, required = False)
@@ -1046,9 +1130,7 @@ def main():
     alphabet = args.alphabet
     Q = args.RateMatrix
 
-    if Q == 'None':
-        q = None
-    elif Q == None:
+    if Q == None:
         if alphabet == 'Protein':
             q = WAG
         elif alphabet == 'DNA':
@@ -1061,6 +1143,9 @@ def main():
         q = K80(float(Q[0].split('0')[1]),float(Q[1].split('0')[1]))
     elif Q[0] == 'JC69':
         q = JC69
+    elif Q[0] == 'None':
+        q = None
+        
     else:
         print('User defined rate matrix')
         Q = Q[0].split(':')
@@ -1077,7 +1162,7 @@ def main():
     indel_aware = args.indel_aware
     branch_length = args.branch_length
     
-    parsimony_score, al = ParsAlign(sequence_file, tree_file, alphabet, output_file,
+    parsimony_score, al = ParsAlign(sequence_file, tree_file,  alphabet, output_file,
                           q, gi_f, ge_f, indel_aware,
                           branch_length)
 
