@@ -11,7 +11,7 @@ from ete3 import PhyloNode
 from random import sample
 from calculateC import calculateC
 from HelperFunctions import determineC
-from RateMatrix import WAG, blosum, JC69, K80
+from RateMatrix import WAG, blosum, JC69, K80, GTR
 import os
 import argparse
 
@@ -281,14 +281,17 @@ def ParsAncestral(tree, indel_aware):
         
         else:
             if tree.parsimony_sets[i] == set('-'):
-                if indel_aware and (tree.insertion_gaps[i] or tree.insertion_flags[i]):
+                if indel_aware and (tree.insertion_gaps[i] or tree.insertion_flags[i]) and tree.up.evolutionary_events[i]=='*':
                     character = '*'
                 else:
                     character = '-'
             
             else:
                 if len(tree.parsimony_sets[i]) > 1 and tree.up.sequence[i] in tree.parsimony_sets[i]:
-                        character = tree.up.sequence[i]
+                        if indel_aware and tree.up.insertion_flags[i] or tree.up.evolutionary_events[i].islower():
+                            character = tree.up.sequence[i].lower()
+                        else:
+                            character = tree.up.sequence[i]
                 else:
                     if indel_aware and tree.up.insertion_flags[i]:
                         character = sample(tree.parsimony_sets[i],1)[0].lower()
@@ -412,7 +415,7 @@ def ParsASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getcwd())
                 
                 if node.is_root():
                     node.name = 'ROOT'
-                else:
+                elif not node.is_leaf():
                     node.name = 'N' + str(no_internal)
                     no_internal += 1
                     
@@ -473,7 +476,12 @@ def main():
         q = JC69
     elif Q[0] == 'None':
         q = None
-        
+    elif 'GTR' in Q[0]:
+        q = GTR(float(Q[0].split('GTR')[1]),float(Q[1].split('R')[1]),
+                float(Q[2].split('R')[1]),float(Q[3].split('R')[1]),
+                float(Q[4].split('R')[1]),float(Q[5].split('R')[1]),
+                float(Q[6].split('R')[1]),float(Q[7].split('R')[1]),
+                float(Q[8].split('R')[1]),float(Q[9].split('R')[1]))    
     else:
         print('User defined rate matrix')
         Q = Q[0].split(':')
