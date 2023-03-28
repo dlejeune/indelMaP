@@ -10,7 +10,7 @@ import numpy as np
 from ete3 import PhyloNode
 from calculateC import calculateC
 from HelperFunctions import flags, determineT, setcurrentT, gap_traceback, determineC
-from RateMatrix import WAG, blosum, JC69, K80
+from RateMatrix import WAG, blosum, JC69, K80, GTR
 import argparse
 import os
 
@@ -1145,7 +1145,12 @@ def main():
         q = JC69
     elif Q[0] == 'None':
         q = None
-        
+    elif 'GTR' in Q[0]:
+        q = GTR(float(Q[0].split('GTR')[1]),float(Q[1].split('R')[1]),
+                float(Q[2].split('R')[1]),float(Q[3].split('R')[1]),
+                float(Q[4].split('R')[1]),float(Q[5].split('R')[1]),
+                float(Q[6].split('R')[1]),float(Q[7].split('R')[1]),
+                float(Q[8].split('R')[1]),float(Q[9].split('R')[1]))    
     else:
         print('User defined rate matrix')
         Q = Q[0].split(':')
