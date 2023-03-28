@@ -247,4 +247,13 @@ def K80(alpha, beta):
                  [beta/(alpha+2*beta), beta/(alpha+2*beta), alpha/(alpha+2*beta), -1]])
     
     return (K,)
+
+def GTR(fT, fC, fA, fG, rTC, rTA, rTG, rCA, rCG, rAG):
+    gtr = 1/(fT*(rTC*fC+rTA*fA+rTG*fG)+fC*(rTC*fT+rCA*fA+rCG*fG)+fA*(rTA*fT+rCA*fC+rAG*fG)+fG*(rTG*fT+rCG*fC+rAG*fA))*np.array([[-(rTC*fC+rTA*fA+rTG*fG), rTC*fC, rTA*fA, rTG*fG],
+                    [rTC*fT, -(rTC*fT+rCA*fA+rCG*fG), rCA*fA, rCG*fG],
+                    [rTA*fT, rCA*fC, -(rTA*fT+rCA*fC+rAG*fG), rAG*fG],
+                    [rTG*fT, rCG*fC, rAG*fA, -(rTG*fT+rCG*fC+rAG*fA)]])
+    
+    return (gtr,)
+
     
