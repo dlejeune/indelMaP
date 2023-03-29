@@ -10,7 +10,7 @@ import numpy as np
 from ete3 import PhyloNode
 from calculateC import calculateC
 from HelperFunctions import flags, determineT, setcurrentT, gap_traceback, determineC
-from RateMatrix import WAG, blosum, JC69, K80, GTR
+from RateMatrix import WAG, blosum, HIVb, JC69, K80, GTR
 import argparse
 import os
 
@@ -1139,6 +1139,8 @@ def main():
         q = WAG
     elif Q[0] == 'blosum':
         q = blosum
+    elif Q[0] == 'HIVb':
+        q = HIVb
     elif 'K80' in Q[0]:
         q = K80(float(Q[0].split('0')[1]),float(Q[1].split('0')[1]))
     elif Q[0] == 'JC69':
