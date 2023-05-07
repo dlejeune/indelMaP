@@ -237,10 +237,10 @@ def ParsInternal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length):
         min_score = np.inf
         for left_character in left_set[i]:
             for int_character in tree.parsimony_sets[i]:
-                score_l = C_left[left_character][int_character]
+                score_l = C_left[int_character][left_character]
                 
                 for right_character in right_set[i]:
-                    score_r = C_right[right_character][int_character]
+                    score_r = C_right[int_character][right_character]
                     
                     score = score_l + score_r
                     
@@ -255,10 +255,10 @@ def ParsInternal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length):
         min_score = np.inf
         for left_character in left_set[i]:
             for int_character in tree.parsimony_sets[i]:
-                score_l = C_left[left_character][int_character]
+                score_l = C_left[int_character][left_character]
                 
                 for right_character in right_set[i]:
-                    score_r = C_right[right_character][int_character]
+                    score_r = C_right[int_character][right_character]
                     
                     score = score_l + score_r
                     
@@ -408,17 +408,17 @@ def ParsASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getcwd())
     tree_score = sum(tree.parsimony_scores)
     
     if ancestor_reconstruction:
-        with open(out_file + '_internal_evolutionary_events.fasta', 'w') as f1, open(out_file + '_internal_ancestral_reconstruction.fasta', 'w') as f3, open(out_file + '_leaves_evolutionary_events.fasta', 'w') as f2:
+        with open(out_file + '_internal_evolutionary_events.fas', 'w') as f1, open(out_file + '_internal_ancestral_reconstruction.fas', 'w') as f3, open(out_file + '_leaves_evolutionary_events.fas', 'w') as f2:
             
             no_internal = len(tree) + 1
             for node in tree.traverse('preorder'):
-                
-                if node.is_root():
-                    node.name = 'ROOT'
-                elif not node.is_leaf():
-                    node.name = 'N' + str(no_internal)
-                    no_internal += 1
-                    
+                if node.name == '':
+                    if node.is_root():
+                        node.name = 'ROOT'
+                    elif not node.is_leaf():
+                        node.name = 'N' + str(no_internal)
+                        no_internal += 1
+                        
                 ParsAncestral(node, indel_aware)
                 
                 if not node.is_leaf():
@@ -504,7 +504,7 @@ def main():
                           q, gi_f, ge_f, indel_aware,
                           branch_length, ancestral_reconstruction)
 
-    print('\nThe files including the ancestral sequence reconstruction and evoultionary events were saved to:\n'+ output_file +  '_internal_evolutionary_events.fasta\n'+  output_file + '_internal_ancestral_reconstruction.fasta\n'  + output_file + '_leaves_evolutionary_events.fasta\n' + '\nIndel-aware parsimony score: '+str(parsimony_score)+'\n')
+    print('\nThe files including the ancestral sequence reconstruction and evoultionary events were saved to:\n'+ output_file +  '_internal_evolutionary_events.fas\n'+  output_file + '_internal_ancestral_reconstruction.fas\n'  + output_file + '_leaves_evolutionary_events.fas\n' + '\nIndel-aware parsimony score: '+str(parsimony_score)+'\n')
 
 
 
