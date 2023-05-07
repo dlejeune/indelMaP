@@ -223,10 +223,10 @@ def GenerateMatrices(tree, C_all, gi_f, ge_f, indel_aware, branch_length):
                 min_score = np.inf
                 for left_character in left_sets[i-1]:
                     for int_character in new_set:
-                        score_l = C_left[left_character][int_character]
+                        score_l = C_left[int_character][left_character]
                         
                         for right_character in right_sets[j-1]:
-                            score_r = C_right[right_character][int_character]
+                            score_r = C_right[int_character][right_character]
                             
                             score = score_l + score_r
                             
@@ -466,10 +466,10 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
                 min_score = np.inf
                 for left_character in left_sets[i-1]:
                     for int_character in new_set:
-                        score_l = C_left[left_character][int_character]
+                        score_l = C_left[int_character][left_character]
                         
                         for right_character in right_sets[j-1]:
-                            score_r = C_right[right_character][int_character]
+                            score_r = C_right[int_character][right_character]
                             
                             score = score_l + score_r
                             
@@ -1040,7 +1040,7 @@ def ParsAlign(sequence_file,  tree_file, alphabet, output_file=os.path.abspath(o
         Choose between 'Protein' or 'DNA'.
     output_file : str
         Path and filename for the outputfile without suffix; 
-        if left empty the file will save to the current working directory under the filename msa.fasta
+        if left empty the file will save to the current working directory under the filename msa.fas
     Q : numpy.ndarray
         Choose the substitution model; - Protein: WAG, blosum - DNA: JC69, K80(alpha,beta); 
         if no substitution model is specified each substitution is associated with the same cost. 
@@ -1098,7 +1098,7 @@ def ParsAlign(sequence_file,  tree_file, alphabet, output_file=os.path.abspath(o
         
     alignment = tree.alignment 
     
-    with open(output_file + '.fasta', 'w') as f:
+    with open(output_file + '.fas', 'w') as f:
         leaf_names = [leaf.name for leaf in tree.iter_leaves()]
         for i in range(len(tree.alignment)):
             print('>' + leaf_names[i] + '\n' + ''.join(tree.alignment[i]) + '\n', file=f)
@@ -1110,7 +1110,7 @@ def get_arguments_from_CLI():
     parser = argparse.ArgumentParser(prog = 'Indel-aware parsimony alignment', description='The program progressively alignes protein or nucleotide sequences along a given guide tree under indel-aware parsimony.')
     parser.add_argument('--seq_file', '-s', help='Path to file containing unaligned input sequences in fasta format. If aligned sequences are given, gaps are removed and sequences are realigned.', required = True)
     parser.add_argument('--tree_file', '-t',  help='Path to file containing a guide tree to guide the progressive alignment in newick format.', required = True)
-    parser.add_argument('--output_file', '-o', default=os.path.abspath(os.getcwd())+'/msa', help = 'Path and filename for the outputfile without suffix; if left empty the file will save to the current working directory under the filename msa.fasta', required = False)
+    parser.add_argument('--output_file', '-o', default=os.path.abspath(os.getcwd())+'/msa', help = 'Path and filename for the outputfile without suffix; if left empty the file will save to the current working directory under the filename msa.fas', required = False)
     parser.add_argument('--alphabet', '-a',  help='Specify sequence alphabet, choose between DNA or Protein', type=str, required = True)
     parser.add_argument('--RateMatrix','-q', default = None, type=str, nargs='+', help = 'Choose the substitution model; - Protein: WAG, blosum - DNA: JC69, K80{alpha,beta}; if no substitution model is specified the default for DNA sequences is K80 with transition to transversion ratio of 2 and for Protein sequences WAG; if each substitution should be associated with the same cost you can type None. You can specify your own model by giving a symmetric transition rate matrix with an average substitution rate of 1. Columns have to be separated by a comma and rows with a colon, and transition rates are given as float. Example: -q=-1,0.3333333333333333,0.3333333333333333,0.3333333333333333:0.3333333333333333,-1,0.3333333333333333,0.3333333333333333:0.3333333333333333,0.3333333333333333,-1,0.3333333333333333:0.3333333333333333,0.3333333333333333,0.3333333333333333,-1')
     parser.add_argument('--gap_opening_factor','-go', default = 2.5, help = 'The gap opening cost is given by the gap_opening_factor*average_substitution_cost; default = 2.5', type=float, required = False)
@@ -1173,7 +1173,7 @@ def main():
                           q, gi_f, ge_f, indel_aware,
                           branch_length)
 
-    print('\nThe alignment file was saved to: '+ output_file +'.fasta\nIndel-aware parsimony score: '+str(parsimony_score)+'\n')
+    print('\nThe alignment file was saved to: '+ output_file +'.fas\nIndel-aware parsimony score: '+str(parsimony_score)+'\n')
 
 
 
