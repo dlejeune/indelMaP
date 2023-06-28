@@ -55,7 +55,7 @@ python indelMaP_MSA.py --seq_file multipleSequenceAlignmentFile.fasta --tree_fil
 ```
 
 ### Indel-aware parsimony score
-If only the indel-aware parsimony score is required, the option --ancestral_reconstruction for ParsASR can be set to False. The algorithm will only calculate the indel-aware parsimony score for a given alignment and guide tree. 
+If only the indel-aware parsimony score is required, the option --ancestral_reconstruction for indelMaP_ASR can be set to False. The algorithm will only calculate the indel-aware parsimony score for a given alignment and guide tree. 
 ```
 python indelMaP_ASR.py --msa_file multipleSequenceAlignmentFile.fasta --tree_file treeFile.nwk --alphabet Protein  --ancestral_reconstruction False
 ```
