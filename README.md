@@ -1,4 +1,4 @@
-# Indel-Aware-Parsimony-Methods
+# indelMaP: Indel-Aware Maximum Parsimony
 
 The repository includes the code for multiple sequence alignment (indelMaP_MSA) and ancestral sequence reconstruction (indelMaP_ASR) under indel-aware maximum parsimony. 
 
