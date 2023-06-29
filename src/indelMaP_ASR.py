@@ -176,9 +176,7 @@ def indelMaP_Internal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length, bl
     elif (left_set[i] != set('-') and right_set[i] == set('-')):
         min_score_l = np.inf
         for left_character in left_set[i]:
-            # print(left_set[i])
             for int_character in left_set[i]:
-                # print(tree.parsimony_sets[i])
                 score_l = C_left[int_character][left_character]
                 if score_l < min_score_l:
                     min_score_l = score_l
@@ -241,14 +239,12 @@ def indelMaP_Internal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length, bl
         tree.parsimony_scores[i] = left_score + right_score + min_score
 
 
-def indelMaP_Ancestral(tree, indel_aware):
+def indelMaP_Ancestral(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles):
     seq = ''
     events = ''
     for i in range(len(tree.parsimony_sets)):
         if tree.is_root():
-            character = sample(sorted(tree.parsimony_sets[i]),1)[0]           
-            if character == '-' and (indel_aware and (tree.insertion_gaps[i] or tree.insertion_flags[i])):
-                character = '*'        
+            character = best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i)     
         else:
             if tree.parsimony_sets[i] == set('-'):
                 if indel_aware and (tree.insertion_gaps[i] or tree.insertion_flags[i]) and tree.up.evolutionary_events[i]=='*':
@@ -263,12 +259,9 @@ def indelMaP_Ancestral(tree, indel_aware):
                             character = tree.up.sequence[i]
                 else:
                     if indel_aware and tree.up.insertion_flags[i]:
-                        character = sample(sorted(tree.parsimony_sets[i]),1)[0].lower()
+                        character = best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i).lower()
                     else:
-                        if tree.up.evolutionary_events[i].islower():
-                            character = sample(sorted(tree.parsimony_sets[i]),1)[0].lower()
-                        else:
-                            character = sample(sorted(tree.parsimony_sets[i]),1)[0]            
+                        character = best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i)       
         events += character
         if character == '*':
             seq += '-'
@@ -276,6 +269,60 @@ def indelMaP_Ancestral(tree, indel_aware):
             seq += character.upper()
     tree.add_features(evolutionary_events = events)
     tree.add_features(sequence = seq)
+
+def best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i):
+    if len(tree.parsimony_sets[i]) == 1:
+        character = list(tree.parsimony_sets[i])[0]
+        if character == '-' and (indel_aware and (tree.insertion_gaps[i] or tree.insertion_flags[i])):
+                character = '*'
+    else:
+        left_dist = tree.children[0].dist
+        right_dist = tree.children[1].dist
+        C_left, gi_left, ge_left = determineC(C_all, left_dist, gi_f, ge_f, 
+                                                    branch_length, bl_percentiles)
+        C_right, gi_right, ge_right = determineC(C_all, right_dist, gi_f, ge_f, 
+                                                        branch_length, bl_percentiles)
+        left_set = tree.children[0].parsimony_sets
+        right_set = tree.children[1].parsimony_sets
+        min_char = []
+        if left_set[i] == set('-'):
+            min_score_r = np.inf
+            for right_character in right_set[i]:
+                for int_character in tree.parsimony_sets[i]:
+                    score_r = C_right[int_character][right_character]
+                    if score_r == min_score_r:
+                        min_char += [int_character]
+                    elif score_r < min_score_r:
+                        min_score_r = score_r
+                        min_char = [int_character]
+        elif right_set[i] == set('-'):
+            min_score_l= np.inf
+            for left_character in left_set[i]:
+                for int_character in tree.parsimony_sets[i]:
+                    score_l = C_left[int_character][left_character]
+                    if score_l == min_score_l:
+                        min_char += [int_character]
+                    elif score_l < min_score_l:
+                        min_score_l = score_l
+                        min_char = [int_character]
+        else:
+            min_score = np.inf
+            for left_character in left_set[i]:
+                for int_character in tree.parsimony_sets[i]:
+                    score_l = C_left[int_character][left_character]
+                    for right_character in right_set[i]:
+                        score_r = C_right[int_character][right_character]
+                        score = score_l + score_r
+                        if score == min_score:
+                            min_char += [int_character]
+                        elif score < min_score:
+                            min_score = score
+                            min_char = [int_character]
+        if len(min_char)>1:
+            character = sample(sorted(min_char),1)[0]   
+        else:
+            character = min_char[0]
+    return character
                     
                 
 def indelMaP_ASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getcwd())+'/msa', Q=None, gi_f=2.5, ge_f=0.5, indel_aware=True,
@@ -354,18 +401,12 @@ def indelMaP_ASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getc
     for node in tree.traverse('postorder'):
         if not node.is_leaf():
             for i in range(length_MSA):
-                    
                 indelMaP_Internal(node, i, C_all, gi_f, ge_f, 
                                      indel_aware, branch_length, bl_percentiles)
     # sum the parsimony scores at the root over the whole sequence
-            # print(node.insertion_gaps)
-            # # print(node.insertion_flags)
-            # print(node.parsimony_sets)
-            # print(node.parsimony_scores)
     tree_score = sum(tree.parsimony_scores)
     if ancestor_reconstruction:
         with open(out_file + '_internal_evolutionary_events.fas', 'w') as f1, open(out_file + '_internal_ancestral_reconstruction.fas', 'w') as f3, open(out_file + '_leaves_evolutionary_events.fas', 'w') as f2:
-            
             no_internal = len(tree) + 1
             for node in tree.traverse('preorder'):
                 if node.name == '':
@@ -375,7 +416,7 @@ def indelMaP_ASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getc
                         node.name = 'N' + str(no_internal)
                         no_internal += 1
                         
-                indelMaP_Ancestral(node, indel_aware)
+                indelMaP_Ancestral(node, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles)
                 
                 if not node.is_leaf():
                     print('>'+ node.name+'\n'+node.evolutionary_events, file=f1)
