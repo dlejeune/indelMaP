@@ -91,75 +91,16 @@ def setcurrentT(currentT_value, T_M, T_X, T_Y):
         current_T = T_X
     return current_T
 
-def gap_traceback(direction_gap, left_flags, right_flags, left_insertions, right_insertions, tmp_i, tmp_j, current_T, T_M, T_X, T_Y):  
-    
-    if direction_gap == 'left':
-        gap = left_flags[tmp_i-1]  
-    elif direction_gap == 'right':
-        gap = right_flags[tmp_j-1]     
-    count = 0
-    while gap != flags.gap_opening and tmp_i>0 and tmp_j>0:
-        count += 1
-        if left_insertions[tmp_i-1] and right_insertions[tmp_j-1]:
-            tmp_i -= 1 
-            tmp_j -= 1
-                        
-        elif left_insertions[tmp_i-1]:
-            tmp_i -= 1
-
-        elif right_insertions[tmp_j-1]:
-            tmp_j -= 1
-                        
-        #move diagonal 
-        elif current_T[tmp_i][tmp_j] == 1:
-            break
-            
-        #move horizontal
-        elif np.array_equal(current_T, T_Y):
-            current_T = setcurrentT(current_T[tmp_i][tmp_j], T_M, T_X, T_Y)
-            tmp_j -= 1 
-            
-        #move vertical
-        elif np.array_equal(current_T, T_X):
-            current_T = setcurrentT(current_T[tmp_i][tmp_j], T_M, T_X, T_Y)
-            tmp_i -= 1 
-    print(count)
-    return tmp_i, tmp_j, current_T
-
-def determineC(C_all, dist, gi_f, ge_f, branch_length):
-    
-    close = 0.1
-    intermediate = 0.3
-    distant = 0.5
-    very_distant = 0.7
+def determineC(C_all, dist, gi_f, ge_f, branch_length, bl_percentiles):
     
     if len(C_all) != 2:
-        
-        if dist == 0.0 or not branch_length:
-        
-            C = C_all[distant][0]
-            gi = gi_f*C_all[distant][1]
-            ge = ge_f*C_all[distant][1]
-        
-        elif 0.0 < dist and dist <= 0.2:
-            C = C_all[close][0]
-            gi = gi_f*C_all[close][1]
-            ge = ge_f*C_all[close][1]
-        
-        elif 0.2 < dist and dist <= 0.4:
-            C = C_all[intermediate][0]
-            gi = gi_f*C_all[intermediate][1]
-            ge = ge_f*C_all[intermediate][1]
-            
-        elif 0.4 < dist and dist <= 0.6:
-            C = C_all[distant][0]
-            gi = gi_f*C_all[distant][1]
-            ge = ge_f*C_all[distant][1]
-            
-        elif 0.6 < dist:
-            C = C_all[very_distant][0]
-            gi = gi_f*C_all[very_distant][1]
-            ge = ge_f*C_all[very_distant][1]
+        if not branch_length:
+            d = 0.5
+        else:
+            d = min(bl_percentiles, key=lambda x:abs(x-dist))
+        C = C_all[d][0]
+        gi = gi_f*C_all[d][1]
+        ge = ge_f*C_all[d][1]
     else:
         C = C_all[0]
         gi = gi_f*C_all[1]
@@ -167,4 +108,3 @@ def determineC(C_all, dist, gi_f, ge_f, branch_length):
     
     return C, gi, ge
         
-#%%
