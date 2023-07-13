@@ -190,6 +190,7 @@ def indelMaP_Internal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length, bl
                     tree.parsimony_scores[i] = left_score + right_score + ge_right + min_score_l
                 else:
                     tree.parsimony_scores[i] = left_score + right_score + gi_right + min_score_l
+            # if we expand a deletion site
             elif indel_aware and not tree.insertion_flags[i]:
                 tmp = i-1
                 while (tree.insertion_gaps[tmp] or tree.insertion_flags[tmp]) and tmp > 0:
