@@ -388,33 +388,48 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
                 ### FILL S_M 
                 S_X_cut = S_X[i-1][j-1]
                 S_Y_cut = S_Y[i-1][j-1]
-                S_M_cut = S_M[i-1][j-1]
                 if left_flags[i-1] == flags.gap_extension and right_flags[j-1] == flags.gap_extension:
-                    tmp = i-1
-                    while tmp > 0 and (T_X[tmp][j-1] == 3 or left_insertions[tmp-1]):
-                        tmp-=1
-                    if T_X[tmp][j-1] != 1:
+                    tmp_i = i-1
+                    tmp_j = j-1
+                    while (tmp_j > 0 and tmp_i > 0) and (T_X[tmp_i][tmp_j] == 3 or left_insertions[tmp_i-1]):
+                        if left_insertions[tmp_i-1] or T_X[tmp_i][tmp_j] == 3:
+                            tmp_i -= 1
+                        if right_insertions[tmp_j-1]:
+                            tmp_j -= 1
+                    if T_X[tmp_i][tmp_j] != 1:
                         S_X_cut = S_X[i-1][j-1] + gi_right - ge_right
-                    tmp = j-1
-                    while tmp > 0 and (T_Y[i-1][tmp] == 2 or right_insertions[tmp-1]):
-                        tmp -= 1
-                    if T_Y[i-1][tmp] != 1:
+                    tmp_i = i-1
+                    tmp_j = j-1
+                    while (tmp_j > 0 and tmp_i > 0) and (T_Y[tmp_i][tmp_j] == 2 or right_insertions[tmp_j-1] or left_insertions[tmp_i-1]):
+                        if right_insertions[tmp_j-1] or T_Y[tmp_i][tmp_j] == 2:
+                            tmp_j -= 1
+                        if left_insertions[tmp_i-1]:
+                                tmp_i -= 1
+                    if T_Y[tmp_i][tmp_j] != 1:
                         S_Y_cut = S_Y[i-1][j-1] + gi_left - ge_left
                 elif left_flags[i-1] == flags.gap_extension:
                     S_X_cut = S_X[i-1][j-1] + gi_right - ge_right
-                    tmp = j-1
-                    while tmp > 0 and (T_Y[i-1][tmp] == 2 or right_insertions[tmp-1]):
-                        tmp -= 1
-                    if T_Y[i-1][tmp] != 1:
+                    tmp_j = j-1
+                    tmp_i = i-1
+                    while (tmp_j > 0 and tmp_i > 0) and (T_Y[tmp_i][tmp_j] == 2 or right_insertions[tmp_j-1] or left_insertions[tmp_i-1]):
+                        if right_insertions[tmp_j-1] or T_Y[tmp_i][tmp_j] == 2:
+                            tmp_j -= 1
+                        if left_insertions[tmp_i-1]:
+                                tmp_i -= 1
+                    if T_Y[tmp_i][tmp_j] != 1:
                         S_Y_cut = S_Y[i-1][j-1] + gi_left - ge_left
                 elif right_flags[j-1] == flags.gap_extension:
                     S_Y_cut = S_Y[i-1][j-1] + gi_left - ge_left
-                    tmp = i-1
-                    while tmp > 0 and (T_X[tmp][j-1] == 3 or left_insertions[tmp-1]):
-                        tmp-=1
-                    if T_X[tmp][j-1] != 1:
+                    tmp_i = i-1
+                    tmp_j = j-1
+                    while (tmp_j > 0 and tmp_i > 0) and (T_X[tmp_i][tmp_j] == 3 or left_insertions[tmp_i-1] or right_insertions[tmp_j-1]):
+                        if left_insertions[tmp_i-1] or T_X[tmp_i][tmp_j] == 3:
+                            tmp_i -= 1
+                        if right_insertions[tmp_j-1]:
+                            tmp_j -= 1
+                    if T_X[tmp_i][tmp_j] != 1:
                         S_X_cut = S_X[i-1][j-1] + gi_right - ge_right
-                min_S_M = min(S_M_cut, S_X_cut, S_Y_cut)
+                min_S_M = min(S_M[i-1][j-1], S_X_cut, S_Y_cut)
                 if left_sets[i-1].intersection(right_sets[j-1]):
                     new_set = left_sets[i-1].intersection(right_sets[j-1])                
                 elif not left_sets[i-1].intersection(right_sets[j-1]):
@@ -429,7 +444,7 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
                             if score < min_score:
                                 min_score = score
                 S_M[i][j] = min_S_M + min_score
-                T_M[i][j] = determineT(min_S_M, S_M_cut, S_X_cut, S_Y_cut)
+                T_M[i][j] = determineT(min_S_M, S_M[i-1][j-1], S_X_cut, S_Y_cut)
                 ### FILL S_Y
                 #if the algorithm is phylogeny aware gap placements in columns 
                 #flagged as deletions are free
@@ -470,6 +485,7 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
                     s_m = S_M[i][j-1] + min_score_r + gi_left
                     S_Y[i][j] = min(s_m, s_x, s_y)
                     T_Y[i][j] = determineT(S_Y[i][j], s_m, s_x, s_y)
+                ### FILL S_X
                 if indel_aware and (left_flags[i-1] in possible_ins):
                     S_M_cut = S_M[i-1][j]
                     S_Y_cut = S_Y[i-1][j]
