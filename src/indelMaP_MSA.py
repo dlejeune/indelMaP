@@ -791,7 +791,6 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
                     pars_sets.insert(0, set('-'))
                 else:
                     if current_T[i][j] != 2 or (current_T[i][j] == 2 and right_flags[j-2] in possible_ins and current_T[i][j-1] != 0 and current_T[i][j-1]!=2):
-                    
                         ins_flags.insert(0, flags.gap_opening)
                     else:
                         ins_flags.insert(0, flags.gap_extension)
