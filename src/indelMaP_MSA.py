@@ -397,7 +397,7 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
                         if right_insertions[tmp_j-1]:
                             tmp_j -= 1
                     if T_X[tmp_i][tmp_j] != 1:
-                        S_X_cut = S_X[i-1][j-1] + gi_right - ge_right
+                        S_X_cut = S_X[i-1][j-1] + 2*gi_right - 2*ge_right
                     tmp_i = i-1
                     tmp_j = j-1
                     while (tmp_j > 0 and tmp_i > 0) and (T_Y[tmp_i][tmp_j] == 2 or right_insertions[tmp_j-1] or left_insertions[tmp_i-1]):
@@ -406,7 +406,7 @@ def GenerateMatricesAffine(tree, alphabet, C_all, gi_f, ge_f, indel_aware, branc
                         if left_insertions[tmp_i-1]:
                                 tmp_i -= 1
                     if T_Y[tmp_i][tmp_j] != 1:
-                        S_Y_cut = S_Y[i-1][j-1] + gi_left - ge_left
+                        S_Y_cut = S_Y[i-1][j-1] + 2*gi_left - 2*ge_left
                 elif left_flags[i-1] == flags.gap_extension:
                     S_X_cut = S_X[i-1][j-1] + gi_right - ge_right
                     tmp_j = j-1
@@ -791,7 +791,6 @@ def TraceBackAffine(T_M, T_X, T_Y, start_T, tree, indel_aware):
                     pars_sets.insert(0, set('-'))
                 else:
                     if current_T[i][j] != 2 or (current_T[i][j] == 2 and right_flags[j-2] in possible_ins and current_T[i][j-1] != 0 and current_T[i][j-1]!=2):
-                    
                         ins_flags.insert(0, flags.gap_opening)
                     else:
                         ins_flags.insert(0, flags.gap_extension)
