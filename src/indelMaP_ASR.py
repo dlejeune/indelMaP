@@ -240,12 +240,12 @@ def indelMaP_Internal(tree, i, C_all, gi_f, ge_f, indel_aware, branch_length, bl
         tree.parsimony_scores[i] = left_score + right_score + min_score
 
 
-def indelMaP_Ancestral(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles):
+def indelMaP_Ancestral(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, alphabet):
     seq = ''
     events = ''
     for i in range(len(tree.parsimony_sets)):
         if tree.is_root():
-            character = best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i)     
+            character = best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i, alphabet)     
         else:
             if tree.parsimony_sets[i] == set('-'):
                 if indel_aware and (tree.insertion_gaps[i] or tree.insertion_flags[i]) and tree.up.evolutionary_events[i]=='*':
@@ -260,9 +260,9 @@ def indelMaP_Ancestral(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_p
                             character = tree.up.sequence[i]
                 else:
                     if indel_aware and tree.up.insertion_flags[i]:
-                        character = best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i).lower()
+                        character = best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i, alphabet).lower()
                     else:
-                        character = best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i)       
+                        character = best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i, alphabet)       
         events += character
         if character == '*':
             seq += '-'
@@ -271,11 +271,49 @@ def indelMaP_Ancestral(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_p
     tree.add_features(evolutionary_events = events)
     tree.add_features(sequence = seq)
 
-def best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i):
+def best_reconstruction(tree, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, i, alphabet):
     if len(tree.parsimony_sets[i]) == 1:
         character = list(tree.parsimony_sets[i])[0]
         if character == '-' and (indel_aware and (tree.insertion_gaps[i] or tree.insertion_flags[i])):
                 character = '*'
+    elif tree.is_leaf():
+        # Dealing with ambigous characters
+        if alphabet == 'Protein':
+            characters_protein = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P',
+                          'S', 'T', 'W', 'Y', 'V']
+            if tree.parsimony_sets[i] == set(characters_protein):
+                character = 'X'
+            elif tree.parsimony_sets[i] == set(['D', 'N']):
+                character = 'B'
+            elif tree.parsimony_sets[i] == set(['E', 'Q']):
+                character = 'Z'
+            elif tree.parsimony_sets[i] == set(['I', 'L']):
+                character = 'J'
+        elif alphabet == 'DNA':
+            characters_dna = ['T', 'C', 'A', 'G']
+            if tree.parsimony_sets[i] == set(characters_dna):
+                character = 'X'
+            elif tree.parsimony_sets[i] == set(['A', 'C', 'G']):
+                character = 'V'
+            elif tree.parsimony_sets[i]== set(['A', 'C', 'T']):
+                character = 'H'
+            elif tree.parsimony_sets[i] == set(['A', 'G', 'T']):
+                charachter = 'D'
+            elif tree.parsimony_sets[i] == set(['C', 'G', 'T']):
+                character = 'B'
+            elif tree.parsimony_sets[i] == set(['A', 'C']):
+                character = 'M'
+            elif tree.parsimony_sets[i] == set(['A', 'G']):
+                character = 'R'
+            elif tree.parsimony_sets[i] == set(['A', 'T']):
+                character = 'W'
+            elif tree.parsimony_sets[i] == set(['C', 'G']):
+                character = 'S'
+            elif tree.parsimony_sets[i] == set(['C', 'T']):
+                character = 'Y'
+            elif tree.parsimony_sets[i] == set(['G', 'T']):
+                character = 'K'
+        
     else:
         left_dist = tree.children[0].dist
         right_dist = tree.children[1].dist
