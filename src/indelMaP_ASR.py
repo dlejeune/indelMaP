@@ -455,7 +455,7 @@ def indelMaP_ASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getc
                         node.name = 'N' + str(no_internal)
                         no_internal += 1
                         
-                indelMaP_Ancestral(node, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles)
+                indelMaP_Ancestral(node, C_all, gi_f, ge_f, indel_aware, branch_length, bl_percentiles, alphabet)
                 
                 if not node.is_leaf():
                     print('>'+ node.name+'\n'+node.evolutionary_events, file=f1)
