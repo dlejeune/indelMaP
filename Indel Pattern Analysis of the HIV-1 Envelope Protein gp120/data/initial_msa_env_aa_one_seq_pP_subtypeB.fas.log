@@ -1,0 +1,1222 @@
+IQ-TREE multicore version 2.0.6 for Mac OS X 64-bit built May 30 2020
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    ZHAW-C02F63JNML85 (AVX512, FMA3, 16 GB RAM)
+Command: /Applications/iqtree-2.0.6-MacOSX/bin/iqtree2 -s /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas -t /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/bioNJ_env_aa_one_seq_pP_subtypeB.nwk -m HIVb -o B.FR.1983.HXB2-LAI-IIIB-BRU.K03455.LAI --date /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/date_file_env.txt --date-options -l 0.0 --redo
+Seed:    150764 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Wed Jul  5 23:35:30 2023
+Kernel:  AVX+FMA - 1 threads (8 CPU cores detected)
+
+HINT: Use -nt option to specify number of threads because your CPU has 8 cores!
+HINT: -nt AUTO will automatically determine the best number of threads to use.
+
+Reading alignment file /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas ... Fasta format detected
+Alignment most likely contains protein sequences
+Alignment has 762 sequences with 7699 columns, 5428 distinct patterns
+981 parsimony-informative, 899 singleton sites, 5819 constant sites
+                                                    Gap/Ambiguity  Composition  p-value
+   1  B.FR.1983.HXB2-LAI-IIIB-BRU.K03455.LAI               88.88%    passed      5.86%
+   2  B.FR.1983.BH102_BH10.M15654.BH10                     88.88%    passed      6.26%
+   3  B.FR.1983.IIIB_LAI.A04321.LAI                        88.82%    failed      3.97%
+   4  B.FR.1985.NL43E9_LAI_IIIB_NY5.AF070521.NL43          88.91%    passed     10.60%
+   5  B.FR.1990.LW901.U12036.LW                            88.93%    failed      4.85%
+   6  B.GB.2005.P1_DAY_1.FJ653428.P1                       88.93%    passed     11.54%
+   7  B.ES.2008.X2425-2.FJ670525.X2425                     89.05%    passed     13.18%
+   8  B.ES.2014.ARP1195.KT276255.ARP1195                   88.80%    failed      4.08%
+   9  B.FR.2012.PHI6_1.OP994622.PHI6                       89.05%    passed      5.53%
+  10  B.CY.2008.CY229.JF683778.CY229                       89.49%    failed      4.33%
+  11  B.SE.2013.084TH.MF373186.pt084                       88.95%    passed     10.80%
+  12  B.FR.2009.770203.KC699035.770203                     88.96%    passed      5.34%
+  13  B.CH.2001.HIV_CH_BID-V3531_2001.JQ403024.-           88.97%    passed      7.85%
+  14  B.CY.2005.CY018.FJ388890.CY018                       88.60%    failed      3.41%
+  15  B.CY.2005.CY132.FJ388936.CY132                       88.87%    passed     12.97%
+  16  B.BE.2016.P7_G10_NA.MW881757.P7_STAR11               88.83%    passed      5.67%
+  17  B.CY.2005.CY070.FJ388960.CY070                       89.00%    passed      6.46%
+  18  B.CY.2005.CY020.FJ388891.CY020                       88.70%    passed     14.41%
+  19  B.CY.2005.CY097.FJ388924.CY097                       88.91%    passed      7.04%
+  20  B.CY.2005.CY033.FJ388957.CY033                       88.89%    failed      3.89%
+  21  B.CY.2005.CY036.FJ388959.CY036                       88.82%    failed      4.80%
+  22  B.CY.2005.CY082.FJ388962.CY082                       88.96%    failed      1.85%
+  23  B.CY.2006.CY165.FJ388947.CY165                       88.80%    passed      9.97%
+  24  B.CY.2005.CY088.FJ388919.CY088                       88.88%    passed     12.11%
+  25  B.CY.2005.CY089.FJ388920.CY089                       88.86%    passed     10.07%
+  26  B.CY.2005.CY072.FJ388914.CY072                       88.83%    passed      5.70%
+  27  B.CY.2005.CY093.FJ388923.CY093                       88.89%    passed      6.28%
+  28  B.FR.2013.180003_2.OP994703.180003                   88.95%    failed      2.81%
+  29  B.CY.2005.CY032.FJ388898.CY032                       88.92%    passed      7.82%
+  30  B.DE.2010.C7V00QY0_E10_152242.KC248015.-             89.10%    passed      7.99%
+  31  B.DE.2010.320435.KT124763.320435                     88.53%    failed      2.53%
+  32  B.FR.1991.1644.KC699001.1644                         88.96%    failed      3.70%
+  33  B.FR.1998.750705.KC699020.750705                     88.91%    failed      3.09%
+  34  B.ES.2008.X2510_2.FJ853622.X2510                     88.96%    failed      3.47%
+  35  B.ES.2014.100_114.KY465968.EUR0060                   89.04%    failed      2.75%
+  36  B.GB.2009.J525_E4.HQ595783.J525                      88.97%    passed      8.88%
+  37  B.DE.2008.954229.KT124810.954229                     89.01%    failed      0.94%
+  38  B.BE.1993.VI843-172.DQ313250.VI843                   88.95%    passed     10.02%
+  39  B.CY.2009.CY251.JF683794.CY251                       88.76%    passed     20.78%
+  40  B.DE.2009.172508.KT124754.172508                     88.89%    passed      8.41%
+  41  B.GB.2009.L563_H1.HQ595786.L563                      88.93%    failed      2.29%
+  42  B.CH.2000.M1_0007251_NFLG95.KC797171.M1              88.73%    passed     15.06%
+  43  B.CH.2008.M2_0801071_NFLG2.KC797215.M2               88.73%    passed     16.98%
+  44  B.GB.2009.W450b_C12.HQ595806.W450b                   88.82%    failed      2.58%
+  45  B.CY.2009.CY241.JF683787.CY241                       88.82%    failed      1.50%
+  46  B.FR.2009.DEMB09FR001.KF716494.H474                  88.69%    failed      4.80%
+  47  B.SE.2014.099US.MF373201.pt099                       88.91%    passed     18.86%
+  48  B.CY.2005.CY124.FJ388933.CY124                       88.88%    failed      1.17%
+  49  B.BG.2009.V_09_013.MH746254.-                        88.89%    failed      2.37%
+  50  B.FR.2003.LA06ToXa.KU168261.ToXa                     88.73%    failed      3.11%
+  51  B.BE.2016.P6_G1_STAT5B.MW881748.P6_STAR10            88.71%    failed      2.26%
+  52  B.DE.2004.HIV_DE_BID-V4131_2004.JQ403037.-           88.65%    passed     30.20%
+  53  B.DE.2004.HIV_DE_BID-V4132_2004.JQ403038.-           88.70%    passed     15.31%
+  54  B.DE.2004.HIV_DE_BID-V4134_2004.JQ403039.-           88.70%    passed     23.03%
+  55  B.DE.2005.HIV_DE_BID-V4135_2005.JQ403049.-           88.73%    passed     27.31%
+  56  B.BE.2014.AH.MN485978.-                              89.82%    passed     24.80%
+  57  B.SI.2011.Sample29_SI257.MN736700.SI257              89.06%    passed      8.33%
+  58  B.CY.2007.CY201.JF683753.CY201                       88.95%    passed     22.72%
+  59  B.SE.2015.101SE.MF373203.pt101                       89.08%    passed     12.35%
+  60  B.SE.2015.102SE.MF373204.pt102                       89.01%    passed     32.84%
+  61  B.FR.2008.DEMB08FR002.JX140654.BP001099              88.65%    passed     14.73%
+  62  B.FR.2007.590111.KC699030.590111                     88.60%    passed     16.71%
+  63  B.ES.2004.RF_LTNP_37.KC595202.RF_LTNP_37             89.01%    passed      5.71%
+  64  B.FR.2010.751734.KC699034.751734                     88.61%    passed     14.38%
+  65  B.CH.2002.T1SHCS901SGA_10_T1.KX792606.SHCS901        88.74%    passed     11.58%
+  66  B.CH.2002.R1ZPHI11SGA_11_R1.KX792634.ZPHI11          88.84%    passed     24.65%
+  67  B.DE.2016.1HD9K-D0-070816-A4_S27.KY324805.1HD9K      88.95%    passed      8.10%
+  68  B.ES.2015.100596.KY989953.100596                     88.65%    passed     10.03%
+  69  B.BE.2017.BZ.MN486022.-                              88.80%    passed     15.08%
+  70  B.FR.1985.NL43xWC001.AF003887.WC001                  88.79%    failed      1.93%
+  71  B.FR.1989.819.KC699004.819                           88.86%    passed     13.24%
+  72  B.NL.1985.19956_3_2A4.GU455514.19956                 88.84%    failed      3.04%
+  73  B.NL.1989.39.20.1E8.MT951984.39                      88.86%    failed      2.40%
+  74  B.ES.1989.As5_1b.KC595174.As5                        88.89%    failed      1.58%
+  75  B.ES.2006.X1998.EU786676.1998                        89.01%    passed      7.76%
+  76  B.ES.2009.X2733_2.JX422204.ARP1163                   88.89%    failed      2.22%
+  77  B.ES.2015.100594.KY989951.100594                     88.96%    failed      3.29%
+  78  B.ES.2008.R5.KT200354.R5                             88.63%    failed      1.34%
+  79  B.BG.2008.V_08_001.MH746261.-                        88.56%    failed      3.10%
+  80  B.DE.2010.464704.KT124772.464704                     88.75%    passed      6.48%
+  81  B.DE.2007.906153.KT124803.906153_3489                88.74%    passed     17.54%
+  82  B.ES.2010.R7.KT200356.R7                             88.89%    failed      0.13%
+  83  B.FR.2015.CODb1_9.OP994768.CODb1                     88.99%    passed     10.26%
+  84  B.ES.2007.X2231.EU786680.2231                        88.97%    passed     10.61%
+  85  B.ES.2008.X2400-3.FJ670524.X2400                     89.01%    passed     13.49%
+  86  B.DE.2010.C7V01AF1_E10_131980.KC247989.-             89.30%    failed      3.64%
+  87  B.DE.2010.C7V01BY0_E10_152255.KC248024.-             89.31%    failed      4.81%
+  88  B.ES.2009.DEMB09ES007.KC473841.ARP1186               88.87%    failed      1.18%
+  89  B.ES.2008.ES_X2515_3.GQ372988.X2515                  88.70%    failed      0.77%
+  90  B.BE.2016.CO.MN486037.-                              89.36%    failed      4.67%
+  91  B.ES.2009.DEMB09BO001.JX140656.ARP1116               88.92%    passed      7.68%
+  92  B.ES.2010.P2606_2.JX422200.ARP1174                   88.95%    failed      3.88%
+  93  B.CY.2007.CY204.JF683756.CY204                       88.91%    failed      3.63%
+  94  B.DE.2010.C7V01C48_E10_152265.KC248034.-             88.79%    failed      0.85%
+  95  B.BE.2016.BG.MN486003.-                              90.04%    failed      2.14%
+  96  B.DE.2010.587196.KT124783.587196                     88.79%    passed      7.64%
+  97  B.SE.2012.SE600057.KP411828.SE600057                 88.78%    passed     17.20%
+  98  B.BE.2016.AZ.MN485996.-                              89.02%    passed     15.02%
+  99  B.BE.2016.DX.MT417760.-                              89.19%    passed      8.63%
+ 100  B.GB.2008.CH080191_e_p1.HM204643.713080191           88.89%    failed      1.32%
+ 101  B.SE.2003.003SE.MF373125.pt003                       88.69%    passed      6.91%
+ 102  B.CH.2003.HIV_CH_BID-V4421_2003.JQ403043.-           88.65%    failed      0.59%
+ 103  B.FR.1988.562.KC699011.562                           88.93%    passed      7.12%
+ 104  B.DE.2012.635056.KT124787.635056                     88.79%    passed     12.04%
+ 105  B.CH.2003.NAb4pre_cl_1.EU023922.117.NAB04            88.92%    passed      5.01%
+ 106  B.BE.2016.AW.MN485993.-                              89.02%    passed      7.32%
+ 107  B.BE.2016.DF.MT417742.-                              89.02%    passed      7.30%
+ 108  B.BE.2016.STAR09_TCM_TTM_54.MZ041613.STAR9           88.91%    failed      4.96%
+ 109  B.ES.2006.X2102.EU786677.2102                        88.97%    failed      3.65%
+ 110  B.GB.2009.E355_A10.HQ595777.E355                     88.88%    passed      8.61%
+ 111  B.GB.2008.CH080038_e_p2.HM204627.713080038           88.99%    passed      7.86%
+ 112  B.DE.2009.C7V00493_E10_116085.KC247957.-             89.13%    failed      0.69%
+ 113  B.DE.2009.C7V006B5_E10_152229.KC248004.-             88.80%    failed      0.21%
+ 114  B.IT.1996.PVO_4.AY835444.PVO                         88.75%    passed      9.40%
+ 115  B.CY.2003.CY005.EU668963.CY005                       88.93%    passed     11.13%
+ 116  B.CH.2000.HIV_CH_BID-V3530_2000.JQ403023.-           88.83%    passed      8.96%
+ 117  B.GB.2008.CH080095_e_p1.HM204633.713080095           88.74%    failed      4.29%
+ 118  B.DE.2016.9249_pre_06.MH575774.9249                  88.58%    failed      0.16%
+ 119  B.CH.2003.R9ZPHI39SGA_1_R9.KX792557.ZPHI39           88.97%    failed      3.80%
+ 120  B.CH.2003.T9ZPHI38cl_D2_T9.KX792565.ZPHI38           88.99%    failed      1.99%
+ 121  B.CY.2008.CY220.JF683769.CY220                       88.84%    failed      4.29%
+ 122  B.DE.2008.147984.KT124751.147984                     88.70%    failed      3.37%
+ 123  B.DE.2016.1HD5K-D0-061016-A9_S1.KY324593.1HD5K       88.78%    passed     10.39%
+ 124  B.BG.2008.P_08_004.MH746265.-                        88.87%    passed      8.30%
+ 125  B.FR.2015.CHI2_1.OP994403.CHI2                       88.93%    passed     16.04%
+ 126  B.CY.2005.CY131.FJ388935.CY131                       88.79%    passed      6.00%
+ 127  B.GB.2008.B653_C7.HQ595772.B653                      88.95%    failed      1.06%
+ 128  B.GB.2009.S200c_p1.JF680933.S200c                    88.82%    failed      0.50%
+ 129  B.ES.2010.P2593_2.JX422199.ARP1182                   88.71%    failed      1.17%
+ 130  B.ES.2013.P6.KT200348.P6                             88.48%    failed      4.63%
+ 131  B.FR.1999.751002.KC699023.751002                     88.97%    passed     10.94%
+ 132  B.CY.2005.CY110.FJ388927.CY110                       88.88%    failed      3.20%
+ 133  B.ES.2014.ARP1208.KT276268.ARP1208                   89.08%    failed      0.35%
+ 134  B.BE.2016.AY.MN485995.-                              88.99%    failed      4.33%
+ 135  B.BE.2016.BE.MN486002.-                              89.09%    failed      4.48%
+ 136  B.ES.2007.X2278_c2_B6.FJ817366.X2278                 88.95%    failed      0.01%
+ 137  B.NL.2002.patient_E_129_1.HQ386210.E                 88.88%    failed      0.20%
+ 138  B.CY.2009.CY266.JF683807.CY266                       88.83%    failed      3.21%
+ 139  B.BE.2016.BB.MN485998.-                              88.80%    passed     14.46%
+ 140  B.BE.2016.BN.MN486010.-                              88.63%    passed      7.37%
+ 141  B.DE.2016.1HD11K-D0-091416-C11_S23.KY324331.1HD11K   88.75%    passed      5.05%
+ 142  B.BE.2019.DO.MT417751.-                              89.25%    failed      0.62%
+ 143  B.BE.2019.DP.MT417752.-                              89.58%    failed      4.14%
+ 144  B.BE.2016.AT.MN485990.-                              88.87%    failed      2.25%
+ 145  B.GB.2008.MM62.01.1C4.bulk.MT795076.MM62             88.86%    failed      2.98%
+ 146  B.ES.2009.P2149_3.GU362881.P2149                     89.02%    failed      1.24%
+ 147  B.ES.2014.ARP1207.KT276267.ARP1207                   88.76%    failed      3.29%
+ 148  B.ES.2014.EUR-0045.KU685585.EUR0045                  89.00%    passed      6.15%
+ 149  B.BE.2016.BD.MN486000.-                              89.05%    failed      0.30%
+ 150  B.BE.2015.DE.MT417741.-                              90.30%    failed      1.98%
+ 151  B.FR.2011.DEMB11FR001.KF716496.H553                  89.09%    passed      5.67%
+ 152  B.ES.2014.EUR-0031.KU685591.EUR0031                  88.88%    failed      4.28%
+ 153  B.ES.2006.R14.KT200350.R14                           88.69%    failed      3.48%
+ 154  B.CH.2007.T4SHCS617SGA_10_T4.KX792768.SHCS617        88.93%    failed      4.62%
+ 155  B.CH.2007.R4ZPHI149SGA_12_R4.KX792798.ZPHI149        88.93%    passed      5.66%
+ 156  B.SE.2003.005SE.MF373127.pt005                       88.76%    failed      3.03%
+ 157  B.GB.2013.13592_1_29.3.MF109372.-                    89.54%    failed      4.12%
+ 158  B.FR.2015.CHI3_2.OP994428.CHI3                       88.82%    failed      0.57%
+ 159  B.ES.2006.X1958.EU786674.1958                        88.93%    failed      0.53%
+ 160  B.GB.2008.CH080046_e_p1.HM204628.713080046           88.88%    passed      5.79%
+ 161  B.IT.1994.306_9_CHILD_1.KF061031.B306                88.86%    failed      2.95%
+ 162  B.PL.2008.BP00074_RH02.JN687774.BP00074              88.84%    passed      6.10%
+ 163  B.CH.2003.HIV_CH_BID-V4470_2003.JQ403045.-           88.84%    failed      2.11%
+ 164  B.GB.2008.CH080024_e_p1.HM204626.713080024           88.95%    failed      3.58%
+ 165  B.BE.2016.P8_G_1_SMG1P2.MW881768.P8_STAR3            88.79%    passed      6.17%
+ 166  B.GB.2014.13612_1_43.3.MF109428.-                    89.49%    failed      3.73%
+ 167  B.GB.2014.14727_1_53.3.MF109616.-                    89.54%    passed     14.15%
+ 168  B.GB.2008.C500_G5.HQ595774.C500                      88.66%    failed      1.50%
+ 169  B.ES.2010.R3.KT200352.R3                             88.87%    passed     12.06%
+ 170  B.DK.2001.CTL_016.EF514704.CTL-016                   88.82%    passed      5.66%
+ 171  B.DK.2001.CTL_035.EF514710.CTL-035                   88.92%    failed      4.13%
+ 172  B.DK.2001.CTL_041.EF514711.CTL-041                   88.92%    passed     20.67%
+ 173  B.DE.2010.C7V00ZJ2_E10_131972.KC247981.-             89.43%    passed     15.94%
+ 174  B.DE.2010.C7V006J8_E10_152258.KC248027.-             89.54%    passed     19.48%
+ 175  B.FR.2008.940139.KC699038.940139                     89.08%    passed      7.53%
+ 176  B.ES.2014.ARP1206.KT276266.ARP1206                   89.28%    passed     15.02%
+ 177  B.SE.2013.089SE.MF373191.pt089                       88.70%    failed      1.35%
+ 178  B.CY.2005.CY122.FJ403482.CY122                       89.06%    failed      1.82%
+ 179  B.CY.2008.CY238.JF683785.CY238                       88.45%    passed     11.94%
+ 180  B.DE.2008.637829.KT124788.637829                     88.88%    failed      2.18%
+ 181  B.GB.2009.S321_E3.HQ595801.S321                      88.89%    passed     10.99%
+ 182  B.DE.2008.176952.KT124755.176952_3507                88.97%    failed      3.36%
+ 183  B.ES.2004.20044616_7Fc1.KC595155.20044616            88.73%    failed      3.01%
+ 184  B.CY.2008.CY224.JF683773.CY224                       88.87%    failed      2.65%
+ 185  B.BE.2016.BP.MN486012.-                              90.82%    passed      7.08%
+ 186  B.BE.2014.AD.MN485974.-                              89.09%    passed     12.98%
+ 187  B.BE.2017.BV.MN486018.-                              89.87%    passed     13.75%
+ 188  B.CY.2005.CY130.FJ388934.CY130                       88.71%    failed      0.10%
+ 189  B.CY.2005.CY141.FJ388939.CY141                       88.82%    failed      0.23%
+ 190  B.GB.2005.23.12.17.GQ304518.MM23                     88.96%    failed      1.85%
+ 191  B.GB.2008.CH080183_e_p1.HM204642.713080183           88.80%    passed     13.31%
+ 192  B.FR.1999.751401.KC699025.751401                     88.84%    passed      5.64%
+ 193  B.CY.2005.CY150.FJ388941.CY150                       88.84%    failed      4.68%
+ 194  B.GB.2008.G435_G3.HQ595781.G435                      88.84%    passed      9.41%
+ 195  B.SI.2013.Sample43_SI378.MN736704.-                  88.95%    passed     12.62%
+ 196  B.FR.1993.PIH155.AF041130.155                        88.96%    failed      0.85%
+ 197  B.GB.2009.S263_p4.JF680934.S263                      88.82%    failed      4.25%
+ 198  B.BE.2017.BY.MN486021.-                              89.15%    passed      7.63%
+ 199  B.ES.2004.20020760_Fc1.KC595154.20020760             88.70%    failed      3.78%
+ 200  B.GB.2009.P362b_p1.JF680929.P362b                    88.80%    failed      3.09%
+ 201  B.FR.2009.920414.KC699037.920414                     88.82%    passed      7.07%
+ 202  B.FR.2010.PHI5_2.OP994516.PHI5                       88.78%    passed      7.16%
+ 203  B.GB.2008.CH080142_e_p1.HM204638.713080142           88.79%    failed      2.35%
+ 204  B.GB.2008.CH080175_e_p2.HM204641.713080175           88.82%    failed      0.37%
+ 205  B.ES.2010.R4.KT200353.R4                             88.84%    failed      1.98%
+ 206  B.FR.1997.440104.KC699017.440104                     88.89%    failed      2.46%
+ 207  B.FR.2012.PHI7_6.OP994562.PHI7                       89.00%    failed      2.23%
+ 208  B.BE.2017.BS.MN486015.-                              89.08%    failed      2.46%
+ 209  B.BE.2017.BW.MN486019.-                              88.99%    failed      1.62%
+ 210  B.GB.2008.B650c_E2.HQ595771.B650c                    88.95%    passed     10.16%
+ 211  B.CY.2009.CY250.JF683793.CY250                       88.92%    passed      6.13%
+ 212  B.FR.2009.840104.KC699036.840104                     88.92%    passed     14.34%
+ 213  B.ES.2014.EUR-0046.KU685586.EUR0046                  89.00%    passed      6.64%
+ 214  B.ES.2008.X2574_2.GU362886.X2574_ARP1111             89.06%    failed      2.83%
+ 215  B.ES.2010.DEMB10VE001.JX140659.ARP1183               88.80%    failed      0.33%
+ 216  B.GB.2011.MM34.23.1B2.QVOA.MT794569.MM34             88.88%    failed      2.92%
+ 217  B.BG.2008.P_08_001.MH746266.-                        88.89%    failed      1.19%
+ 218  B.DE.2009.C7V00485_E10_116061.KC247955.-             89.10%    failed      3.41%
+ 219  B.DE.2009.C7V00CT0_E10_152227.KC248002.-             89.31%    failed      3.99%
+ 220  B.ES.2015.100597.KY989949.100597                     89.01%    passed      7.38%
+ 221  B.GB.2008.M425_B8.HQ595788.M425                      89.02%    passed      7.74%
+ 222  B.GB.2013.13774_1_79.3.MF109501.-                    89.65%    passed     11.29%
+ 223  B.FR.2012.OFN23677004_Env260.MH000296.OFN23677004    89.44%    passed      7.19%
+ 224  B.FR.2010.EIB71251332_Env261.MH000297.EIB71251332    89.43%    passed      9.35%
+ 225  B.FR.2010.KJR74958143_Env263.MH000298.KJR74958143    89.36%    failed      1.75%
+ 226  B.BE.2016.BA.MN485997.-                              88.86%    failed      2.18%
+ 227  B.DE.2016.1HD4K-D0-061516-E3_S53.KY324517.1HD4K      88.91%    failed      4.46%
+ 228  B.GB.2013.13774_1_50.3.MF109475.-                    89.53%    passed      9.52%
+ 229  B.GB.2008.P362_E1.HQ595792.P362                      88.87%    failed      2.46%
+ 230  B.CY.2007.CY195.JF683747.CY195                       88.92%    failed      3.43%
+ 231  B.GB.2014.14535_1_26.3.MF109523.-                    89.56%    passed     11.61%
+ 232  B.DE.2017.Strain0526.MK086129.-                      88.97%    failed      0.32%
+ 233  B.BE.2015.DM.MT417749.-                              89.02%    failed      3.73%
+ 234  B.DE.2008.822582.KT124794.822582                     88.80%    failed      0.78%
+ 235  B.CH.2008.T7ZPHI80SGA_1_T7.KX792808.ZPHI80           88.91%    failed      3.05%
+ 236  B.CH.2008.R7ZPHI158SGA_11_R7.KX792813.ZPHI158        88.99%    failed      4.12%
+ 237  B.FR.1999.60204.KC699013.60204                       88.87%    failed      0.83%
+ 238  B.ES.2008.R11.KT200349.R11                           89.00%    passed      8.62%
+ 239  B.FR.2007.940218.KC699040.940218                     88.51%    failed      1.32%
+ 240  B.FR.2018.S-1A2.ON421498.S                           88.67%    passed     15.32%
+ 241  B.ES.2010.R6.KT200355.R6                             88.80%    failed      4.10%
+ 242  B.ES.2014.ARP1202.KT276262.ARP1202                   88.93%    passed     11.24%
+ 243  B.ES.2014.EUR-0044.KU685584.EUR0044                  89.00%    failed      3.43%
+ 244  B.FR.1994.PIH309.AF041132.309                        88.91%    failed      2.39%
+ 245  B.FR.2014.070001_8d.OP994747.70001                   88.95%    passed      6.70%
+ 246  B.DK.2004.PMVL_018.EF514697.PMVL-018                 88.39%    failed      0.89%
+ 247  B.CY.2005.CY065.FJ388910.CY065                       88.89%    failed      1.77%
+ 248  B.ES.2006.X1959.EU786675.1959                        89.10%    failed      4.54%
+ 249  B.DK.2001.CTL_023.EF514707.CTL-023                   88.88%    failed      1.71%
+ 250  B.BE.2017.CG.MN486029.-                              89.14%    failed      1.34%
+ 251  B.BE.2017.CJ.MN486032.-                              88.92%    passed      7.87%
+ 252  B.FR.1988.529.KC699006.529                           88.82%    passed      5.53%
+ 253  B.ES.2005.R15.KT200351.R15                           88.86%    failed      3.83%
+ 254  B.GB.2003.MM33d12p.HM586187.MM33                     88.91%    failed      4.47%
+ 255  B.GB.2002.MM28_d0013_ipe013_SGA_1.MG902325.MM28      88.87%    failed      2.91%
+ 256  B.DE.2012.956306.KT124811.956306                     88.73%    failed      0.91%
+ 257  B.GB.2007.MM55.03.2A1.bulk.MT795003.MM55             89.17%    passed     12.62%
+ 258  B.BE.2017.BX.MN486020.-                              88.95%    passed     11.88%
+ 259  B.BE.2019.ED.MT417766.-                              89.30%    failed      4.79%
+ 260  B.BE.2019.EE.MT417767.-                              89.04%    failed      3.51%
+ 261  B.GB.1986.GB8_46R.AJ271445.GB8                       88.97%    passed      8.55%
+ 262  B.DE.2004.9213_V4136_d3.JQ403050.9213                88.80%    passed      5.40%
+ 263  B.DE.2004.912218.KT124804.912218                     88.80%    passed      5.40%
+ 264  B.ES.1989.RF_LTNP_10.KC595195.RF_LTNP_10             88.87%    passed     12.25%
+ 265  B.ES.2007.RF_LTNP_12.KC595196.RF_LTNP_12             88.96%    passed     17.70%
+ 266  B.GB.1994.746DEN04.AJ535590.Pat-1                    88.84%    failed      2.33%
+ 267  B.ES.2004.357182_1Fc1.KC595163.357182                88.54%    passed      8.48%
+ 268  B.ES.2005.279752_5Fc1.KC595158.-                     88.88%    passed      5.53%
+ 269  B.DK.2004.PMVL_027.EF514698.PMVL-027                 88.97%    failed      0.80%
+ 270  B.DE.2009.585067.KT124782.585067                     88.84%    failed      4.74%
+ 271  B.CH.2003.NAB02_pre_cl_3_3.EF643656.111.NAB02        88.97%    failed      1.55%
+ 272  B.CY.2007.CY214.JF683764.CY214                       88.88%    failed      3.45%
+ 273  B.CY.2009.CY254.JF683797.CY254                       88.75%    failed      3.77%
+ 274  B.CY.2005.CY142.FJ388965.CY142                       88.80%    passed     10.28%
+ 275  B.SE.2011.SE600023.KP411824.SE600023                 88.97%    passed      8.43%
+ 276  B.SE.2009.030SE.MF373144.pt030                       88.69%    failed      3.35%
+ 277  B.FR.2010.660118.KC699031.660118                     88.70%    failed      0.33%
+ 278  B.FR.1999.FR-P3.KF682427.P3                          88.57%    failed      2.88%
+ 279  B.CY.2007.CY188.JF683741.CY188                       88.84%    failed      0.72%
+ 280  B.BE.2018.CL.MN486034.-                              88.87%    failed      0.31%
+ 281  B.GB.1997.CW012.AJ418495.CW012                       88.87%    passed      5.88%
+ 282  B.CH.2003.HIV_CH_BID-V4474_2003.JQ403046.-           88.83%    passed      6.19%
+ 283  B.IT.1995.TRO_11.AY835445.TRO                        88.78%    failed      3.52%
+ 284  B.CH.2001.NAB01_pre_cl_30_4.EF643652.NAB01           88.89%    failed      2.27%
+ 285  B.SE.2011.059SE.MF373162.pt059                       88.79%    passed      9.52%
+ 286  B.GB.2008.B200_B12.HQ595768.B200                     88.91%    failed      4.09%
+ 287  B.BE.2016.STAR04_CD45_26.MZ041494.STAR4              89.01%    passed     17.98%
+ 288  B.CH.2000.HIV_CH_BID-V3529_2000.JQ403022.-           88.93%    failed      0.39%
+ 289  B.DE.2008.154162.KT124752.154162                     88.61%    failed      2.68%
+ 290  B.CY.2005.CY056.FJ388905.CY056                       88.70%    failed      3.29%
+ 291  B.SE.1992.P4a_19920211.GU204933.P4a                  88.78%    passed     23.06%
+ 292  B.CY.2005.CY030.FJ388956.CY030                       88.86%    failed      1.29%
+ 293  B.CY.2009.CY244.JF683790.CY244                       88.91%    failed      1.55%
+ 294  B.ES.2013.DEMB13ES010.KP109518.HIV_0012              88.74%    failed      3.28%
+ 295  B.CY.2005.CY067.FJ388911.CY067                       88.87%    failed      4.28%
+ 296  B.GB.2009.L000b_p1.JF680919.L000b                    88.92%    passed     19.87%
+ 297  B.CY.2005.CY035.FJ388958.CY035                       88.74%    failed      1.88%
+ 298  B.CY.2005.CY096.FJ388963.CY096                       89.01%    failed      0.22%
+ 299  B.CY.2005.CY120.FJ388931.CY120                       88.69%    failed      1.70%
+ 300  B.CY.2005.CY137.FJ388937.CY137                       88.73%    failed      0.28%
+ 301  B.ES.2007.X2236_C6.HQ236609.X2236                    88.99%    passed     11.39%
+ 302  B.DE.2016.1HD6K-D0-061016-A3_S7.KY324640.1HD6K       88.96%    passed      5.52%
+ 303  B.GB.1997.CW002.AJ418531.CW002                       88.93%    failed      2.22%
+ 304  B.DK.2001.CTL_033.EF514709.CTL-033                   88.91%    failed      3.41%
+ 305  B.CY.2007.CY199.JF683751.CY199                       88.88%    failed      0.89%
+ 306  B.GB.2008.CH080071_e_p2.HM204631.713080071           89.38%    failed      4.25%
+ 307  B.GB.2008.CH080219_e_p2.HM204645.713080219           88.91%    passed      9.08%
+ 308  B.GB.2008.CH080225_e_p2.HM204646.713080225           88.82%    passed      6.87%
+ 309  B.CY.2009.CY242.JF683788.CY242                       88.88%    failed      3.86%
+ 310  B.DE.2013.947915.KT124808.947915                     88.83%    passed      6.39%
+ 311  B.BE.2018.DQ.MT417753.-                              89.26%    passed     43.27%
+ 312  B.BE.2017.DR.MT417754.-                              89.41%    passed     33.14%
+ 313  B.BE.2016.EF.MT417768.-                              89.57%    passed      9.61%
+ 314  B.ES.2008.ES_X2556_3.GQ372990.X2556                  88.89%    failed      4.68%
+ 315  B.CH.2002.HIV_CH_BID-V3527_2002.JQ403021.-           88.76%    passed      5.33%
+ 316  B.GB.2008.CH080087_e_p1.HM204632.713080087           88.75%    passed     18.95%
+ 317  B.DE.2010.C7V00ZV7_E10_131978.KC247987.-             89.35%    passed      6.05%
+ 318  B.GB.2009.S520_G7.HQ595802.S520                      88.79%    failed      3.28%
+ 319  B.GB.2002.MM24_d0027_ipe0027_SGA_301.MG902036.MM24   88.92%    failed      4.51%
+ 320  B.DE.2009.C7V00477_E10_116057.KC247954.-             89.28%    passed     30.19%
+ 321  B.DE.2009.C7V00CS2_E10_152226.KC248001.-             89.41%    passed     20.69%
+ 322  B.GB.2009.F432b_p1.JF680911.F432b                    88.76%    passed     16.85%
+ 323  B.DE.2010.290307.KT124760.290307                     88.78%    passed     13.52%
+ 324  B.DK.2004.PMVL_025.EF514702.PMVL-025                 88.97%    failed      1.94%
+ 325  B.DE.2010.C7V00ZS3_E10_131975.KC247984.-             89.40%    failed      4.03%
+ 326  B.DE.2010.C7V01038_E10_152250.KC248021.-             89.30%    failed      2.78%
+ 327  B.GB.2008.S230_A12.HQ595798.S230                     89.05%    passed      5.22%
+ 328  B.DE.2010.C7V004G9_E10_116111.KC247963.-             89.56%    passed      5.49%
+ 329  B.DE.2010.C7V00J18_E10_152235.KC248008.-             89.62%    passed      8.13%
+ 330  B.DE.2010.C7V00J67_E10_152238.KC248011.-             89.65%    passed      8.37%
+ 331  B.NL.2003.patient_A_5_2.HQ386140.A                   88.87%    passed     13.60%
+ 332  B.FR.2013.CHI6_12b.OP994482.CHI6                     88.83%    failed      3.57%
+ 333  B.ES.2014.EUR-0053.KU685590.EUR0053                  89.01%    passed      5.76%
+ 334  B.DE.2017.IDC561_aph_G10.MN871328.IDC561             88.53%    failed      1.21%
+ 335  B.GB.2008.M535_A7.HQ595790.M535                      88.80%    failed      1.20%
+ 336  B.ES.2014.EUR-0052.KU685589.EUR0052                  88.75%    failed      0.14%
+ 337  B.DE.2013.366396.KT124767.366396                     89.17%    failed      1.81%
+ 338  B.BE.2015.AK.MN485981.-                              89.17%    failed      2.28%
+ 339  B.FR.1992.PHI120.AF041125.120                        88.88%    failed      0.81%
+ 340  B.FR.1997.440102.KC699016.440102                     88.66%    failed      3.00%
+ 341  B.FR.1993.PHI159.AF041128.159                        88.95%    passed      5.90%
+ 342  B.FR.1989.757.KC699003.757                           88.93%    passed      6.63%
+ 343  B.CH.2004.HIV_CH_BID-V4408_2004.JQ403042.-           88.92%    failed      3.49%
+ 344  B.DE.2008.654207_SGA1.KR868869.654207                88.86%    failed      1.08%
+ 345  B.ES.1989.As4_2.KC595173.As4                         88.95%    failed      1.27%
+ 346  B.FR.1997.130203.KC699014.130203                     88.74%    failed      0.74%
+ 347  B.GB.1997.CW037.AJ418514.CW037                       88.89%    failed      4.41%
+ 348  B.GB.2008.G230_H7.HQ595780.G230                      88.80%    failed      1.64%
+ 349  B.GB.2008.CH080169_e_p1.HM204640.713080169           88.95%    failed      3.47%
+ 350  B.BE.1994.VI1399.DQ313253.-                          88.84%    failed      4.58%
+ 351  B.SE.2000.s6_522_8.JN251812.patient                  88.89%    passed     22.22%
+ 352  B.GB.1991.E21BrD2.JF706370.E21                       89.05%    failed      3.25%
+ 353  B.SE.2010.SE600012.KP411823.SE600012                 88.79%    failed      3.51%
+ 354  B.FR.2018.V-A6.ON421508.V                            89.02%    failed      1.37%
+ 355  B.DK.2001.CTL_030.EF514708.CTL-030                   89.12%    passed     13.55%
+ 356  B.ES.2015.100_116.KY465969.EUR0065                   88.97%    failed      3.10%
+ 357  B.CY.2005.CY055.FJ388904.CY055                       88.93%    failed      3.56%
+ 358  B.CY.2005.CY075.FJ388916.CY075                       88.63%    passed      9.73%
+ 359  B.DE.2016.1HD10K-D0-090516-A12_S2.KY324257.1HD10K    89.00%    passed      6.02%
+ 360  B.DK.2001.CTL_043.EF514712.CTL-043                   88.60%    failed      1.41%
+ 361  B.FR.2019.CYPO.B10.MN690612.CO                       88.89%    failed      1.54%
+ 362  B.FR.2019.MISP.A5.MN690659.MP                        88.92%    failed      3.25%
+ 363  B.FR.2019.FLMOE01.MN690634.FO                        88.89%    failed      3.94%
+ 364  B.FR.2019.PIQU.10.MN690685.PU                        88.89%    failed      2.18%
+ 365  B.FR.2019.XAPE.C5.MN690715.XE                        88.84%    failed      3.60%
+ 366  B.NL.2002.patient_C_9_3.HQ386173.C                   88.83%    passed      5.01%
+ 367  B.DE.2010.C7V00J75_E10_152239.KC248012.-             89.62%    failed      3.72%
+ 368  B.CY.2009.CY263.JF683805.CY263                       88.84%    passed     19.70%
+ 369  B.ES.2014.EUR-0043.KU685583.EUR0043                  88.88%    passed      6.27%
+ 370  B.SE.1992.P8a_19921110.GU204941.P8a                  88.91%    failed      1.28%
+ 371  B.CY.2007.CY190.JF683743.CY190                       88.86%    passed      7.53%
+ 372  B.CY.2007.CY194.JF683746.CY194                       88.88%    passed      6.62%
+ 373  B.CY.2009.CY268.JF683809.CY268                       88.87%    passed     10.48%
+ 374  B.GB.1994.748DEN31.AJ535600.Pat-2                    88.58%    failed      0.48%
+ 375  B.CH.2006.T5ZPHI67SGA_11_T5.KX792688.ZPHI67          88.89%    failed      1.58%
+ 376  B.CH.2007.R5ZPHI127SGA_4_R5.KX792706.ZPHI127         88.95%    failed      1.40%
+ 377  B.GB.2008.CH080134_e_p1.HM204637.713080134           88.93%    passed      5.76%
+ 378  B.DE.2010.C7V00QP8_E10_131969.KC247978.-             89.19%    passed      7.23%
+ 379  B.NL.1987.19554_9_2D8.GU455456.19554                 88.83%    passed     11.77%
+ 380  B.GB.2009.B400_G4.HQ595769.B400                      88.82%    passed     11.27%
+ 381  B.FR.1999.750710.KC699021.750710                     88.87%    passed     25.20%
+ 382  B.BE.2016.BQ.MN486013.-                              89.02%    passed      6.08%
+ 383  B.BE.2017.CD.MN486026.-                              89.18%    passed     17.44%
+ 384  B.FR.1997.751102.KC699024.751102                     88.87%    passed     10.37%
+ 385  B.BG.2008.S_08_001.MH746264.-                        88.88%    passed     18.47%
+ 386  B.FR.2009.DEMB09FR002.KF716495.H471                  88.89%    passed     15.21%
+ 387  B.BE.2017.CE.MN486027.-                              88.99%    failed      4.44%
+ 388  B.ES.2007.X2149.EU786678.2149                        88.91%    failed      2.67%
+ 389  B.IT.2009.T300b_p2.JF680936.T300b                    88.78%    passed      8.41%
+ 390  B.DE.2009.159793.KT124753.159793                     88.76%    passed      6.88%
+ 391  B.CY.2005.CY100.FJ388964.CY100                       89.01%    passed     16.61%
+ 392  B.GB.2009.T520b_F9.HQ595805.T520b                    88.96%    passed      9.78%
+ 393  B.FR.2008.940140.KC699039.940140                     88.80%    passed      8.14%
+ 394  B.FR.2005.DEMB05FR001.JX140652.BP001094              88.93%    passed      9.37%
+ 395  B.CH.2007.T6SHCS604SGA_10_T6.KX792725.SHCS604        88.71%    passed      9.42%
+ 396  B.CH.2007.R6ZPHI143SGA_11_R6.KX792750.ZPHI143        88.71%    passed      8.99%
+ 397  B.NL.1985.320SIC3_ACH320.AF069524.ACH320             88.83%    failed      2.84%
+ 398  B.CY.2005.CY113.FJ388930.CY113                       88.74%    failed      1.14%
+ 399  B.ES.2014.ARP1196.KT276256.ARP1196                   89.00%    passed     10.71%
+ 400  B.ES.2014.100351.MF381283.100351                     88.84%    passed      5.81%
+ 401  B.NL.1986.H434-8-A3.AY970946.H434                    89.01%    passed      6.14%
+ 402  B.GB.1983.CAM1.D10112.CAM1                           88.88%    failed      1.10%
+ 403  B.DK.2007.PMVL_011.FJ694790.-                        88.58%    failed      0.71%
+ 404  B.ES.2008.R9.KT200358.R9                             88.93%    failed      1.85%
+ 405  B.ES.2014.ARP1203.KT276263.ARP1203                   89.01%    passed      9.10%
+ 406  B.ES.2014.EUR-0050.KU685588.EUR0050                  88.87%    failed      0.47%
+ 407  B.ES.2013.P3598-C21.MW584218.P3598                   89.01%    passed      5.92%
+ 408  B.ES.2014.P4149-C6.MW584220.P4149                    88.93%    failed      2.93%
+ 409  B.ES.2013.P3472-C13.MW584217.P3472                   89.01%    failed      3.63%
+ 410  B.ES.2014.P3681-C14.MW584219.P3681                   88.95%    passed      7.46%
+ 411  B.ES.2009.X2689_2.GU362885.X2689                     88.87%    passed      5.03%
+ 412  B.ES.2014.ARP1204.KT276264.ARP1204                   88.97%    passed     28.80%
+ 413  B.CH.2002.HIV_CH_BID-V3511_2002.JQ403019.-           88.93%    passed     20.63%
+ 414  B.GB.1995.820DEN35.AJ535608.Pat-3                    88.73%    failed      0.53%
+ 415  B.NL.1994.ACH142_E11.DQ178989.ACH142                 88.79%    failed      1.09%
+ 416  B.DE.2008.255524.KT124757.255524                     88.88%    passed      6.03%
+ 417  B.BE.2017.02006_cen.MN449474.P5_02006                88.78%    passed     11.64%
+ 418  B.DE.2010.C7V01B31_E10_131993.KC247997.-             89.52%    passed     15.88%
+ 419  B.DE.2010.C7V01C63_E10_152268.KC248036.-             89.53%    passed     15.18%
+ 420  B.BE.2016.CP.MN486038.-                              89.14%    passed      7.99%
+ 421  B.GB.2008.CH080258_e_p2.HM204647.713080258           88.65%    failed      0.23%
+ 422  B.BE.2016.BR.MN486014.-                              88.79%    passed     11.88%
+ 423  B.DE.2005.243_D1.GU191384.243                        88.95%    passed     18.33%
+ 424  B.DE.2004.963987.KT124812.963987                     88.78%    failed      2.38%
+ 425  B.DE.2016.9254_W12_12BL5.MH575478.9254               88.78%    failed      3.77%
+ 426  B.DE.2010.C7V006H2_E10_152257.KC248026.-             89.01%    failed      3.59%
+ 427  B.BE.2016.BM.MN486009.-                              88.51%    failed      4.15%
+ 428  B.ES.2008.X2555_2.GU362883.X2555                     88.96%    failed      3.67%
+ 429  B.DE.2010.C7V00ZT1_E10_131976.KC247985.-             88.87%    failed      3.35%
+ 430  B.FR.2007.590110.KC699029.590110                     89.04%    passed      9.44%
+ 431  B.DE.2010.556743.KT124779.556743                     88.99%    passed      8.75%
+ 432  B.GB.2008.CH080203_e_p1.HM204644.713080203           88.71%    failed      1.36%
+ 433  B.GB.2009.W452_p1.JF680937.-                         88.76%    failed      3.22%
+ 434  B.CY.2007.CY197.JF683749.CY197                       89.13%    passed     16.86%
+ 435  B.GB.2019.ID402-p2-A11_S229.ON542742.ID402           88.79%    passed     16.76%
+ 436  B.GB.2009.G652_p5.JF680913.G652                      88.67%    failed      0.67%
+ 437  B.BE.2019.DY.MT417761.-                              89.06%    failed      1.07%
+ 438  B.ES.2005.1540906_2Fc1.KC595151.1540906              88.87%    passed      5.64%
+ 439  B.CY.2009.CY262.JF683804.CY262                       88.73%    failed      1.47%
+ 440  B.GB.2000.patient_MM4.JN034158.MM4                   88.70%    failed      1.83%
+ 441  B.GB.2009.P150_p1.JF680928.P150                      88.80%    failed      1.94%
+ 442  B.GB.2005.MM15.16.1B2.QVOA.MT793911.MM15             88.78%    failed      2.96%
+ 443  B.FR.1988.36.KC699002.36                             88.86%    passed     11.94%
+ 444  B.FR.1992.PHI133.AF041126.133                        89.04%    passed     11.71%
+ 445  B.GB.2013.13659_1_66.3.MF109454.-                    89.51%    failed      2.15%
+ 446  B.DK.2004.PMVL_013.EF514700.PMVL-013                 88.61%    failed      2.65%
+ 447  B.DE.2003.HIV_DE_BID-V3307_2003.JQ403048.V3307       88.84%    passed     16.07%
+ 448  B.BE.1996.VI1273.DQ313252.-                          88.89%    passed      7.46%
+ 449  B.DE.2010.863847.KT124797.863847                     88.84%    failed      1.47%
+ 450  B.GB.2008.CH080052_e_p1.HM204629.713080052           88.96%    passed     11.72%
+ 451  B.FR.1998.920203.KC699026.920203                     88.82%    failed      1.09%
+ 452  B.SE.2011.SE600034.KP411825.SE600034                 88.96%    failed      1.79%
+ 453  B.SE.2011.058SE.MF373161.pt058                       88.92%    failed      4.57%
+ 454  B.CY.2007.CY202.JF683754.CY202                       88.91%    failed      0.13%
+ 455  B.DE.2010.C7V00R34_E10_152244.KC248017.-             89.00%    passed     10.53%
+ 456  B.GB.1996.875DEN49.AJ535612.Pat-4                    88.93%    passed      7.01%
+ 457  B.FR.1991.1639.KC699005.1639                         88.82%    passed     10.21%
+ 458  B.SE.2010.040CA.MF373151.pt040                       88.73%    passed      6.37%
+ 459  B.BE.2016.BF.MN486001.-                              89.51%    passed      8.93%
+ 460  B.BE.2017.CR.MN486040.-                              89.05%    failed      3.11%
+ 461  B.GB.2009.C625_p1.JF680910.C625                      88.86%    failed      3.18%
+ 462  B.ES.1998.HC2988965_5Fc1.KC595182.HC2988965          88.79%    passed     15.42%
+ 463  B.GB.2008.D650_E9.HQ595775.D650                      88.88%    passed     23.81%
+ 464  B.GB.2008.T460_C6.HQ595803.T460                      88.91%    passed     10.78%
+ 465  B.GB.1994.NIBSC-1.KJ019215.-                         89.02%    passed      7.18%
+ 466  B.CY.2008.CY232.JF683781.CY232                       89.04%    passed      7.16%
+ 467  B.DE.1986.D31.U43096.D31                             88.96%    passed     12.42%
+ 468  B.BE.2019.EI.MT417771.-                              89.09%    failed      3.93%
+ 469  B.BE.2019.EJ.MT417772.-                              89.79%    failed      4.62%
+ 470  B.FR.1995.PIH374.AF041133.374                        88.93%    passed     13.47%
+ 471  B.NL.1990.1120.11B12.MT951990.1120                   88.95%    failed      2.23%
+ 472  B.GB.1997.CW048.AJ418521.CW048                       88.91%    passed      6.04%
+ 473  B.SE.1989.P1a_19890808.GU204919.P1a                  88.76%    failed      3.66%
+ 474  B.DK.2001.CTL_017.EF514705.CTL-017                   88.49%    failed      0.63%
+ 475  B.SE.1987.P1b_19870602.GU204922.P1b                  88.84%    passed      7.66%
+ 476  B.GB.2004.MM42d22_GN1.HM586198.MM42                  89.04%    passed      8.84%
+ 477  B.FR.1997.60101.KC699012.60101                       89.08%    failed      1.44%
+ 478  B.CH.2002.HIV_CH_BID-V4404_2002.JQ403041.-           88.84%    passed     15.39%
+ 479  B.CY.2005.CY074.FJ388915.CY074                       88.83%    failed      0.78%
+ 480  B.CY.2005.CY087.FJ388918.CY087                       88.69%    failed      0.62%
+ 481  B.DE.2010.C7V01AK1_E10_131983.KC247992.-             89.01%    failed      1.14%
+ 482  B.DE.2010.C7V01C14_E10_152263.KC248032.-             89.00%    failed      1.20%
+ 483  B.DE.2011.891676.KT124802.891676                     88.87%    failed      1.47%
+ 484  B.NL.1985.19298_4G10.GU455476.19298                  88.84%    passed      7.83%
+ 485  B.FR.1989.657.KC699009.657                           88.99%    failed      2.31%
+ 486  B.ES.2004.3227057_5Fc1.KC595161.3227057              88.84%    failed      4.21%
+ 487  B.ES.1989.As1.KC595169.As1                           88.93%    passed      7.87%
+ 488  B.ES.1989.As3.KC595172.As3                           88.82%    failed      1.65%
+ 489  B.GB.2004.MM39d11p.HM586193.MM39                     88.89%    passed     10.08%
+ 490  B.FR.1995.PIH373.AF041134.373                        88.91%    failed      4.54%
+ 491  B.NL.1985.19642_3_1G11.GU455425.19642                88.93%    passed      6.03%
+ 492  B.ES.2004.5009564_2Fc1.KC595166.5009564              88.95%    failed      1.93%
+ 493  B.ES.1989.S61I1.AF256204.89ES061                     88.83%    passed     11.74%
+ 494  B.BE.1990.VI423_-_53.DQ313249.VI423                  88.99%    failed      4.23%
+ 495  B.ES.1989.As11_10.KC595170.As11                      88.83%    failed      1.84%
+ 496  B.ES.1989.As2_3b.KC595171.As2                        88.89%    failed      0.86%
+ 497  B.DK.2004.PMVL_039.EF514703.PMVL-039                 89.06%    passed     11.57%
+ 498  B.ES.1989.As9_4.KC595178.As9                         88.97%    failed      4.22%
+ 499  B.ES.2004.64_1_22.KC595167.64                        88.96%    failed      2.75%
+ 500  B.FR.1989.1197.KC699007.1197                         88.93%    failed      2.36%
+ 501  B.NL.1986.H1_7_1A7.EU743973.ACH19999                 88.95%    failed      4.64%
+ 502  B.NL.1985.H5_4_bulk.EU744146.ACH19659                88.99%    failed      2.45%
+ 503  B.NL.1985.H2_5_12B1.EU744014.ACH19542                88.86%    failed      1.64%
+ 504  B.NL.1987.208.12.F4.MT951987.208                     88.86%    failed      1.69%
+ 505  B.NL.1987.19663_9A2.GU455494.19663                   88.89%    failed      1.98%
+ 506  B.ES.1989.As8_8.KC595177.As8                         88.96%    passed      8.69%
+ 507  B.ES.2005.10246788Fc1.KC595149.10246788              88.93%    failed      3.39%
+ 508  B.ES.1989.As6_1.KC595175.As6                         88.93%    failed      4.08%
+ 509  B.ES.2004.18122_3Fc1.KC595152.-                      88.88%    passed      6.02%
+ 510  B.ES.2004.LTNP20_1.KC595183.LTNP_20                  88.97%    failed      3.58%
+ 511  B.ES.2004.20020753Fc1.KC595153.20020753              88.99%    failed      1.56%
+ 512  B.ES.2004.357184_1Fc1.KC595164.357184                88.93%    failed      3.13%
+ 513  B.ES.2004.LTNP56_12_1F3.KC595186.LTNP56              88.89%    failed      4.12%
+ 514  B.ES.2004.2057906Fc1.KC595156.2057906                88.99%    passed      5.02%
+ 515  B.ES.2017.LTNP_3_127GC.MN055643.LTNP3                88.95%    failed      2.68%
+ 516  B.ES.2004.RF_LTNP_36.KC595201.RF_LTNP_36             88.96%    failed      2.92%
+ 517  B.ES.2007.LTNP2_3_0F3.KC595184.LTNP2                 88.95%    passed      5.02%
+ 518  B.ES.1999.30_1_21.KC595159.30                        89.04%    failed      4.67%
+ 519  B.ES.2004.3227058_6Fc1.KC595162.3227058              88.83%    failed      0.97%
+ 520  B.ES.2004.RF_LTNP_09.KC595194.RF_LTNP_09             88.79%    failed      1.48%
+ 521  B.ES.2004.12_3_PC_1.KC595150.LTNP12                  88.91%    passed      9.73%
+ 522  B.ES.2004.3227050_2Fc1.KC595160.3227050              88.88%    passed      5.96%
+ 523  B.NL.1987.H3_12_6C4.EU744055.ACH18969                89.13%    passed     23.03%
+ 524  B.FR.1989.1058.KC699010.1058                         88.88%    failed      2.51%
+ 525  B.IT.1992.136_3_CHILD_2.KF061032.136-child           89.02%    passed      7.15%
+ 526  B.NL.1986.H4_007_1B2.EU744097.ACH19768               88.99%    passed     17.17%
+ 527  B.CY.2005.CY068.FJ388912.CY068                       88.83%    failed      1.31%
+ 528  B.DE.1986.D117III_child.AF490512.D117III-ch          88.89%    passed      5.86%
+ 529  B.DE.1986.D117II_mother.AF490513.D117II              89.01%    passed     15.88%
+ 530  B.CY.2007.CY216.JF683765.CY216                       88.69%    passed     16.00%
+ 531  B.CY.2009.CY246.JF683791.CY246                       88.79%    passed     15.28%
+ 532  B.CY.2009.CY267.JF683808.CY267                       88.80%    passed     12.46%
+ 533  B.GB.1993.NA20_LN23_14_4.JN786861.NA20               88.70%    failed      1.46%
+ 534  B.CH.2001.HIV_CH_BID-V3534_2001.JQ403026.-           88.80%    passed      8.90%
+ 535  B.FR.2015.vKB18.OK075086.KB18                        88.97%    failed      3.36%
+ 536  B.GB.1997.CW010.AJ418478.CW010                       88.87%    passed      8.90%
+ 537  B.DE.2016.9255_W12_12A2.MH575375.9255                89.02%    passed     14.57%
+ 538  B.DE.2016.9253_rebound_S62_E12.MH575546.9253         88.83%    failed      1.09%
+ 539  B.DE.2020.2050-d21-7-H7.MW660543.mouse2050           89.05%    failed      3.33%
+ 540  B.DE.2020.1901-d21-6-G6.MW660556.mouse1901           89.05%    failed      3.14%
+ 541  B.DE.2020.1541-d21-5-H6.MW660565.mouse1541           89.05%    failed      2.69%
+ 542  B.DE.2020.1506-d21-7-H2.MW660572.mouse1506           89.05%    failed      3.14%
+ 543  B.DE.2020.1502-d21-6-G1.MW660580.mouse1502           89.05%    failed      3.26%
+ 544  B.DE.2020.2039-d21-6-F11.MW660551.mouse2039          89.05%    failed      3.40%
+ 545  B.CH.2001.HIV_CH_BID-V3533_2001.JQ403025.-           88.93%    passed     19.46%
+ 546  B.FR.1999.130206.KC699015.130206                     88.73%    passed     11.38%
+ 547  B.GB.2013.13592_1_26.3.MF109369.-                    89.49%    passed     13.72%
+ 548  B.GB.2018.DEMB18UK020.MT222952.ST083                 88.71%    passed     27.65%
+ 549  B.FR.1992.92FR_BX08.AY713411.BX08                    89.05%    passed      7.35%
+ 550  B.NL.1989.8332.21B3.MT951992.8332                    88.80%    failed      4.59%
+ 551  B.ES.2005.9684_12Fc1.KC595168.9684                   88.80%    passed      5.22%
+ 552  B.ES.2004.RF_LTNP_40.KC595203.RF_LTNP_40             88.75%    passed     10.72%
+ 553  B.FR.1993.PHI146.AF041127.146                        88.86%    passed     24.72%
+ 554  B.CY.2005.CY028.FJ388895.CY028                       88.83%    passed     24.40%
+ 555  B.FR.2013.PHI2_2.OP994535.PHI2                       89.00%    passed      7.38%
+ 556  B.SE.2009.SE600001.KP411822.SE600001                 88.89%    passed     10.70%
+ 557  B.BE.1991.SIMI84_HSIMI84.L07421.SIMI                 88.88%    failed      4.82%
+ 558  B.FR.1993.PHI153.AF041129.153                        88.92%    failed      1.21%
+ 559  B.CH.2002.HIV_CH_BID-V3539_2002.JQ403029.-           88.89%    passed      6.75%
+ 560  B.DE.1986.HAN.U43141.HAN-2                           88.89%    failed      3.99%
+ 561  B.FR.1989.749.KC699008.749                           88.92%    passed     13.87%
+ 562  B.FR.2018.AB-11A.ON421462.AB                         88.87%    passed      6.29%
+ 563  B.NL.2003.patient_D_5_13.HQ386192.D                  88.78%    passed      7.60%
+ 564  B.GB.2009.B520_A3.HQ595770.B520                      88.91%    passed      9.10%
+ 565  B.BE.2017.DC.MT417739.-                              89.01%    failed      1.53%
+ 566  B.BE.2015.DD.MT417740.-                              89.26%    passed      5.51%
+ 567  B.CH.2002.HIV_CH_BID-V4478_2002.JQ403047.-           88.86%    passed     15.15%
+ 568  B.FR.2010.PHI3_1.OP994495.PHI3                       88.60%    passed     29.43%
+ 569  B.GB.2007.UKBH1BD1.JF706472.UKBH1                    89.09%    passed      5.01%
+ 570  B.DE.2010.iso4-w10.KU612900.case4                    89.06%    passed      8.69%
+ 571  B.DE.2010.iso5-h10.KU612901.case5                    88.91%    passed      7.16%
+ 572  B.FR.2000.310103.KC699018.310103                     88.95%    passed     13.83%
+ 573  B.DK.2004.PMVL_049.EF514701.PMVL-049                 88.78%    failed      2.69%
+ 574  B.BE.2005.N2_DAY_1.FJ653242.N2                       88.95%    failed      1.30%
+ 575  B.CY.2007.CY198.JF683750.CY198                       88.71%    failed      2.23%
+ 576  B.CY.2008.CY226.JF683775.CY226                       88.80%    passed     13.85%
+ 577  B.NL.1988.704.13A5.MT951994.704                      88.82%    failed      2.81%
+ 578  B.NL.2002.patient_B_5_11.HQ386159.B                  88.84%    failed      3.82%
+ 579  B.FR.2008.750214.KC699032.750214                     88.92%    passed     18.85%
+ 580  B.GB.2014.13612_1_38.3.MF109422.-                    89.51%    passed     28.13%
+ 581  B.FR.2018.T-13A.ON421502.T                           88.69%    failed      1.79%
+ 582  B.ES.2004.40022834_5Fc1.KC595165.40022834            88.86%    failed      4.78%
+ 583  B.GB.2008.G125b_H6.HQ595779.G125b                    88.91%    failed      0.95%
+ 584  B.DE.2010.571373_SGA13.KR868834.571373               88.87%    passed      8.66%
+ 585  B.SE.2008.028SE.MF373142.pt028                       88.84%    passed      8.88%
+ 586  B.CY.2007.CY181.JF683736.CY181                       88.78%    passed     12.52%
+ 587  B.SI.2015.Sample56_SI457.MN736706.SI457              88.92%    passed     13.74%
+ 588  B.SE.2005.007SE.MF373129.pt007                       88.91%    passed     12.15%
+ 589  B.SE.2007.023SE.MF373140.pt023                       88.91%    passed     11.68%
+ 590  B.BE.2013.AB.MN485972.-                              89.23%    passed      5.32%
+ 591  B.BE.2014.AJ.MN485980.-                              89.51%    passed      9.99%
+ 592  B.BE.2017.CF.MN486028.-                              88.78%    failed      2.68%
+ 593  B.BE.2016.CS.MN486041.-                              88.79%    failed      1.75%
+ 594  B.FR.1993.PIH160.AF041131.160                        88.80%    failed      0.56%
+ 595  B.FR.1996.PIH384.AF041135.384                        88.87%    failed      1.47%
+ 596  B.CY.2005.CY149.FJ388940.CY149                       89.01%    passed      5.17%
+ 597  B.IT.2005.131_D1.GU191372.131                        88.74%    failed      1.20%
+ 598  B.SE.2012.071EG.MF373174.pt071                       88.97%    failed      3.93%
+ 599  B.DE.2010.C7V01AM7_E10_131986.KC247994.-             89.47%    passed      8.23%
+ 600  B.DE.2010.C7V01C30_E10_152266.KC248035.-             89.23%    passed      7.66%
+ 601  B.GB.2013.13592_1_4.3.MF109388.-                     89.51%    passed      9.61%
+ 602  B.BE.2016.AX.MN485994.-                              89.04%    failed      3.25%
+ 603  B.SI.2016.Sample12_SI159.MN736698.-                  88.93%    passed      6.97%
+ 604  B.GB.2009.C600_p1.JF680909.C600                      89.12%    failed      2.89%
+ 605  B.BE.2016.CY.MN486047.-                              89.04%    passed      8.68%
+ 606  B.GB.2016.DEMB16UK018.MT222951.ST053                 88.91%    passed      9.02%
+ 607  B.DE.2010.C7V00ZR5_E10_131974.KC247983.-             89.35%    passed      9.39%
+ 608  B.DE.2010.C7V01AL9_E10_131985.KC247993.-             89.26%    passed      5.28%
+ 609  B.CY.2007.CY189.JF683742.CY189                       88.89%    passed     13.33%
+ 610  B.CH.2006.T3SHCS566SGA_10_T3.KX792657.SHCS566        88.91%    passed     27.66%
+ 611  B.CH.2005.R3ZPHI97SGA_10_R3.KX792677.ZPHI92          88.88%    passed     12.92%
+ 612  B.BE.2015.AR.MN485988.-                              89.27%    failed      4.17%
+ 613  B.BE.2016.AU.MN485991.-                              89.09%    failed      4.54%
+ 614  B.FR.2014.CHI5_6.OP994378.CHI5                       88.82%    passed      6.60%
+ 615  B.GB.1995.811DEN01.AJ535616.Pat-5                    88.74%    failed      2.15%
+ 616  B.GB.2009.M263_p1.JF680923.M263                      88.95%    failed      3.97%
+ 617  B.SE.2005.SE600063.KP411829.SE600063                 88.82%    failed      1.37%
+ 618  B.SE.2005.008SE.MF373130.pt008                       88.80%    passed     15.99%
+ 619  B.DK.2004.PMVL_012.EF514699.PMVL-012                 88.89%    passed      8.61%
+ 620  B.GB.2008.R232_F6.HQ595795.R232                      88.95%    passed      9.56%
+ 621  B.CH.2003.NAB03_pre_cl_43_1.EF643659.107.NAB03       88.83%    passed      5.99%
+ 622  B.SE.2013.083ET.MF373185.pt083                       88.86%    failed      4.44%
+ 623  B.GB.2009.L320_p1.JF680920.L320                      88.96%    failed      4.94%
+ 624  B.IT.2009.P400_p2.JF680930.P400                      88.88%    failed      3.36%
+ 625  B.NL.1999.671_99T12.AY423381.H671                    88.92%    failed      1.23%
+ 626  B.BE.2016.DH.MT417744.-                              89.13%    failed      1.11%
+ 627  B.CY.2005.CY037.FJ388899.CY037                       88.75%    failed      1.42%
+ 628  B.DE.2012.328893.KT124765.328893                     88.76%    failed      0.55%
+ 629  B.CY.2006.CY168.FJ388949.CY168                       88.97%    failed      0.34%
+ 630  B.CY.2006.CY180.FJ388955.CY180                       88.83%    failed      1.08%
+ 631  B.IT.2005.SG1.DQ672623.SG1                           89.43%    passed     22.29%
+ 632  B.GB.2009.M600c_p1.JF680924.M600c                    88.78%    passed     16.03%
+ 633  B.ES.2007.X2210_3.EU786679.2210                      89.04%    passed      7.90%
+ 634  B.FR.2008.330424.KC699028.330424                     88.84%    passed      9.16%
+ 635  B.FR.2010.BAH74839248_Env275.MH000305.BAH74839248    89.40%    failed      4.90%
+ 636  B.FR.2013.LAO44631890_Env276.MH000306.LAO44631890    89.38%    failed      4.98%
+ 637  B.FR.2012.HUD08176060_Env277.MH000307.HUD08176060    89.36%    failed      3.61%
+ 638  B.FR.2012.NYA61231945_Env278.MH000308.NYA61231945    89.36%    passed      6.85%
+ 639  B.BE.2014.CN.MN486036.-                              88.97%    failed      0.82%
+ 640  B.ES.2008.P2008.FJ670531.P2008_ARP1099               88.71%    failed      1.92%
+ 641  B.GB.2014.14667_1_36.3.MF109596.-                    89.57%    passed     29.52%
+ 642  B.GB.2008.CH080128_e_p1.HM204636.713080128           88.92%    passed     12.35%
+ 643  B.GB.2014.14535_1_5.3.MF109533.-                     89.53%    failed      3.59%
+ 644  B.GB.2001.patient_MM8.JN034137.MM8                   88.91%    failed      0.64%
+ 645  B.GB.2009.T516_C7.HQ595804.T516                      88.95%    failed      4.44%
+ 646  B.CY.2009.CY253.JF683796.CY253                       89.04%    passed      7.10%
+ 647  B.GB.2014.13659_1_75.3.MF109461.-                    89.52%    passed      9.27%
+ 648  B.ES.2010.R8.KT200357.R8                             88.99%    failed      2.74%
+ 649  B.ES.2005.X1890.EU786672.1890                        89.08%    passed      9.44%
+ 650  B.GB.2014.14592_1_67.3.MF109561.-                    89.57%    passed     12.87%
+ 651  B.GB.2013.15171_1_35.4.MF109667.-                    89.56%    failed      4.85%
+ 652  B.GB.2013.15171_1_7.5.MF109680.-                     89.58%    passed      5.01%
+ 653  B.GB.2014.14727_1_66.3.MF109627.-                    89.51%    passed     23.28%
+ 654  B.GB.2014.14727_1_75.3.MF109636.-                    89.51%    passed     31.54%
+ 655  B.GB.2008.Q230_F6.HQ595794.Q230                      88.88%    passed      8.41%
+ 656  B.BE.2016.BI.MN486005.-                              90.18%    passed     10.10%
+ 657  B.GB.2004.MM43d21_GN1.HM586206.MM43                  88.92%    passed      5.85%
+ 658  B.GB.2010.MM40.18.1C7.QVOA.MT794825.MM40             88.91%    failed      3.70%
+ 659  B.GB.2014.13659_1_52.3.MF109440.-                    89.58%    passed     11.55%
+ 660  B.CH.2002.HIV_CH_BID-V4424_2002.JQ403044.-           88.87%    failed      1.95%
+ 661  B.FR.2014.CODb3_3.OP994809.CODb3                     88.65%    failed      3.86%
+ 662  B.BE.2014.AI.MN485979.-                              88.75%    passed     16.65%
+ 663  B.BE.2016.BL.MN486008.-                              88.84%    failed      1.16%
+ 664  B.GB.2008.CH080060_e_p1.HM204630.713080060           88.95%    failed      1.94%
+ 665  B.GB.2014.13659_1_64.3.MF109452.-                    89.48%    failed      2.90%
+ 666  B.GB.2013.15171_1_32.3.MF109664.-                    89.51%    passed     18.55%
+ 667  B.ES.2005.MDM3_1_3GP160.KC595189.MDM                 89.05%    failed      1.15%
+ 668  B.BE.2017.CB.MN486024.-                              89.04%    passed      6.26%
+ 669  B.DE.2008.882283_SGA115.KR868913.882283              89.02%    passed     11.98%
+ 670  B.FR.2006.FHY01223832_Env242.MH000288.FHY01223832    89.40%    passed      9.13%
+ 671  B.FR.2007.EKT55884155_Env248.MH000291.EKT55884155    89.40%    passed      6.72%
+ 672  B.FR.2007.MAA39190018_Env244.MH000289.MAA39190018    89.41%    passed      7.26%
+ 673  B.FR.2007.BDV23265724_Env246.MH000290.BDV23265724    89.40%    passed      5.33%
+ 674  B.DE.2009.923040.KT124805.923040                     88.87%    passed      8.72%
+ 675  B.GB.2008.CH080156_e_p1.HM204639.713080156           89.00%    passed     22.37%
+ 676  B.GB.2014.14592_1_52.4.MF109546.-                    89.54%    passed     14.88%
+ 677  B.GB.2013.13592_1_21.3.MF109364.-                    89.51%    passed      8.86%
+ 678  B.GB.2014.13612_1_11.3.MF109395.-                    89.48%    passed     18.72%
+ 679  B.GB.2014.14667_1_2.4.MF109590.-                     89.60%    passed      6.51%
+ 680  B.GB.2013.15228_1_67.4.MF109705.-                    89.49%    failed      2.48%
+ 681  B.GB.2014.14592_1_44.3.MF109540.-                    89.49%    failed      3.14%
+ 682  B.GB.2013.13774_1_47.3.MF109472.-                    89.49%    passed     11.56%
+ 683  B.GB.2013.13774_1_63.3.MF109487.-                    89.51%    passed     32.24%
+ 684  B.GB.2008.E214_E1.HQ595776.E214                      88.67%    passed      6.90%
+ 685  B.GB.2014.14535_1_27.3.MF109524.-                    89.49%    passed     26.86%
+ 686  B.GB.2014.13612_1_12.4.MF109396.-                    89.53%    failed      2.07%
+ 687  B.GB.2014.14727_1_59.4.MF109620.-                    89.52%    failed      0.85%
+ 688  B.FR.2013.JBF39579748_Env265.MH000299.JBF39579748    89.44%    passed      9.24%
+ 689  B.FR.2012.OAA78024406_Env267.MH000300.OAA78024406    89.47%    passed     13.80%
+ 690  B.FR.2010.LNB71860835_Env268.MH000301.NLB71860835    89.45%    passed     14.26%
+ 691  B.GB.2013.13592_1_17.3.MF109359.-                    89.51%    passed     10.89%
+ 692  B.GB.2014.14727_1_69.3.MF109630.-                    89.57%    failed      0.57%
+ 693  B.GB.2013.13592_1_20.3.MF109363.-                    89.57%    passed     47.64%
+ 694  B.GB.2013.13592_1_33.3.MF109376.-                    89.49%    passed      7.21%
+ 695  B.GB.2014.14727_1_63.3.MF109624.-                    89.48%    passed     10.59%
+ 696  B.GB.2013.15171_1_42.3.MF109675.-                    89.53%    passed      6.53%
+ 697  B.GB.2014.14535_1_7.3.MF109534.-                     89.49%    failed      4.25%
+ 698  B.FR.2012.DVB78224816_Env269.MH000302.DVB78224816    89.45%    passed      7.37%
+ 699  B.FR.2012.AJH98699831_Env271.MH000303.AJH98699831    89.44%    passed     18.20%
+ 700  B.FR.2011.OVU69304866_Env274.MH000304.OVU69304866    89.45%    passed     11.98%
+ 701  B.GB.2009.S225_E7.HQ595797.S225                      88.91%    passed     16.81%
+ 702  B.GB.2014.14592_1_64.3.MF109558.-                    89.58%    failed      1.97%
+ 703  B.GB.2014.14727_1_40.3.MF109605.-                    89.52%    failed      3.12%
+ 704  B.GB.2014.13612_1_34.3.MF109418.-                    89.61%    passed     11.64%
+ 705  B.GB.2013.13774_1_54.3.MF109479.-                    89.49%    passed      9.80%
+ 706  B.GB.2014.14535_1_28.4.MF109525.-                    89.56%    failed      4.48%
+ 707  B.GB.2013.13774_1_55.3.MF109480.-                    89.53%    passed     12.28%
+ 708  B.GB.2014.13612_1_17.3.MF109400.-                    89.48%    passed      6.97%
+ 709  B.GB.2014.14535_1_9.3.MF109536.-                     89.51%    passed     11.67%
+ 710  B.GB.2014.14667_1_16.3.MF109578.-                    89.51%    passed      5.32%
+ 711  B.GB.2014.13612_1_25.3.MF109408.-                    89.53%    passed     13.51%
+ 712  B.GB.2014.14592_1_57.3.MF109551.-                    89.52%    passed      6.07%
+ 713  B.GB.2009.A626_p1.JF680906.A626                      88.95%    failed      1.16%
+ 714  B.GB.2013.13774_1_71.3.MF109494.-                    89.53%    passed      8.33%
+ 715  B.FR.2012.IWC73075664_Env256.MH000292.IWC73075664    89.43%    passed     12.43%
+ 716  B.FR.2012.KVA06075493_Env257.MH000293.KVA06075493    89.43%    passed     13.93%
+ 717  B.FR.2012.LSB70094558_Env258.MH000294.LSB70094558    89.43%    passed      9.69%
+ 718  B.FR.2011.CVI79731224_Env259.MH000295.CVI79731224    89.47%    passed      5.62%
+ 719  B.GB.2014.13612_1_41.3.MF109426.-                    89.61%    passed     19.77%
+ 720  B.GB.2014.13659_1_59.3.MF109447.-                    89.57%    passed     13.39%
+ 721  B.SE.2010.SE600046.KP411827.SE600046                 89.00%    passed      6.93%
+ 722  B.SE.2010.038US.MF373149.pt038                       88.93%    passed     20.39%
+ 723  B.GB.2014.13659_1_69.3.MF109456.-                    89.49%    passed     12.11%
+ 724  B.GB.2013.15171_1_25.4.MF109656.-                    89.51%    failed      3.18%
+ 725  B.CY.2007.CY184.JF683738.CY184                       88.91%    failed      0.65%
+ 726  B.GB.2013.13774_1_77.4.MF109499.-                    89.57%    failed      1.88%
+ 727  B.GB.2013.13774_1_84.3.MF109506.-                    89.49%    passed     22.91%
+ 728  B.GB.2014.13659_1_61.3.MF109449.-                    89.56%    failed      1.69%
+ 729  B.CY.2008.CY237.JF683784.CY237                       88.88%    failed      3.28%
+ 730  B.CH.2004.R8ZPHI72SGA_12_R8.KX792587.ZPHI72          89.00%    passed      6.05%
+ 731  B.ES.2014.100_112.KY465967.EUR0056                   88.80%    passed     12.04%
+ 732  B.SI.2016.Sample65_SI497.MN736707.SI497              88.91%    failed      1.42%
+ 733  B.DK.2001.CTL_018.EF514706.CTL-018                   88.96%    failed      4.28%
+ 734  B.GB.2002.MM27_d0018_ipe012_SGA_1001.MG902171.MM27   88.97%    failed      2.98%
+ 735  B.ES.2008.P2021-3.FJ853620.P2021                     89.00%    failed      0.23%
+ 736  B.DE.2009.136172.KT124749.136172                     88.91%    failed      3.14%
+ 737  B.ES.2004.RF_LTNP_13.KC595197.RF_LTNP_13             89.05%    failed      4.28%
+ 738  B.SE.1995.P2a_19950126.GU204925.P2a                  89.10%    failed      4.41%
+ 739  B.SE.1992.P2b_19920522.GU204929.P2b                  89.23%    passed      5.59%
+ 740  B.ES.2004.251248_7Fc1.KC595157.-                     88.93%    passed     15.26%
+ 741  B.GB.2005.MM45d22_GN1.HM586210.MM45                  88.80%    failed      0.35%
+ 742  B.CH.2003.T2SHCS396SGA_11_T2.KX792831.SHCS396        88.65%    passed     10.28%
+ 743  B.CH.2003.R2ZPHI24SGA_10_R2.KX792852.ZPHI24          88.95%    passed     20.10%
+ 744  B.FR.2000.750905.KC699022.750905                     88.73%    passed     17.98%
+ 745  B.GB.2014.13659_1_65.3.MF109453.-                    89.53%    failed      1.36%
+ 746  B.BE.2017.DW.MT417759.-                              89.75%    failed      1.86%
+ 747  B.ES.2015.100598.KY989954.100598                     88.96%    passed      6.42%
+ 748  B.FR.2014.CHI4_3.OP994447.CHI4                       89.04%    failed      1.73%
+ 749  B.GB.2008.F455b_B4.HQ595778.F455b                    88.82%    failed      2.56%
+ 750  B.FR.2012.PHI8_1.OP994587.PHI8                       88.60%    failed      0.49%
+ 751  B.FR.2014.CODb6_2.OP994796.CODb6                     88.92%    failed      1.54%
+ 752  B.CY.2009.CY258.JF683801.CY258                       88.92%    passed      7.03%
+ 753  B.GB.2014.13659_1_58.3.MF109446.-                    89.51%    failed      1.20%
+ 754  B.BE.2013.AC.MN485973.-                              89.18%    failed      3.15%
+ 755  B.BE.2015.AO.MN485985.-                              89.14%    passed      9.28%
+ 756  B.DE.2010.C7V00QX2_E10_152240.KC248013.-             89.00%    failed      4.28%
+ 757  B.DE.2008.296004.KT124762.296004                     88.88%    passed      5.55%
+ 758  B.GB.2014.14592_1_47.3.MF109543.-                    89.52%    failed      3.27%
+ 759  B.ES.2009.Leg3.JN054257.Leg3                         88.84%    failed      2.46%
+ 760  B.FR.2010.098001_7.OP994722.98001                    88.83%    passed      5.24%
+ 761  B.DE.2016.1HD8K-D0-061516-A11_S66.KY324735.1HD8K     89.01%    failed      0.15%
+ 762  B.ES.2015.100600.KY989956.100600                     88.86%    passed      9.05%
+WARNING: 762 sequences contain more than 50% gaps/ambiguity
+****  TOTAL                                                88.99%  378 sequences failed composition chi2 test (p-value<5%; df=19)
+NOTE: B.DE.2004.912218.KT124804.912218 is identical to B.DE.2004.9213_V4136_d3.JQ403050.9213 but kept for subsequent analysis
+NOTE: B.DE.2020.1506-d21-7-H2.MW660572.mouse1506 is identical to B.DE.2020.1901-d21-6-G6.MW660556.mouse1901 but kept for subsequent analysis
+Reading input tree file /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/bioNJ_env_aa_one_seq_pP_subtypeB.nwk ... rooted tree
+
+NOTE: 641 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -421819.025
+Optimal log-likelihood: -396800.215
+Parameters optimization took 1 rounds (9.622 sec)
+
+Do NNI search on 1 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -394406.809
+Finish initializing candidate tree set (2)
+Current best tree score: -394406.809 / CPU time: 61.032
+Number of iterations: 1
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 2: -394063.109
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 3: -394027.871
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 4: -393927.898
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 5: -393836.717
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 6: -393627.070
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 10: -393536.538
+Iteration 10 / LogL: -393536.538 / Time: 0h:10m:26s
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 11: -393507.091
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 15: -393332.752
+Iteration 20 / LogL: -393336.589 / Time: 0h:19m:46s
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 21: -393239.741
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 24: -393236.678
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 26: -393233.892
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 27: -393074.879
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 28: -393033.203
+Iteration 30 / LogL: -393089.961 / Time: 0h:28m:25s (1h:36m:4s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 35: -392936.646
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 37: -392917.020
+Iteration 40 / LogL: -393283.729 / Time: 0h:37m:2s (1h:32m:7s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 41: -392879.214
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 43: -392757.104
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 44: -392727.387
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 49: -392672.257
+Iteration 50 / LogL: -392679.105 / Time: 0h:45m:34s (1h:32m:5s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 53: -392635.957
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 55: -392608.374
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 58: -392515.045
+Iteration 60 / LogL: -392746.897 / Time: 0h:54m:34s (1h:30m:38s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 69: -392507.399
+Iteration 70 / LogL: -392536.968 / Time: 1h:2m:57s (1h:30m:19s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 72: -392479.511
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 73: -392449.385
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 74: -392442.089
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 75: -392401.612
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 78: -392316.775
+Iteration 80 / LogL: -392412.140 / Time: 1h:11m:31s (1h:28m:43s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 88: -392297.353
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 90: -392265.698
+Iteration 90 / LogL: -392265.698 / Time: 1h:20m:18s (1h:30m:13s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 95: -392214.296
+Iteration 100 / LogL: -392301.783 / Time: 1h:29m:3s (1h:25m:27s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 103: -392209.618
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 106: -392205.109
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 107: -392204.072
+Iteration 110 / LogL: -392345.228 / Time: 1h:37m:30s (1h:26m:46s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 116: -392201.737
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 117: -392188.962
+Iteration 120 / LogL: -392320.250 / Time: 1h:45m:45s (1h:26m:12s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 122: -392162.583
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 124: -392123.621
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 129: -392117.106
+Iteration 130 / LogL: -392217.561 / Time: 1h:53m:52s (1h:27m:23s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 133: -392091.972
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 134: -392081.741
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 136: -392077.226
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 138: -392069.925
+Iteration 140 / LogL: -392082.221 / Time: 2h:2m:20s (1h:26m:15s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 144: -392012.720
+Iteration 150 / LogL: -392030.651 / Time: 2h:10m:49s (1h:22m:31s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 155: -391996.316
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 158: -391961.240
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 159: -391876.658
+Iteration 160 / LogL: -392019.962 / Time: 2h:19m:24s (1h:26m:48s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 166: -391828.659
+Iteration 170 / LogL: -392038.160 / Time: 2h:27m:45s (1h:23m:56s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 179: -391812.670
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 180: -391812.114
+Iteration 180 / LogL: -391812.114 / Time: 2h:36m:45s (1h:27m:34s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 185: -391783.883
+Iteration 190 / LogL: -391837.236 / Time: 2h:44m:54s (1h:22m:53s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 196: -391704.684
+Iteration 200 / LogL: -391865.483 / Time: 2h:53m:16s (1h:23m:35s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 204: -391684.221
+Iteration 210 / LogL: -391747.866 / Time: 3h:2m:15s (1h:21m:58s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 213: -391672.201
+Iteration 220 / LogL: -391716.279 / Time: 3h:10m:39s (1h:20m:57s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 221: -391666.435
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 222: -391648.940
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 223: -391611.405
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 225: -391555.175
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 229: -391553.340
+Iteration 230 / LogL: -391660.004 / Time: 3h:19m:28s (1h:26m:14s left)
+Iteration 240 / LogL: -391681.197 / Time: 3h:27m:55s (1h:17m:25s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 246: -391512.904
+Iteration 250 / LogL: -391540.751 / Time: 3h:36m:17s (1h:23m:23s left)
+Iteration 260 / LogL: -391635.110 / Time: 3h:44m:32s (1h:14m:33s left)
+Iteration 270 / LogL: -391575.402 / Time: 3h:52m:58s (1h:5m:49s left)
+Iteration 280 / LogL: -391544.278 / Time: 4h:1m:19s (0h:57m:5s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 282: -391506.710
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 283: -391492.531
+Iteration 290 / LogL: -391556.858 / Time: 4h:9m:35s (1h:20m:18s left)
+Iteration 300 / LogL: -391552.156 / Time: 4h:18m:0s (1h:11m:37s left)
+Iteration 310 / LogL: -391603.166 / Time: 4h:26m:22s (1h:2m:55s left)
+Iteration 320 / LogL: -391793.948 / Time: 4h:34m:47s (0h:54m:16s left)
+Iteration 330 / LogL: -391502.659 / Time: 4h:42m:53s (0h:45m:34s left)
+Iteration 340 / LogL: -391597.370 / Time: 4h:50m:50s (0h:36m:53s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 343: -391481.563
+Iteration 350 / LogL: -391846.301 / Time: 4h:59m:15s (1h:19m:44s left)
+Iteration 360 / LogL: -391773.435 / Time: 5h:7m:27s (1h:11m:4s left)
+Iteration 370 / LogL: -391532.549 / Time: 5h:15m:33s (1h:2m:25s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 373: -391480.516
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 378: -391467.039
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 380: -391446.344
+Iteration 380 / LogL: -391446.344 / Time: 5h:24m:16s (1h:25m:33s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 381: -391392.886
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 385: -391385.742
+Iteration 390 / LogL: -391539.371 / Time: 5h:32m:37s (1h:21m:14s left)
+Iteration 400 / LogL: -391476.919 / Time: 5h:40m:26s (1h:12m:31s left)
+Iteration 410 / LogL: -391516.460 / Time: 5h:48m:31s (1h:3m:54s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 411: -391361.590
+Iteration 420 / LogL: -391474.684 / Time: 5h:56m:44s (1h:17m:28s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 425: -391313.263
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 430: -391243.423
+Iteration 430 / LogL: -391243.423 / Time: 6h:4m:53s (1h:25m:3s left)
+Iteration 440 / LogL: -391292.474 / Time: 6h:12m:48s (1h:16m:25s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 449: -391230.557
+Iteration 450 / LogL: -391274.159 / Time: 6h:20m:45s (1h:23m:57s left)
+Iteration 460 / LogL: -391361.935 / Time: 6h:28m:49s (1h:15m:23s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 467: -391226.076
+Iteration 470 / LogL: -391501.398 / Time: 6h:36m:41s (1h:22m:2s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 474: -391187.432
+Iteration 480 / LogL: -391327.481 / Time: 6h:44m:57s (1h:19m:28s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 484: -391141.794
+Iteration 490 / LogL: -391283.644 / Time: 6h:53m:7s (1h:19m:24s left)
+Iteration 500 / LogL: -391247.163 / Time: 7h:1m:23s (1h:10m:56s left)
+Iteration 510 / LogL: -391381.921 / Time: 7h:9m:22s (1h:2m:25s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 519: -391129.579
+Iteration 520 / LogL: -391158.208 / Time: 7h:17m:22s (1h:23m:25s left)
+Iteration 530 / LogL: -391286.852 / Time: 7h:26m:27s (1h:15m:6s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 532: -391119.944
+Iteration 540 / LogL: -391240.674 / Time: 7h:37m:55s (1h:18m:9s left)
+Iteration 550 / LogL: -391174.375 / Time: 7h:46m:25s (1h:9m:39s left)
+Iteration 560 / LogL: -391134.341 / Time: 7h:57m:10s (1h:1m:27s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 565: -391115.800
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 569: -391086.169
+Iteration 570 / LogL: -391121.611 / Time: 8h:6m:37s (1h:24m:39s left)
+Iteration 580 / LogL: -391207.711 / Time: 8h:15m:49s (1h:16m:12s left)
+Iteration 590 / LogL: -391142.506 / Time: 8h:25m:18s (1h:7m:46s left)
+Iteration 600 / LogL: -391269.077 / Time: 8h:34m:42s (0h:59m:17s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 601: -391080.882
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 606: -391055.635
+Iteration 610 / LogL: -391162.323 / Time: 8h:44m:19s (1h:22m:39s left)
+Iteration 620 / LogL: -391174.808 / Time: 8h:53m:23s (1h:14m:6s left)
+Iteration 630 / LogL: -391120.180 / Time: 9h:2m:28s (1h:5m:32s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 631: -391037.668
+Iteration 640 / LogL: -391653.219 / Time: 9h:11m:19s (1h:18m:30s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 648: -391007.802
+Iteration 650 / LogL: -391113.816 / Time: 9h:20m:56s (1h:24m:42s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 658: -390984.271
+Iteration 660 / LogL: -391241.137 / Time: 9h:30m:15s (1h:24m:48s left)
+Iteration 670 / LogL: -391013.830 / Time: 9h:39m:4s (1h:16m:10s left)
+Iteration 680 / LogL: -391120.671 / Time: 9h:48m:34s (1h:7m:36s left)
+Iteration 690 / LogL: -391085.895 / Time: 9h:57m:45s (0h:58m:59s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 697: -390962.142
+Iteration 700 / LogL: -391007.749 / Time: 10h:6m:55s (1h:24m:13s left)
+Iteration 710 / LogL: -391038.604 / Time: 10h:16m:30s (1h:15m:39s left)
+Iteration 720 / LogL: -391042.274 / Time: 10h:25m:38s (1h:7m:0s left)
+Iteration 730 / LogL: -390975.990 / Time: 10h:34m:26s (0h:58m:18s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 734: -390913.600
+Iteration 740 / LogL: -391201.934 / Time: 10h:43m:26s (1h:21m:50s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 747: -390905.424
+Iteration 750 / LogL: -391015.386 / Time: 10h:52m:27s (1h:24m:29s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 754: -390857.833
+Iteration 760 / LogL: -390950.615 / Time: 11h:2m:20s (1h:22m:1s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 769: -390811.282
+Iteration 770 / LogL: -390938.917 / Time: 11h:11m:53s (1h:26m:29s left)
+Iteration 780 / LogL: -390846.615 / Time: 11h:21m:23s (1h:17m:50s left)
+Iteration 790 / LogL: -390911.325 / Time: 11h:30m:41s (1h:9m:9s left)
+Iteration 800 / LogL: -390922.983 / Time: 11h:41m:7s (1h:0m:32s left)
+Iteration 810 / LogL: -390894.744 / Time: 11h:50m:21s (0h:51m:48s left)
+Iteration 820 / LogL: -390880.549 / Time: 12h:0m:22s (0h:43m:5s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 828: -390798.017
+Iteration 830 / LogL: -390901.466 / Time: 12h:10m:8s (1h:26m:18s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 839: -390789.213
+Iteration 840 / LogL: -390855.832 / Time: 12h:20m:5s (1h:27m:19s left)
+Iteration 850 / LogL: -390832.000 / Time: 12h:29m:17s (1h:18m:32s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 852: -390773.042
+Iteration 860 / LogL: -390861.006 / Time: 12h:38m:45s (1h:21m:15s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 866: -390761.863
+Iteration 870 / LogL: -390838.957 / Time: 12h:48m:48s (1h:24m:55s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 873: -390733.184
+Iteration 880 / LogL: -390811.818 / Time: 12h:58m:56s (1h:22m:24s left)
+Iteration 890 / LogL: -390782.113 / Time: 13h:8m:24s (1h:13m:36s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 891: -390730.277
+Iteration 900 / LogL: -390796.796 / Time: 13h:17m:51s (1h:20m:45s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 903: -390714.072
+Iteration 910 / LogL: -390822.984 / Time: 13h:27m:3s (1h:22m:34s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 917: -390689.172
+Iteration 920 / LogL: -390768.214 / Time: 13h:36m:48s (1h:26m:12s left)
+Iteration 930 / LogL: -390713.059 / Time: 13h:47m:28s (1h:17m:29s left)
+Iteration 940 / LogL: -390720.931 / Time: 13h:56m:42s (1h:8m:36s left)
+Iteration 950 / LogL: -390780.373 / Time: 14h:6m:9s (0h:59m:44s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 953: -390614.942
+Iteration 960 / LogL: -390919.425 / Time: 14h:15m:48s (1h:22m:59s left)
+Iteration 970 / LogL: -390855.558 / Time: 14h:25m:4s (1h:14m:5s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 980: -390587.874
+Iteration 980 / LogL: -390587.874 / Time: 14h:35m:15s (1h:29m:24s left)
+Iteration 990 / LogL: -390849.027 / Time: 14h:45m:1s (1h:20m:32s left)
+Iteration 1000 / LogL: -390772.637 / Time: 14h:54m:39s (1h:11m:38s left)
+Iteration 1010 / LogL: -390635.897 / Time: 15h:3m:14s (1h:2m:39s left)
+Iteration 1020 / LogL: -390724.239 / Time: 15h:12m:40s (0h:53m:44s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1030: -390562.013
+Iteration 1030 / LogL: -390562.013 / Time: 15h:21m:59s (1h:29m:36s left)
+Iteration 1040 / LogL: -390633.780 / Time: 15h:30m:42s (1h:20m:37s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1046: -390535.804
+Iteration 1050 / LogL: -390711.873 / Time: 15h:39m:41s (1h:25m:59s left)
+Iteration 1060 / LogL: -390673.131 / Time: 15h:49m:19s (1h:17m:5s left)
+Iteration 1070 / LogL: -390709.939 / Time: 15h:58m:29s (1h:8m:8s left)
+Iteration 1080 / LogL: -390804.859 / Time: 16h:8m:3s (0h:59m:12s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1083: -390535.740
+Iteration 1090 / LogL: -390557.939 / Time: 16h:17m:37s (1h:23m:29s left)
+Iteration 1100 / LogL: -390567.463 / Time: 16h:26m:46s (1h:14m:31s left)
+Iteration 1110 / LogL: -390544.389 / Time: 16h:36m:28s (1h:5m:35s left)
+Iteration 1120 / LogL: -390741.372 / Time: 16h:45m:33s (0h:56m:36s left)
+Iteration 1130 / LogL: -390654.453 / Time: 16h:55m:14s (0h:47m:39s left)
+Iteration 1140 / LogL: -390636.903 / Time: 17h:3m:58s (0h:38m:39s left)
+Iteration 1150 / LogL: -390811.083 / Time: 17h:13m:29s (0h:29m:40s left)
+Iteration 1160 / LogL: -390563.399 / Time: 17h:23m:3s (0h:20m:41s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1163: -390535.395
+Iteration 1170 / LogL: -390568.619 / Time: 17h:31m:56s (1h:23m:41s left)
+Iteration 1180 / LogL: -390643.985 / Time: 17h:41m:57s (1h:14m:45s left)
+Iteration 1190 / LogL: -390629.634 / Time: 17h:51m:18s (1h:5m:46s left)
+Iteration 1200 / LogL: -390585.713 / Time: 18h:0m:46s (0h:56m:47s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1206: -390508.751
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1208: -390480.472
+Iteration 1210 / LogL: -390593.631 / Time: 18h:10m:19s (1h:28m:22s left)
+Iteration 1220 / LogL: -390722.666 / Time: 18h:19m:48s (1h:19m:23s left)
+Iteration 1230 / LogL: -390609.681 / Time: 18h:29m:43s (1h:10m:25s left)
+Iteration 1240 / LogL: -390561.046 / Time: 18h:39m:22s (1h:1m:26s left)
+Iteration 1250 / LogL: -390568.504 / Time: 18h:48m:52s (0h:52m:25s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1256: -390475.637
+Iteration 1260 / LogL: -390693.936 / Time: 18h:58m:45s (1h:26m:49s left)
+Iteration 1270 / LogL: -390614.080 / Time: 19h:8m:55s (1h:17m:51s left)
+Iteration 1280 / LogL: -390535.342 / Time: 19h:19m:1s (1h:8m:52s left)
+Iteration 1290 / LogL: -390596.867 / Time: 19h:29m:26s (0h:59m:52s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1297: -390457.123
+Iteration 1300 / LogL: -390675.557 / Time: 19h:39m:30s (1h:28m:4s left)
+Iteration 1310 / LogL: -390841.274 / Time: 19h:48m:51s (1h:19m:0s left)
+Iteration 1320 / LogL: -390465.171 / Time: 19h:58m:38s (1h:9m:58s left)
+Iteration 1330 / LogL: -390567.943 / Time: 20h:8m:23s (1h:0m:55s left)
+Iteration 1340 / LogL: -390873.805 / Time: 20h:17m:32s (0h:51m:49s left)
+Iteration 1350 / LogL: -390542.671 / Time: 20h:26m:54s (0h:42m:44s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1355: -390446.297
+Iteration 1360 / LogL: -390478.563 / Time: 20h:36m:25s (1h:26m:25s left)
+Iteration 1370 / LogL: -390871.270 / Time: 20h:45m:54s (1h:17m:21s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1378: -390436.089
+Iteration 1380 / LogL: -390583.548 / Time: 20h:54m:52s (1h:29m:10s left)
+Iteration 1390 / LogL: -390548.766 / Time: 21h:4m:28s (1h:20m:6s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1395: -390395.289
+Iteration 1400 / LogL: -390553.675 / Time: 21h:13m:52s (1h:26m:30s left)
+Iteration 1410 / LogL: -390561.899 / Time: 21h:23m:10s (1h:17m:24s left)
+Iteration 1420 / LogL: -390520.678 / Time: 21h:32m:7s (1h:8m:17s left)
+Iteration 1430 / LogL: -390579.548 / Time: 21h:41m:26s (0h:59m:11s left)
+Iteration 1440 / LogL: -390606.682 / Time: 21h:50m:15s (0h:50m:4s left)
+Iteration 1450 / LogL: -390550.313 / Time: 21h:59m:13s (0h:40m:58s left)
+Iteration 1460 / LogL: -390497.094 / Time: 22h:8m:12s (0h:31m:51s left)
+Iteration 1470 / LogL: -390518.500 / Time: 22h:17m:20s (0h:22m:45s left)
+Iteration 1480 / LogL: -390513.896 / Time: 22h:26m:43s (0h:13m:39s left)
+Iteration 1490 / LogL: -390568.567 / Time: 22h:35m:48s (0h:4m:33s left)
+TREE SEARCH COMPLETED AFTER 1496 ITERATIONS / Time: 22h:41m:6s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -390395.289
+Optimal log-likelihood: -390395.289
+Parameters optimization took 1 rounds (4.204 sec)
+BEST SCORE FOUND : -390395.289
+Total tree length: 86.718
+
+Total number of iterations: 1496
+CPU time used for tree search: 81140.942 sec (22h:32m:20s)
+Wall-clock time used for tree search: 81656.340 sec (22h:40m:56s)
+Total CPU time used: 81154.608 sec (22h:32m:34s)
+Total wall-clock time used: 81670.233 sec (22h:41m:10s)
+
+Analysis results written to: 
+  IQ-TREE report:                /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.iqtree
+  Maximum-likelihood tree:       /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.treefile
+  Screen log file:               /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.log
+
+--- Start phylogenetic dating ---
+Reading date file /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/date_file_env.txt ...
+762 dates extracted
+Building time tree by least-square dating (LSD) with command:
+lsd -i /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree.subst -s 7699 -o /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree -g /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree.outgroup -d /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree.date -l 0.0 
+Reroot the tree 1 using given outgroups ...
+
+TREE 1
+*PROCESSING:
+Reading the tree ... 
+Collapse 0 (over 761) internal branches having branch length <= 0
+ (settable via option -l)
+Parameter to adjust variances was set to 0.0334 (settable via option -b)
+Minimum branch length of time scaled tree (settable via option -u and -U): 0.0366,
+ rounded to 0.0356 (13 days/365) using factor 365 (settable via option -R)
+Estimating the root position on the branch defined by given outgroups ...
+*RESULTS:
+- Dating results:
+ rate 0.00265319, tMRCA 1949-01-02
+
+TOTAL ELAPSED TIME: 0.209 seconds
+LSD results written to:
+  LSD report:                  /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree.lsd
+  Time tree in nexus format:   /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree.nex
+  Time tree in newick format:  /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree.nwk
+
+--- End phylogenetic dating ---
+Date and Time: Thu Jul  6 22:16:41 2023
