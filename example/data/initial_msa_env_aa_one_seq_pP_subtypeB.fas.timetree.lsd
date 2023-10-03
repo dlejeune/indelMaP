@@ -1,0 +1,41 @@
+
+LEAST-SQUARE METHODS TO ESTIMATE RATES AND DATES - v.1.8.1 
+
+
+Input files:
+  i                                               Input tree file : /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree.subst
+  d                                               Input date file : /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree.date
+  p                                                Partition file : No
+Output file:
+  o                                                  Output file  : /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree
+Parameters:
+  c                                              With constraints : Yes
+  t                                      Lower bound for the rate : 1e-10
+  v                                                With variances : Yes, use variances based on input branch lengths
+  b                              Adjusted parameter for variances : To estimate
+  r                                             Estimate the root : On the branch given by the outgroups
+  w                                       Given substitution rate : No
+  g                                       File contains outgroups : /Users/iglh/Desktop/HIV-INDEL-ANALYSIS/data/initial_msa_env_aa_one_seq_pP_subtypeB.fas.timetree.outgroup
+  G                       Remove outgroups in the estimating tree : No
+  n                                             Multiple data set : No
+  f                                  Compute confidence intervals : No
+  e                                          Exclude outlier tips : No
+  u                Min internal branch length of time scaled tree : To estimate
+  R     Rounding number for min branch length of time scaled tree : To guess
+  U                Min external branch length of time scaled tree : To estimate
+  l                        Collapsed internal branch length limit : 0
+  D                                            Output date format : Based on input date format
+
+  h to print Help 
+  y to accept or type a letter to change an option (x = Exit) 
+Tree 1 
+Parameter to adjust variances was set to 0.0334329 (settable via option -b)
+Minimum branch length of time scaled tree (settable via option -u and -U): 0.0365988,
+ rounded to 0.0356164 (13/365) using factor 365 (settable via option -R)
+*RESULTS:
+- Dating results:
+ rate 0.00265319, tMRCA 1949-01-02
+
+*********************************************************
+
+TOTAL ELAPSED TIME: 0.208547 seconds
