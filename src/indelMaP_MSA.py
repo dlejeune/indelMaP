@@ -39,49 +39,56 @@ def InitalizeSetsAndAlignment(leaf, alphabet, indel_aware):
         in_character = leaf.sequence[i].upper()
         characters_protein = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 
                       'F', 'P', 'S', 'T', 'W', 'Y', 'V']
+        ambiguous_characters_protein = ['X', 'B', 'Z', 'J']
         characters_dna = ['T', 'C', 'A', 'G']
-        if leaf.sequence[i] in (characters_protein or characters_dna):
-            character = np.array(in_character).reshape((1,1))
-            align = np.concatenate((align, character), axis=1)
-            if alphabet == 'Protein':
-                if in_character == 'X':
-                    pars_sets.append(set(characters_protein))
-                elif in_character == 'B':
-                    pars_sets.append(set(['D', 'N']))
-                elif in_character == 'Z':
-                    pars_sets.append(set(['E', 'Q']))
-                elif in_character == 'J':
-                    pars_sets.append(set(['I', 'L']))
-                else:
-                    pars_sets.append(set(in_character))
-            if alphabet == 'DNA':
-                if in_character == 'X' or in_character == 'N':
-                    pars_sets.append(set(characters_dna))
-                elif in_character == 'V':
-                    pars_sets.append(set(['A', 'C', 'G']))
-                elif in_character == 'H':
-                    pars_sets.append(set(['A', 'C', 'T']))
-                elif in_character == 'D':
-                    pars_sets.append(set(['A', 'G', 'T']))
-                elif in_character == 'B':
-                    pars_sets.append(set(['C', 'G', 'T']))
-                elif in_character == 'M':
-                    pars_sets.append(set(['A', 'C']))
-                elif in_character == 'R':
-                    pars_sets.append(set(['A', 'G']))
-                elif in_character == 'W':
-                    pars_sets.append(set(['A', 'T']))
-                elif in_character == 'S':
-                    pars_sets.append(set(['C', 'G']))
-                elif in_character == 'Y':
-                    pars_sets.append(set(['C', 'T']))
-                elif in_character == 'K':
-                    pars_sets.append(set(['G', 'T']))
-                else:
-                    pars_sets.append(set(in_character))
-            if indel_aware:
-                ins_flags.append(flags.no_gap)
-                ins_perm.append(False)
+        ambiguous_characters_dna = ['X', 'N', 'V', 'H', 'D', 'B', 'M', 'R', 'W', 'S', 'Y', 'K']
+        character = np.array(in_character).reshape((1,1))
+        align = np.concatenate((align, character), axis=1)
+        if alphabet == 'Protein':
+            if not in_character in ambiguous_characters_protein and not in_character in characters_protein:
+                print('Error: Character not in alphabet')
+                exit()
+            if in_character == 'X':
+                pars_sets.append(set(characters_protein))
+            elif in_character == 'B':
+                pars_sets.append(set(['D', 'N']))
+            elif in_character == 'Z':
+                pars_sets.append(set(['E', 'Q']))
+            elif in_character == 'J':
+                pars_sets.append(set(['I', 'L']))
+            else:
+                pars_sets.append(set(in_character))
+        if alphabet == 'DNA':
+            if not in_character in ambiguous_characters_dna and not in_character in characters_dna:
+                print('Error: Character not in alphabet')
+                exit()
+            if in_character == 'X' or in_character == 'N':
+                pars_sets.append(set(characters_dna))
+            elif in_character == 'V':
+                pars_sets.append(set(['A', 'C', 'G']))
+            elif in_character == 'H':
+                pars_sets.append(set(['A', 'C', 'T']))
+            elif in_character == 'D':
+                pars_sets.append(set(['A', 'G', 'T']))
+            elif in_character == 'B':
+                pars_sets.append(set(['C', 'G', 'T']))
+            elif in_character == 'M':
+                pars_sets.append(set(['A', 'C']))
+            elif in_character == 'R':
+                pars_sets.append(set(['A', 'G']))
+            elif in_character == 'W':
+                pars_sets.append(set(['A', 'T']))
+            elif in_character == 'S':
+                pars_sets.append(set(['C', 'G']))
+            elif in_character == 'Y':
+                pars_sets.append(set(['C', 'T']))
+            elif in_character == 'K':
+                pars_sets.append(set(['G', 'T']))
+            else:
+                pars_sets.append(set(in_character))
+        if indel_aware:
+            ins_flags.append(flags.no_gap)
+            ins_perm.append(False)
     leaf.add_features(parsimony_sets = pars_sets)
     leaf.add_features(alignment = align)
     if indel_aware:
