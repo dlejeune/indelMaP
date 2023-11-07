@@ -465,7 +465,8 @@ def indelMaP_ASR(tree_file, msa_file, alphabet, out_file=os.path.abspath(os.getc
         f1.close()
         f2.close()
         f3.close()
-        tree.write(format=1, outfile=out_file+'_tree.nwk')
+        with open(out_file+'_tree.nwk', 'w') as f:
+            print(tree.write(format=1).split(';')[0]+"ROOT;", file=f)
     return tree_score
 
 
