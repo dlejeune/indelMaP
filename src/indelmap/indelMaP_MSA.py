@@ -7,9 +7,9 @@ Created on Fri Apr  1 08:55:19 2022
 """
 import numpy as np
 from ete3 import PhyloNode
-from calculateC import calculateC
-from HelperFunctions import flags, determineT, setcurrentT, determineC
-from RateMatrix import WAG, blosum, HIVb, JC69, K80, GTR
+from indelmap.calculateC import calculateC
+from indelmap.HelperFunctions import flags, determineT, setcurrentT, determineC
+from indelmap.RateMatrix import WAG, blosum, HIVb, JC69, K80, GTR
 import argparse
 import os
 

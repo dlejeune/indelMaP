@@ -9,9 +9,9 @@ Created on Fri Oct 29 22:23:09 2021
 import numpy as np
 from ete3 import PhyloNode
 from random import sample
-from calculateC import calculateC
-from HelperFunctions import determineC
-from RateMatrix import WAG, blosum, HIVb, JC69, K80, GTR
+from indelmap.calculateC import calculateC
+from indelmap.HelperFunctions import determineC
+from indelmap.RateMatrix import WAG, blosum, HIVb, JC69, K80, GTR
 import os
 import argparse
 

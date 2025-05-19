@@ -1,6 +1,6 @@
 [project]
 name = "indelMaP"
-version = "1.0.0"
+version = "1.0.1"
 description = "Indel-Aware Maximum Parsimony"
 readme = "README.md"
 requires-python = "==3.8.20"
@@ -10,3 +10,6 @@ dependencies = [
     "scipy>=1.10.1",
     "six>=1.17.0",
 ]
+
+[project.scripts]
+indelmap-msa = "indelmap:indelMaP_MSA.main"
