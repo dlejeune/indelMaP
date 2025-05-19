@@ -9,8 +9,8 @@ sdist = { url = "https://files.pythonhosted.org/packages/cf/59/f26e8bfab088a3989
 
 [[package]]
 name = "indelmap"
-version = "1.0.0"
-source = { virtual = "." }
+version = "1.0.1"
+source = { editable = "." }
 dependencies = [
     { name = "ete3" },
     { name = "numpy" },

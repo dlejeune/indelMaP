@@ -11,5 +11,10 @@ dependencies = [
     "six>=1.17.0",
 ]
 
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
 [project.scripts]
 indelmap-msa = "indelmap:indelMaP_MSA.main"
+indelmap-asr = "indelmap:indelMaP_ASR.main"
