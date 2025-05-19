@@ -3,7 +3,21 @@
 The repository includes the code for multiple sequence alignment (indelMaP_MSA) and ancestral sequence reconstruction (indelMaP_ASR) under indel-aware maximum parsimony. 
 
 ## Installation and dependencies
-The code does not require installation. Download the repository and execute the indelMaP_MSA.py script for multiple sequence alignment and the indelMaP_ASR.py script for ancestral sequence reconstruction. The code is executed using python and uses the following libraries: ete3, NumPy, random, math, SciPy, os, and argparse. 
+The code does not require installation. Download the repository and execute the indelMaP_MSA.py script for multiple sequence alignment and the indelMaP_ASR.py script for ancestral sequence reconstruction. The code is executed using python and uses the following libraries: ete3, NumPy, random, math, SciPy, os, and argparse.
+
+### Using `uv`
+`uv` is a python dependency management tool which allows for simpler distribution of python tools. You will need to
+[install `uv`](https://docs.astral.sh/uv/getting-started/installation/) to begin. 
+
+Thereafter, you can run:
+
+```bash
+uv tool install git+https://github.com/acg-team/indelMaP
+```
+
+This will install two scripts into your commandline: `indelmap-asr` and `indelmap-msa`. Just run either of them with the 
+`--help` flag for more information. For the rest of this guide, you can substitute `python indelMaP_ASR.py` and 
+`python indelMaP_MSA.py`with `indelmap-asr` and `indelmap-msa` respectively. 
 
 ## Usage
 
