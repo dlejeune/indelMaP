@@ -3,9 +3,10 @@ name = "indelMaP"
 version = "1.0.0"
 description = "Indel-Aware Maximum Parsimony"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = "==3.8.20"
 dependencies = [
     "ete3>=3.1.3",
-    "numpy>=2.2.6",
-    "scipy>=1.15.3",
+    "numpy>=1.24.4",
+    "scipy>=1.10.1",
+    "six>=1.17.0",
 ]
