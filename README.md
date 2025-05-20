@@ -19,6 +19,45 @@ This will install two scripts into your commandline: `indelmap-asr` and `indelma
 `--help` flag for more information. For the rest of this guide, you can substitute `python indelMaP_ASR.py` and 
 `python indelMaP_MSA.py`with `indelmap-asr` and `indelmap-msa` respectively. 
 
+### With Docker
+Using a docker container allows you to run code in many environments without the need to worry about external
+dependencies. You can find a pre-built docker image here: (TODO), but if you would like to build one yourself,
+you can clone this repository (`git clone https://github.com/acg-team/indelMaP.git`) and then run the  following from 
+within the project root directory (`cd indelMaP`):
+
+```
+docker build -t local/indelmap:latest .
+```
+
+This will create a docker _image_ with the tag `local/indelmap:latest`. Note that you may need to run the above command
+as `sudo`. 
+
+To then use the tool, you run:
+
+```
+docker run -it -v /path/to/host/data:/data local/indelmap:latest indelmap-msa -s /data/my_sequences.fasta ...
+```
+
+Some notes: 
+- You may again need to run this comand as `sudo`
+- Docker requires you to mount a volume if you want to access local files. Here, your local directory `/path/to/host/data`
+is mapped to the internal directory `/data`
+- If you wanted to run the `indelmap-asr` command you would just swap it out
+- This container has `procps` installed in it so that you can run it in `Nextflow`.
+
+#### Singularity
+Singularity is often used in environments where you don't have root access, like an HPC. Singularity is able to convert
+a docker image to a singularity image seamlessly. You can accomplish this by running:
+
+```
+singularity build indelmap_latest.sif docker-daemon://local/indelmap:latest
+```
+You will need to do this on the computer that has docker installed, and likely you will need to run this as `sudo`. 
+Thereafter the resulting `indelmap_latest.sif` can be used in an non-root environment.
+
+If you have pushed the image to DockerHub, then using `singularity pull docker://<your image repo>` can be done from a 
+non-root environment and it will automatically convert the docker image.
+
 ## Usage
 
 ### Minimal usage
